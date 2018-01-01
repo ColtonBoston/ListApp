@@ -2,13 +2,13 @@
 
 
 <div class="container">
-  <div class="row">
+  <div class="row center">
   <h1>Create New List</h1>
   <form class="" action="/lists" method="post">
 
     <div class="form-group">
-      <label for="name">Name</label>
-      <input id="name" type="text" name="list[name]" placeholder="List name">
+      <label class="hidden" for="name">Name</label>
+      <input class="form-control" id="name" type="text" name="list[name]" placeholder="List name">
     </div>
     <div class="form-group">
       <label for="privacy-public">Public</label>
@@ -19,12 +19,12 @@
       <input id="privacy-friends" type="radio" name="list[privacy]" value="friends only">
     </div>
     <div class="form-group">
-      <label for="owner">Owner</label>
-      <input id="owner" type="text" name="list[owner]" placeholder="List owner">
+      <label class="hidden" for="owner">Owner</label>
+      <input class="form-control" id="owner" type="text" name="list[owner]" placeholder="List owner">
     </div>
     <div class="form-group">
-      <label for="items">Items</label>
-      <textarea id="items" name="list[items]" placeholder="List items (separate by commas)..."></textarea>
+      <label class="hidden" for="items">Items</label>
+      <textarea class="form-control" id="items" name="list[items]" placeholder="List items (separate by commas)..."></textarea>
     </div>
     <button type="submit" class="btn btn-default">Create</button>
 

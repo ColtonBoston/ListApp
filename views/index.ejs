@@ -1,0 +1,13 @@
+<% include partials/header %>
+
+<div class="container">
+  <h1>All Lists</h1>
+  <a class="btn btn-primary" href="/lists/new">Add New List</a>
+  <% lists.forEach(function(list){ %>
+    <h3><%= list.name %></h3>
+    <p><%= list.items.length %> items</p>
+    <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm">More Info</a>
+  <% }) %>
+
+</div>
+<% include partials/footer %>
