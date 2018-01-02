@@ -1,6 +1,7 @@
 var express = require("express"),
     bodyParser = require("body-parser"),
-    mongoose = require("mongoose");
+    mongoose = require("mongoose"),
+    List = require("./models/list");
 
 var app = express();
 
@@ -8,16 +9,6 @@ mongoose.connect("mongodb://localhost/list_app");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
-
-var listSchema = new mongoose.Schema({
-  name: String,
-  owner: String,
-  privacy: String,
-  items: [],
-  createdAt: {type: Date, default: Date.now}
-});
-
-var List = mongoose.model("List", listSchema);
 
 // List.create({
 //   name: "Groceries",
