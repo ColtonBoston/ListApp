@@ -28,8 +28,13 @@
           <li class="nav-item <%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>"><a href="/lists/">Home</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
-          <li class="nav-item"><a href="/login">Login</a></li>
-          <li class="nav-item"><a href="/register">Sign Up</a></li>
+          <% if (!currentUser) { %>
+            <li class="nav-item"><a href="/login">Login</a></li>
+            <li class="nav-item"><a href="/register">Sign Up</a></li>
+          <% } else { %>
+            <li class="nav-item"><a href="#">Logged in as <strong><%= currentUser.username %></strong></a></li>
+            <li class="nav-item"><a href="/logout">Logout</a></li>
+          <% } %>
   			</ul>
   		</div>
 

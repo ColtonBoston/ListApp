@@ -24,21 +24,12 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser())
+passport.deserializeUser(User.deserializeUser());
 
-
-// List.create({
-//   name: "Groceries",
-//   owner: "Colton",
-//   privacy: "public",
-//   items: ["bananas", "oats", "strawberries", "bacon", "lactose-free milk"]
-// }, function(err, list){
-//   if (err){
-//     console.log(err);
-//   } else {
-//     console.log(list);
-//   }
-// });
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.get("/", function(req, res){
   res.render("landing");
@@ -59,19 +50,21 @@ var data = [
   }
 ];
 
+// Index
 app.get("/lists", function(req, res){
+  console.log(req.user);
   List.find({}, function(err, allLists){
     if (err){
       console.log(err);
     } else {
-      res.render("index", {lists: allLists});
+      res.render("lists/index", {lists: allLists});
     }
   });
 });
 
 // New
 app.get("/lists/new", function(req, res){
-  res.render("new");
+  res.render("lists/new");
 });
 
 // Create
@@ -96,7 +89,7 @@ app.get("/lists/:id", function(req, res){
     if (err){
       console.log(err);
     } else {
-      res.render("show", {list: foundList});
+      res.render("lists/show", {list: foundList});
     }
   });
 });
@@ -132,5 +125,17 @@ app.post("/login", passport.authenticate("local",
   failureRedirect: "/login"
 }), function(req, res){
 });
+
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/lists");
+});
+
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect("/login");
+}
 
 app.listen("3000", console.log("ListApp started..."));
