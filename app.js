@@ -52,7 +52,6 @@ var data = [
 
 // Index
 app.get("/lists", function(req, res){
-  console.log(req.user);
   List.find({}, function(err, allLists){
     if (err){
       console.log(err);
