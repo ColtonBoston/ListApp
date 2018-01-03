@@ -14,17 +14,22 @@ router.get("/lists", function(req, res){
 });
 
 // Open new list form
-router.get("/lists/new", function(req, res){
+router.get("/lists/new", isLoggedIn, function(req, res){
   res.render("lists/new");
 });
 
 // Create new list
-router.post("/lists", function(req, res){
+router.post("/lists", isLoggedIn, function(req, res){
   // var list = req.body.list;
   //
   // list.items = list.items.split(",");
   // console.log(list.items);
   req.body.list.items = req.body.list.items.split(",");
+  var author = {
+    id: req.user._id,
+    username: req.user.username
+  };
+  req.body.list.author = author;
   List.create(req.body.list, function(err, list){
     if (err){
       console.log(err);
@@ -44,5 +49,13 @@ router.get("/lists/:id", function(req, res){
     }
   });
 });
+
+// Checks if the user is logged in
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect("/login");
+}
 
 module.exports = router;

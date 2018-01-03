@@ -1,7 +1,7 @@
 <% include ../partials/header %>
 <div class="container">
   <h1><%= list.name %></h1>
-  <p>Created by <%= list.owner %> on <%= list.createdAt.toDateString() %></p>
+  <p><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <ul>
     <% list.items.forEach(function(item){ %>
       <li><%= item %></li>
