@@ -3,6 +3,9 @@
   <h1><%= list.name %></h1>
   <p><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <a class="btn btn-warning" href="/lists/<%= list._id %>/edit">Edit</a>
+  <form class="delete-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+    <button class="btn btn-danger">Delete</button>
+  </form>
   <ul class="list-group">
     <% list.items.forEach(function(item){ %>
       <li class="list-group-item"><%= item %></li>

@@ -77,6 +77,17 @@ router.put("/lists/:id", function(req, res){
   });
 });
 
+// Destroy Route
+router.delete("/lists/:id", function(req, res){
+  List.findByIdAndRemove(req.params.id, function(err){
+    if (err){
+      res.redirect("/lists");
+    } else {
+      res.redirect("/lists");
+    }
+  });
+});
+
 // Checks if the user is logged in
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){

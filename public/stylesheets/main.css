@@ -10,3 +10,11 @@ body {
 .hidden {
   display: none;
 }
+
+.delete-form {
+  display: inline;
+}
+
+.list-group {
+  margin-top: 10px;
+}
