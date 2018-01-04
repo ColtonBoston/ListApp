@@ -50,6 +50,33 @@ router.get("/lists/:id", function(req, res){
   });
 });
 
+// Edit Route
+router.get("/lists/:id/edit", function(req, res){
+  List.findById(req.params.id, function(err, foundList){
+    if (err){
+      console.log(err);
+    } else {
+      res.render("lists/edit", {list: foundList});
+    }
+  });
+});
+
+// Update Route
+router.put("/lists/:id", function(req, res){
+  var newData =
+  {
+    name: req.body.list.name,
+    items: req.body.list.items.split(",")
+  }
+  List.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, updatedList){
+    if(err){
+      console.log(err);
+    } else {
+      res.redirect("/lists/" + updatedList.id);
+    }
+  });
+});
+
 // Checks if the user is logged in
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){

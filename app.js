@@ -2,12 +2,14 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     passport = require("passport"),
+    methodOverride = require("method-override"),
     LocalStrategy = require("passport-local"),
     User = require("./models/user"),
     List = require("./models/list");
 
 var listRoutes = require("./routes/lists"),
-    indexRoutes = require("./routes/index");
+    indexRoutes = require("./routes/index"),
+    userRoutes = require("./routes/users");
 
 var app = express();
 
@@ -15,7 +17,7 @@ mongoose.connect("mongodb://localhost/list_app");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
-
+app.use(methodOverride("_method"));
 // PASSPORT CONFIG
 app.use(require("express-session")({
   secret: "Zoe is a dog",
@@ -36,5 +38,9 @@ app.use(function(req, res, next){
 
 app.use(indexRoutes);
 app.use(listRoutes);
+app.use(userRoutes);
+
+// For shorter route names in routes/lists.js
+// app.use("/lists", listRoutes);
 
 app.listen("3000", console.log("ListApp started..."));

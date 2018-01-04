@@ -25,7 +25,8 @@
   		<div class="collapse navbar-collapse" id="navbarToggle">
 
         <ul class="nav navbar-nav">
-          <li class="nav-item <%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>"><a href="/lists/">Home</a></li>
+          <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active' : '' %>"><a href="/lists">Home</a></li>
+          <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active' : '' %>"><a href="/users">Friends</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
           <% if (!currentUser) { %>

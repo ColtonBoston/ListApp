@@ -2,9 +2,10 @@
 <div class="container">
   <h1><%= list.name %></h1>
   <p><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
-  <ul>
+  <a class="btn btn-warning" href="/lists/<%= list._id %>/edit">Edit</a>
+  <ul class="list-group">
     <% list.items.forEach(function(item){ %>
-      <li><%= item %></li>
+      <li class="list-group-item"><%= item %></li>
     <% }) %>
   </ul>
 </div>

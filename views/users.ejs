@@ -1,0 +1,23 @@
+<% include partials/header %>
+
+<div class="container">
+  <h1>Users page</h1>
+  <ul>
+  <% users.forEach(function(user){ %>
+    <% if(!user._id.equals(currentUser._id)){ %>
+      <li>
+        <%= user.username %>
+        <form action="/addFriend/<%= user.username %>/<%= user._id %>" method="post">
+          <% if(currentUser.friends.indexOf(user._id) < 0) { %>
+            <input type="submit" value="Add Friend">
+          <% } else { %>
+            <input type="submit" value="Remove Friend">
+          <% } %>
+        </form>
+      </li>
+    <% } %>
+  <% }) %>
+  </ul>
+</div>
+
+<% include partials/footer %>
