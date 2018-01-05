@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-var User = require("../models/user");
+var User = require("../models/user"),
+    List = require("../models/list");
 
 // Show all users
 router.get("/users", isLoggedIn, function(req, res){
@@ -25,6 +26,13 @@ router.post("/addFriend/:id", function(req, res){
       } else {
         currentUser.friends.push(req.params.id);
 
+        List.find({"author.id": req.user._id}, function(err, foundLists){
+          foundLists.forEach(function(list){
+            console.log(list.permissions);
+            list.permissions.push(req.params.id);
+            list.save();
+          });
+        });
         // Redirects after the user is saved.
         // The callback fixes an issue where the page would refresh before the user
         // was saved and the updated data would not be reflected on the page.

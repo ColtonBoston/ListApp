@@ -30,10 +30,12 @@ router.post("/lists", isLoggedIn, function(req, res){
     username: req.user.username
   };
   req.body.list.author = author;
+  req.body.list.permissions = req.user.friends;
   List.create(req.body.list, function(err, list){
     if (err){
       console.log(err);
     } else {
+      console.log(list.permissions);
       res.redirect("/lists");
     }
   });
@@ -51,18 +53,23 @@ router.get("/lists/:id", function(req, res){
 });
 
 // Edit Route
-router.get("/lists/:id/edit", function(req, res){
+router.get("/lists/:id/edit", isLoggedIn, function(req, res){
   List.findById(req.params.id, function(err, foundList){
     if (err){
       console.log(err);
     } else {
+      if (foundList.permissions.indexOf(req.user._id) >= 0){
+        console.log("You can edit");
+      } else {
+        console.log("You cannot edit");
+      }
       res.render("lists/edit", {list: foundList});
     }
   });
 });
 
 // Update Route
-router.put("/lists/:id", function(req, res){
+router.put("/lists/:id", isLoggedIn, function(req, res){
   var newData =
   {
     name: req.body.list.name,

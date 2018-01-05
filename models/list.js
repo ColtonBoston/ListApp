@@ -11,7 +11,13 @@ var listSchema = new mongoose.Schema({
       ref: "User"
     },
     username: String
-  }
+  },
+  permissions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 module.exports = mongoose.model("List", listSchema);
