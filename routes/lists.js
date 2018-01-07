@@ -53,19 +53,10 @@ router.get("/lists/:id", function(req, res){
 });
 
 // Edit Route
-router.get("/lists/:id/edit", isLoggedIn, function(req, res){
-  List.findById(req.params.id, function(err, foundList){
-    if (err){
-      console.log(err);
-    } else {
-      if (foundList.permissions.indexOf(req.user._id) >= 0){
-        console.log("You can edit");
-      } else {
-        console.log("You cannot edit");
-      }
+router.get("/lists/:id/edit", canUserEdit, function(req, res){
+    List.findById(req.params.id, function(err, foundList){
       res.render("lists/edit", {list: foundList});
-    }
-  });
+    });
 });
 
 // Update Route
@@ -85,7 +76,7 @@ router.put("/lists/:id", isLoggedIn, function(req, res){
 });
 
 // Destroy Route
-router.delete("/lists/:id", function(req, res){
+router.delete("/lists/:id", checkListOwnership, function(req, res){
   List.findByIdAndRemove(req.params.id, function(err){
     if (err){
       res.redirect("/lists");
@@ -101,6 +92,43 @@ function isLoggedIn(req, res, next){
     return next();
   }
   res.redirect("/login");
+}
+
+// Check if the user has permission to edit a list
+function canUserEdit(req, res, next){
+  if(req.isAuthenticated()){
+    List.findById(req.params.id, function(err, foundList){
+      if (err){
+        res.redirect("back");
+      } else {
+        if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
+          next();
+        } else {
+          res.redirect("back");
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
+}
+
+function checkListOwnership(req, res, next){
+  if(req.isAuthenticated()){
+    List.findById(req.params.id, function(err, foundList){
+      if (err){
+        res.redirect("back");
+      } else {
+        if (foundList.author.id.equals(req.user._id)){
+          next();
+        } else {
+          res.redirect("back");
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
 }
 
 module.exports = router;
