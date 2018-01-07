@@ -3,11 +3,24 @@ var router = express.Router();
 var List = require("../models/list");
 
 // List index route
-router.get("/lists", function(req, res){
-  List.find({}, function(err, allLists){
+router.get("/lists", isLoggedIn, function(req, res){
+  List.find({$or: [{"permissions": req.user._id}, {"author.id": req.user._id}]}, function(err, allLists){
     if (err){
       console.log(err);
     } else {
+      console.log(allLists);
+      var myLists = [], friendLists = [];
+      allLists.forEach(function(list){
+        if (list.author.id.equals(req.user._id)){
+          myLists.push(list);
+        } else {
+          friendLists.push(list);
+        }
+      });
+      console.log(myLists);
+      console.log("=====================");
+      console.log(friendLists);
+      allLists = myLists.concat(friendLists);
       res.render("lists/index", {lists: allLists});
     }
   });
@@ -31,6 +44,7 @@ router.post("/lists", isLoggedIn, function(req, res){
   };
   req.body.list.author = author;
   req.body.list.permissions = req.user.friends;
+  //req.body.list.permissions.push(req.user._id);
   List.create(req.body.list, function(err, list){
     if (err){
       console.log(err);
@@ -104,7 +118,7 @@ function canUserEdit(req, res, next){
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
         } else {
-          res.redirect("back");
+          res.redirect("/lists");
         }
       }
     });
