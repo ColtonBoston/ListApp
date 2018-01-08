@@ -26,7 +26,7 @@ $("#list").on("blur", ".list-item-input", function(event){
       },
       error: function(){
         console.log("Update failed");
-        selectedList.value = initialItemVal;
+        selectedList[0].value = initialItemVal;
       }
     });
   }
