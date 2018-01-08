@@ -8,7 +8,6 @@ router.get("/lists", isLoggedIn, function(req, res){
     if (err){
       console.log(err);
     } else {
-      console.log(allLists);
       var myLists = [], friendLists = [];
       allLists.forEach(function(list){
         if (list.author.id.equals(req.user._id)){
@@ -17,9 +16,6 @@ router.get("/lists", isLoggedIn, function(req, res){
           friendLists.push(list);
         }
       });
-      console.log(myLists);
-      console.log("=====================");
-      console.log(friendLists);
       allLists = myLists.concat(friendLists);
       res.render("lists/index", {lists: allLists});
     }
@@ -37,7 +33,7 @@ router.post("/lists", isLoggedIn, function(req, res){
   //
   // list.items = list.items.split(",");
   // console.log(list.items);
-  req.body.list.items = req.body.list.items.split(",");
+  //req.body.list.items = req.body.list.items.split(",");
   var author = {
     id: req.user._id,
     username: req.user.username
@@ -50,13 +46,13 @@ router.post("/lists", isLoggedIn, function(req, res){
       console.log(err);
     } else {
       console.log(list.permissions);
-      res.redirect("/lists");
+      res.redirect("/lists/" + list._id);
     }
   });
 });
 
 // Show list
-router.get("/lists/:id", function(req, res){
+router.get("/lists/:id", canUserEdit, function(req, res){
   List.findById(req.params.id, function(err, foundList){
     if (err){
       console.log(err);
@@ -75,16 +71,12 @@ router.get("/lists/:id/edit", canUserEdit, function(req, res){
 
 // Update Route
 router.put("/lists/:id", isLoggedIn, function(req, res){
-  var newData =
-  {
-    name: req.body.list.name,
-    items: req.body.list.items.split(",")
-  }
-  List.findByIdAndUpdate(req.params.id, {$set: newData}, function(err, updatedList){
+  List.findByIdAndUpdate(req.params.id, {$set: {"items": req.body.items}}, function(err, updatedList){
     if(err){
       console.log(err);
     } else {
-      res.redirect("/lists/" + updatedList.id);
+      // res.redirect("/lists/" + updatedList.id);
+      res.end();
     }
   });
 });

@@ -18,3 +18,14 @@ body {
 .list-group {
   margin-top: 10px;
 }
+
+.list-item-input {
+  border: none;
+  border-bottom: 2px solid transparent
+}
+
+.list-item-input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid lightblue;
+}

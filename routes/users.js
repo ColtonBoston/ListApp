@@ -6,6 +6,29 @@ var User = require("../models/user"),
 
 // Show all users
 router.get("/users", isLoggedIn, function(req, res){
+
+  // finds all friends of the current user
+  User
+  .findById(req.user._id)
+  .populate('friends') // <--
+  .exec(function (err, user) {
+    if (err){
+      console.log(err);
+    } else {
+      // Sort friends by alphabetical order
+      user.friends.sort(function(a, b){
+        var friendA = a.username.toUpperCase();
+        var friendB = b.username.toUpperCase();
+        return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+      });
+      user.friends.forEach(function(friend){
+        console.log(friend.username);
+      });
+    }
+  });
+
+  // finds all signed up users
+  // will move this to a search bar with dropdown in the nav
   User.find({}, function(err, foundUsers){
     if(err){
       console.log(err);
