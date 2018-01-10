@@ -7,19 +7,17 @@
       <button class="btn btn-danger">Delete List</button>
     </form>
   <% } %>
-  <% console.log(list.items.length); %>
-    <ul id="list" class="list-group">
-  <% if (list.items && list.items.length > 0){ %>
+  <ul id="list" class="list-group">
+    <% if (list.items && list.items.length > 0){ %>
       <% var i = 0; %>
       <% list.items.forEach(function(item){ %>
         <li id="list-item-<%= i %>" class="list-group-item">
-          <span class="list-item-value">
-            <input class="list-item-input" type="text" value="<%= item %>">
-          </span>
+          <input class="list-item-input" type="text" value="<%= item %>">
+          <button class="btn btn-danger btn-delete-item"><i class="glyphicon glyphicon-trash"></i></button>
         </li>
         <% i++ %>
       <% }) %>
-  <% } %>
+      <% } %>
   </ul>
   <form action="/lists/<%= list._id %>?_method=PUT" method="POST">
     <input id="new-item-input" class="form-control" type="text" name="list[item]" placeholder="Add item...">

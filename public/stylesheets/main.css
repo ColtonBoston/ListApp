@@ -21,11 +21,16 @@ body {
 
 .list-item-input {
   border: none;
-  border-bottom: 2px solid transparent
+  border: 2px solid transparent;
 }
 
 .list-item-input:focus {
-  border: none;
   outline: none;
   border-bottom: 2px solid lightblue;
+}
+
+.btn-delete-item {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }

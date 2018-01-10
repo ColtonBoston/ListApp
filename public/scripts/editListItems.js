@@ -46,8 +46,7 @@ $("#new-item-submit").click(function(event){
 
     var items = getListArray(),
         listIndex = items.length;
-    var li = "<li id='list-item-" + listIndex + "' class='list-group-item'><span class='list-item-value'><input class='list-item-input' type='text' value='"
-             + newItemVal + "'></span></li>";
+    var li = "<li id='list-item-" + listIndex + "' class='list-group-item'><input class='list-item-input' type='text' value='" + newItemVal + "'><button class='btn btn-danger btn-delete-item'><i class='glyphicon glyphicon-trash'></i></button></li>";
     items.push(newItemVal);
     newItemInput[0].value = "";
     console.log(items);
@@ -66,13 +65,40 @@ $("#new-item-submit").click(function(event){
   }
 });
 
+// Delete button.onclick
+$("#list").on("click", ".btn-delete-item", function(event){
+  //console.log($(this)[0].parentElement.classList);
+  var removedItem = $(this)[0].parentElement;
+  removedItem.classList.add("hidden");
+  console.log(removedItem.classList);
+  // $(this)[0].parentElement.remove();
+  var items = getListArray();
+  $.ajax({
+    type: "POST",
+    url: "/lists/" + list._id + "?_method=PUT",
+    data: {items},
+    success: function(){
+      console.log("Delete successful");
+      removedItem.remove();
+    },
+    error: function(){
+      removedItem.classList.remove("hidden");
+    }
+  });
+});
+
 function getListArray(){
   var listInputs = $(".list-item-input"),
       listItems = [];
 
   for(var i = 0; i < listInputs.length; i++){
-    listItems.push(listInputs[i].value);
-    console.log(listInputs[i]);
+    // if (!listInputs[i].hasClass("hidden")){
+    //   listItems.push(listInputs[i].value);
+    //   console.log(listInputs[i]);
+    // }
+    if(!listInputs[i].parentElement.classList.contains("hidden")){
+      listItems.push(listInputs[i].value);
+    }
   }
   return listItems;
 }
