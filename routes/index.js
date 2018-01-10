@@ -5,7 +5,11 @@ var User = require("../models/user");
 
 // Landing Page
 router.get("/", function(req, res){
-  res.render("landing");
+  if (req.isAuthenticated()){
+    res.redirect("/lists");
+  } else {
+    res.render("landing")
+  }
 });
 
 // AUTH ROUTES //
