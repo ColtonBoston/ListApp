@@ -2,10 +2,10 @@
 <% console.log(currentUser.friends); %>
 <div class="container">
   <h1>Users page</h1>
-  <ul>
+  <ul class="list-group">
   <% users.forEach(function(user){ %>
     <% if(!user._id.equals(currentUser._id)){ %>
-      <li>
+      <li class="list-group-item">
         <%= user.username %>
 
         <% if(currentUser.friends.indexOf(user._id) < 0) { %>
