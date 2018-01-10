@@ -31,6 +31,11 @@ body {
 
 .btn-delete-item {
   position: absolute;
-  top: 5px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 5px;
+}
+
+#new-item-submit {
+  margin-top: 5px;
 }
