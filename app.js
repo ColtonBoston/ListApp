@@ -13,7 +13,7 @@ var listRoutes = require("./routes/lists"),
 
 var app = express();
 
-mongoose.connect("mongodb://localhost/list_app");
+mongoose.connect("mongodb://localhost/list_app_v2");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));

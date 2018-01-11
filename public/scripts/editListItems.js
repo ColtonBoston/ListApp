@@ -11,6 +11,7 @@ $("#list").on("focus", ".list-item-input", function(event){
 $("#list").on("blur", ".list-item-input", function(event){
   var selectedList = $(this);
   var updatedItemVal = selectedList[0].value;
+  
   if(updatedItemVal === initialItemVal || updatedItemVal === ""){
     selectedList[0].value = initialItemVal;
   } else {
@@ -40,16 +41,21 @@ $("#new-item-submit").click(function(event){
   event.preventDefault();
   var newItemInput = $("#new-item-input"),
       newItemVal = newItemInput[0].value;
-  console.log()
+  var newItemObj =
+  {
+    name: newItemVal,
+    addedBy: currentUser._id
+  };
+
   if (newItemVal !== ""){
-    console.log("add li with " + newItemVal);
 
     var items = getListArray(),
         listIndex = items.length;
-    var li = "<li id='list-item-" + listIndex + "' class='list-group-item'><input class='list-item-input' type='text' value='" + newItemVal + "'><button class='btn btn-danger btn-delete-item'><i class='glyphicon glyphicon-trash'></i></button></li>";
-    items.push(newItemVal);
+
+    var li = "<li id='list-item-" + listIndex + "' class='list-group-item' data-added-by='" + currentUser._id + "'><input class='list-item-input' type='text' value='" + newItemVal + "'><button class='btn btn-danger btn-delete-item'><i class='glyphicon glyphicon-trash'></i></button><div class='item-added-by'><small><em> added by " + currentUser.username + "</em></small></div></li>";
+
+    items.push(newItemObj);
     newItemInput[0].value = "";
-    console.log(items);
     $.ajax({
       type: "POST",
       url: "/lists/" + list._id + "?_method=PUT",
@@ -59,7 +65,6 @@ $("#new-item-submit").click(function(event){
         $("#list").append(li);
       }
     });
-    //addItemEvents($("#list-item-" + listIndex));
   } else {
     console.log("do nothing");
   }
@@ -97,7 +102,8 @@ function getListArray(){
     //   console.log(listInputs[i]);
     // }
     if(!listInputs[i].parentElement.classList.contains("hidden")){
-      listItems.push(listInputs[i].value);
+      console.log(listInputs[i].parentElement.dataset.addedBy);
+      listItems.push({"name": listInputs[i].value, "addedBy": listInputs[i].parentElement.dataset.addedBy});
     }
   }
   return listItems;

@@ -14,6 +14,11 @@
     <h3><%= list.name %></h3>
     <p>Created by <strong><%= list.author.username %></strong> - <%= list.items.length %> items</p>
     <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm">More Info</a>
+    <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
+      <form class="delete-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+        <button class="btn btn-danger btn-sm">Delete List</button>
+      </form>
+    <% } %>
   <% }) %>
 
 </div>

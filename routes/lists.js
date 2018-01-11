@@ -52,8 +52,21 @@ router.post("/lists", isLoggedIn, function(req, res){
 });
 
 // Show list
+// router.get("/lists/:id", canUserEdit, function(req, res){
+//   List.findById(req.params.id, function(err, foundList){
+//     if (err){
+//       console.log(err);
+//     } else {
+//       res.render("lists/show", {list: foundList});
+//     }
+//   });
+// });
+
+// Show list (updated to populate items.addedBy field with usernames)
 router.get("/lists/:id", canUserEdit, function(req, res){
-  List.findById(req.params.id, function(err, foundList){
+  List.findById(req.params.id)
+  .populate("items.addedBy")
+  .exec(function(err, foundList){
     if (err){
       console.log(err);
     } else {
