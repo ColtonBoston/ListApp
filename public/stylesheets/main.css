@@ -1,5 +1,6 @@
 body {
   padding-bottom: 20px;
+  padding-top: 60px;
 }
 
 .center {
@@ -19,9 +20,16 @@ body {
   margin-top: 10px;
 }
 
+.edit-item-form {
+  display: inline-block;
+  width: 80%;
+}
+
 .list-item-input {
   border: none;
-  border: 2px solid transparent;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  width: 100%;
 }
 
 .list-item-input:focus {
@@ -42,4 +50,36 @@ body {
 
 .item-added-by {
   color: gray;
+}
+
+.search-bar {
+  transform: translateY(25%);
+  position: relative;
+}
+
+.search-results {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  background-color: white;
+  transform: translateY(5px);
+  border: 1px solid lightgray;
+  border-top: none;
+}
+
+#users-list {
+  margin: 0;
+}
+
+#users-list li {
+  border: 0;
+  border-top: 1px solid lightgray;
+  border-radius: 0;
+}
+
+.btn-hide-results {
+  width: 100%;
+  border: none;
+  border-top: 1px solid lightgray;
+  border-radius: 0;
 }

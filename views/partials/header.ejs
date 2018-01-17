@@ -9,8 +9,7 @@
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-expand">
-
+  <nav class="navbar navbar-default navbar-expand navbar-fixed-top">
     <div class="container">
   		<div class="navbar-header">
   			<a href="/" class="navbar-brand">ListApp</a>
@@ -23,11 +22,18 @@
         </button>
   		</div>
   		<div class="collapse navbar-collapse" id="navbarToggle">
-
         <ul class="nav navbar-nav">
           <% if (currentUser) { %>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active' : '' %>"><a href="/lists">Home</a></li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active' : '' %>"><a href="/users">Friends</a></li>
+            <li class="nav-item">
+              <input id="search-bar" class="form-control search-bar" type="search" name="" placeholder="Search for friends...">
+              <div class="search-results hidden">
+                <ul id="users-list" class="list-group">
+                </ul>
+                <button id="btn-hide-results" class="btn btn-default btn-sm btn-hide-results" type="button">Hide Results</button>
+              </div>
+            </li>
           <% } %>
         </ul>
         <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
@@ -40,6 +46,5 @@
           <% } %>
   			</ul>
   		</div>
-
     </div>
   </nav>

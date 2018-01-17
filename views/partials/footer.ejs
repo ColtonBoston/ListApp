@@ -1,2 +1,6 @@
+<% if (currentUser) { %>
+  <script type="text/javascript">var currentUser = <%- JSON.stringify(currentUser) %>;</script>
+<% } %>
+<script type="text/javascript" src="/scripts/userSearch.js"></script>
 </body>
 </html>

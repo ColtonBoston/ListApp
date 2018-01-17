@@ -1,122 +1,101 @@
-var initialItemVal;
+var list = $("#list");
 
-// onFocus event for all list item inputs
-// keep var of initial focused val
-$("#list").on("focus", ".list-item-input", function(event){
-  initialItemVal = $(this)[0].value;
-});
-
-// onBlur or onEnter?
-// if var of initial focused val has changed, put all list item inputs into an array and save the list
-$("#list").on("blur", ".list-item-input", function(event){
-  var selectedList = $(this);
-  var updatedItemVal = selectedList[0].value;
-  
-  if(updatedItemVal === initialItemVal || updatedItemVal === ""){
-    selectedList[0].value = initialItemVal;
-  } else {
-    // update db here
-    var items = getListArray();
-    console.log(items);
-    $.ajax({
-      type: "POST",
-      url: "/lists/" + list._id + "?_method=PUT",
-      data: {items},
-      success: function(){
-        console.log("Update successful");
-      },
-      error: function(){
-        console.log("Update failed");
-        selectedList[0].value = initialItemVal;
-      }
-    });
-  }
-});
-
-// newListItem.onClick
-// create a new list item inputs
-// get all list item input values and put them in an array
-// save list
-$("#new-item-submit").click(function(event){
+// Add list item
+$("#new-item-form").submit(function(event){
   event.preventDefault();
-  var newItemInput = $("#new-item-input"),
-      newItemVal = newItemInput[0].value;
-  var newItemObj =
-  {
-    name: newItemVal,
-    addedBy: currentUser._id
-  };
+  var input = $(this)[0].elements["item[name]"],
+      newItemName = input.value,
+      url = $(this)[0].action;
 
-  if (newItemVal !== ""){
-
-    var items = getListArray(),
-        listIndex = items.length;
-
-    var li = "<li id='list-item-" + listIndex + "' class='list-group-item' data-added-by='" + currentUser._id + "'><input class='list-item-input' type='text' value='" + newItemVal + "'><button class='btn btn-danger btn-delete-item'><i class='glyphicon glyphicon-trash'></i></button><div class='item-added-by'><small><em> added by " + currentUser.username + "</em></small></div></li>";
-
-    items.push(newItemObj);
-    newItemInput[0].value = "";
-    $.ajax({
-      type: "POST",
-      url: "/lists/" + list._id + "?_method=PUT",
-      data: {items},
-      success: function(){
-        console.log("Update successful");
-        $("#list").append(li);
-      }
-    });
-  } else {
-    console.log("do nothing");
+  var item = {
+    name: newItemName
   }
-});
 
-// Delete button.onclick
-$("#list").on("click", ".btn-delete-item", function(event){
-  //console.log($(this)[0].parentElement.classList);
-  var removedItem = $(this)[0].parentElement;
-  removedItem.classList.add("hidden");
-  console.log(removedItem.classList);
-  // $(this)[0].parentElement.remove();
-  var items = getListArray();
   $.ajax({
     type: "POST",
-    url: "/lists/" + list._id + "?_method=PUT",
-    data: {items},
-    success: function(){
-      console.log("Delete successful");
-      removedItem.remove();
+    url: url,
+    data: {item},
+    success: function(data){
+      console.log("Item added to list.");
+
+      var li = $(data).find("#list")[0].lastElementChild;
+      list.append(li);
+      input.value = "";
     },
     error: function(){
-      removedItem.classList.remove("hidden");
+      console.log("Error: Could not add item to list.");
     }
-  });
+  })
 });
 
-function getListArray(){
-  var listInputs = $(".list-item-input"),
-      listItems = [];
+var initialInputVal;
+list.on("focus", ".list-item-input", function(event){
+  initialInputVal = $(this)[0].value;
+});
 
-  for(var i = 0; i < listInputs.length; i++){
-    // if (!listInputs[i].hasClass("hidden")){
-    //   listItems.push(listInputs[i].value);
-    //   console.log(listInputs[i]);
-    // }
-    if(!listInputs[i].parentElement.classList.contains("hidden")){
-      console.log(listInputs[i].parentElement.dataset.addedBy);
-      listItems.push({"name": listInputs[i].value, "addedBy": listInputs[i].parentElement.dataset.addedBy});
-    }
+var hasItemUpdated = false;
+// Update list item on submitting the form
+list.on("submit", ".edit-item-form", function(event){
+  event.preventDefault();
+  updateListItem($(this));
+  hasItemUpdated = true;
+  document.activeElement.blur();
+});
+
+// Update list item on the form losing focus
+list.on("blur", ".edit-item-form", function(event){
+  if (!hasItemUpdated){
+    updateListItem($(this));
+  } else {
+    hasItemUpdated = false;
   }
-  return listItems;
+});
+
+// Delete list item
+list.on("click", ".btn-delete-item", function(event){
+  event.preventDefault();
+  deleteListItem($(this));
+});
+
+function updateListItem(form){
+  // Get the action of the form and the value of the form's input
+  var url = form[0].action,
+      item = form[0].children[0].value;
+
+  // Updates the list item in the db if the value has changed. Resets the input
+  // to before it was focused if the value is empty
+  if (item !== initialInputVal && item !== ""){
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {item},
+      success: function(){
+        console.log("Update successful.");
+      },
+      error: function(){
+        console.log("Update failed.");
+        form[0].children[0].value = initialInputVal;
+      }
+    });
+  } else {
+    form[0].children[0].value = initialInputVal;
+  }
 }
 
-/*
-----------OR----------
-put form over all list item inputs (including newListItem)
-create handlers:
-  newListItem submit.onclick: submit form if input is not empty
-  editListItem onfocus: save item value to var
-    maybe add pencil button to edit and make input not readonly
-  editListItem onblur: if val has changed, submit form
-  listItem delete.onclick: remove li, create array of other items, submit form
-in list update route, check for empty inputs and remove them from array, then save
-*/
+function deleteListItem(form){
+
+  var url = form[0].parentElement.action;
+
+  // Deletes the list item from the db and removes the corresponding li from the ul
+  $.ajax({
+    type: "POST",
+    url: url,
+    success: function(){
+      console.log("Item deleted.");
+      form[0].offsetParent.remove();
+    },
+    error: function(){
+      console.log("Delete failed.");
+    }
+  });
+}

@@ -12,19 +12,23 @@
       <% var i = 0; %>
       <% list.items.forEach(function(item){ %>
         <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
-          <input class="list-item-input" type="text" value="<%= item.name %>">
-          <button class="btn btn-danger btn-delete-item"><i class="glyphicon glyphicon-trash"></i></button>
+          <form class="edit-item-form" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
+            <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
+          </form>
+          <form action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
+            <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-trash"></i></button>
+          </form>
           <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
         </li>
         <% i++ %>
       <% }) %>
-      <% } %>
+    <% } %>
   </ul>
-  <form action="/lists/<%= list._id %>?_method=PUT" method="POST">
-    <input id="new-item-input" class="form-control" type="text" name="list[item][name]" placeholder="Add item...">
+  <form id="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
+    <input id="new-item-input" class="form-control" type="text" name="item[name]" autocomplete="off" placeholder="Add item...">
     <input id="new-item-submit" type="submit" class="btn btn-primary">
   </form>
 </div>
-<script type="text/javascript">var list = <%- JSON.stringify(list) %>, currentUser = <%- JSON.stringify(currentUser); %>;</script>
+<script type="text/javascript">var currentList = <%- JSON.stringify(list) %>, currentUser = <%- JSON.stringify(currentUser); %>;</script>
 <script type="text/javascript" src="/scripts/editListItems.js"></script>
 <% include ../partials/footer %>

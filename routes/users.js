@@ -4,6 +4,14 @@ var passport = require("passport");
 var User = require("../models/user"),
     List = require("../models/list");
 
+router.get("/users/search/:search", function(req, res){
+  var search = regexEscape(req.params.search);
+    User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
+      console.log(foundUsers);
+      res.json(foundUsers);
+    });
+});
+
 // Show all users
 router.get("/users", isLoggedIn, function(req, res){
 
@@ -81,7 +89,6 @@ router.post("/removeFriend/:id", function(req, res){
       res.redirect("/users");
     }
   });
-
 });
 
 // Checks if the user is logged in
@@ -90,6 +97,11 @@ function isLoggedIn(req, res, next){
     return next();
   }
   res.redirect("/login");
+}
+
+// Escape special characters for regex
+function regexEscape(str) {
+    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 module.exports = router;

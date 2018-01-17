@@ -21,16 +21,22 @@ router.get("/register", function(req, res){
 // Sign up logic
 router.post("/register", function(req, res){
   var newUser = new User({username: req.body.username});
-  User.register(newUser, req.body.password, function(err, user){
-    if(err){
-      console.log(err);
-      return res.render("register");
-    } else {
-      passport.authenticate("local")(req, res, function(){
-        res.redirect("/lists");
-      });
-    }
-  });
+  console.log(req.body.username.includes(" "));
+  if (req.body.username.includes(" ")){
+    res.redirect("/register");
+  } else {
+    User.register(newUser, req.body.password, function(err, user){
+      if(err){
+        console.log(err);
+        return res.render("register");
+      } else {
+        passport.authenticate("local")(req, res, function(){
+          res.redirect("/lists");
+        });
+      }
+    });
+  }
+
 });
 
 // Login Routes //

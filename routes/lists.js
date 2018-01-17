@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var List = require("../models/list");
+var List = require("../models/list"),
+    ListItem = require("../models/listItem");
 
 // List index route
 router.get("/lists", isLoggedIn, function(req, res){
@@ -45,27 +46,15 @@ router.post("/lists", isLoggedIn, function(req, res){
     if (err){
       console.log(err);
     } else {
-      console.log(list.permissions);
       res.redirect("/lists/" + list._id);
     }
   });
 });
 
-// Show list
-// router.get("/lists/:id", canUserEdit, function(req, res){
-//   List.findById(req.params.id, function(err, foundList){
-//     if (err){
-//       console.log(err);
-//     } else {
-//       res.render("lists/show", {list: foundList});
-//     }
-//   });
-// });
-
 // Show list (updated to populate items.addedBy field with usernames)
 router.get("/lists/:id", canUserEdit, function(req, res){
   List.findById(req.params.id)
-  .populate("items.addedBy")
+  .populate("items")
   .exec(function(err, foundList){
     if (err){
       console.log(err);
@@ -84,22 +73,46 @@ router.get("/lists/:id/edit", canUserEdit, function(req, res){
 
 // Update Route
 router.put("/lists/:id", isLoggedIn, function(req, res){
-  List.findByIdAndUpdate(req.params.id, {$set: {"items": req.body.items}}, function(err, updatedList){
-    if(err){
-      console.log(err);
-    } else {
-      // res.redirect("/lists/" + updatedList.id);
-      res.end();
-    }
-  });
+  // console.log(req.body.items);
+  // console.log(req.body.items[req.body.items.length - 1].addedBy);
+  // if (req.user._id.equals(req.body.items[req.body.items.length - 1].addedBy))
+  // {
+  //   List.findByIdAndUpdate(req.params.id, {$set: {"items": req.body.items}}, function(err, updatedList){
+  //     if(err){
+  //       console.log(err);
+  //       res.redirect("/lists");
+  //     } else {
+  //       // res.redirect("/lists/" + updatedList.id);
+  //       res.end();
+  //     }
+  //   });
+  // } else {
+  //   console.log("Don't mess with currentUser!");
+  //   res.status(404).send("Oops");
+  // }
+
 });
 
 // Destroy Route
 router.delete("/lists/:id", checkListOwnership, function(req, res){
-  List.findByIdAndRemove(req.params.id, function(err){
+  // Find the list to delete
+  List.findById(req.params.id, function(err, foundList){
     if (err){
       res.redirect("/lists");
     } else {
+      // Loop through each list item inside the list
+      foundList.items.forEach(function(item){
+        // Delete each list item from the ListItem collection
+        ListItem.findByIdAndRemove(item, function(err){
+          if (err){
+            console.log(err);
+          } else {
+            console.log("Items deleted.");
+          }
+        });
+      });
+      // Remove the list from the collection
+      foundList.remove();
       res.redirect("/lists");
     }
   });

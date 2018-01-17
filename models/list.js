@@ -5,11 +5,8 @@ var listSchema = new mongoose.Schema({
   description: String,
   items: [
     {
-      name: String,
-      addedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ListItem"
     }
   ],
   createdAt: {type: Date, default: Date.now},
