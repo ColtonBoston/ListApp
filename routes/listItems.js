@@ -5,7 +5,7 @@ var express = require("express"),
     ListItem = require("../models/listItem");
 
 // Save new list item
-router.post("/lists/:id/listItems", isLoggedIn, function(req, res){
+router.post("/lists/:id/listItems", checkListPermissions, function(req, res){
   List.findById(req.params.id)
     .exec(function(err, foundList){
     if (err){
@@ -29,7 +29,7 @@ router.post("/lists/:id/listItems", isLoggedIn, function(req, res){
 });
 
 // Update list item
-router.put("/lists/:id/listItems/:item_id", isLoggedIn, function(req, res){
+router.put("/lists/:id/listItems/:item_id", checkListPermissions, function(req, res){
   ListItem.findByIdAndUpdate(req.params.item_id, {$set: {"name": req.body.item}}, function(err, updatedItem){
     if (err){
       res.redirect("back");
@@ -40,7 +40,7 @@ router.put("/lists/:id/listItems/:item_id", isLoggedIn, function(req, res){
 });
 
 // Delete list item
-router.delete("/lists/:id/listItems/:item_id", isLoggedIn, function(req, res){
+router.delete("/lists/:id/listItems/:item_id", checkListPermissions, function(req, res){
     ListItem.findByIdAndRemove(req.params.item_id, function(err){
       if (err){
         console.log(err);
@@ -54,7 +54,6 @@ router.delete("/lists/:id/listItems/:item_id", isLoggedIn, function(req, res){
         });
       }
     });
-
 });
 
 // Checks if the user is logged in
@@ -63,6 +62,24 @@ function isLoggedIn(req, res, next){
     return next();
   }
   res.redirect("/login");
+}
+
+function checkListPermissions(req, res, next){
+  if(req.isAuthenticated()){
+    List.findById(req.params.id, function(err, foundList){
+      if (err || !foundList){
+        res.redirect("back");
+      } else {
+        if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
+          next();
+        } else {
+          res.redirect("/lists");
+        }
+      }
+    });
+  } else {
+    res.redirect("/login");
+  }
 }
 
 module.exports = router;
