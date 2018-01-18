@@ -1,5 +1,4 @@
 <% include partials/header %>
-<% console.log(currentUser.friends); %>
 <div class="container">
   <h1>Users page</h1>
   <ul class="list-group">
@@ -7,7 +6,6 @@
     <% if(!user._id.equals(currentUser._id)){ %>
       <li class="list-group-item">
         <%= user.username %>
-
         <% if(currentUser.friends.indexOf(user._id) < 0) { %>
           <form action="/addFriend/<%= user._id %>" method="post">
               <input type="submit" value="Add Friend">

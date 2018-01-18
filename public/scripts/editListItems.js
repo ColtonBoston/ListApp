@@ -90,9 +90,14 @@ function deleteListItem(form){
   $.ajax({
     type: "POST",
     url: url,
-    success: function(){
-      console.log("Item deleted.");
-      form[0].offsetParent.remove();
+    success: function(data){
+      if (data){
+        console.log("Item deleted.");
+        console.log(data.status);
+        form[0].offsetParent.remove();
+      } else {
+        console.log("Delete failed.");
+      }
     },
     error: function(){
       console.log("Delete failed.");

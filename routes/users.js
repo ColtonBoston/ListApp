@@ -48,7 +48,7 @@ router.get("/users", isLoggedIn, function(req, res){
 });
 
 // Add friend route
-router.post("/addFriend/:id", function(req, res){
+router.post("/addFriend/:id", isLoggedIn, function(req, res){
   if (req.user._id.toString() !== req.params.id && req.user.friends.indexOf(req.params.id) < 0){
     User.findById(req.user._id, function(err, currentUser){
       if (err){
@@ -59,7 +59,6 @@ router.post("/addFriend/:id", function(req, res){
 
         List.find({"author.id": req.user._id}, function(err, foundLists){
           foundLists.forEach(function(list){
-            console.log(list.permissions);
             list.permissions.push(req.params.id);
             list.save();
           });
@@ -80,7 +79,7 @@ router.post("/addFriend/:id", function(req, res){
 });
 
 // Remove friend route
-router.post("/removeFriend/:id", function(req, res){
+router.post("/removeFriend/:id", isLoggedIn, function(req, res){
   User.findByIdAndUpdate(req.user._id, {$pull: {friends: req.params.id}}, {new: true}, function(err, foundUser){
     if (err){
       console.log(err);
@@ -96,7 +95,7 @@ function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
-  res.redirect("/login");
+  res.redirect(303, "/login");
 }
 
 // Escape special characters for regex

@@ -61,24 +61,24 @@ function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
-  res.redirect("/login");
+  res.redirect(403, "/login");
 }
 
 function checkListPermissions(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
       if (err || !foundList){
-        res.redirect("back");
+        res.redirect(404, "back");
       } else {
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
         } else {
-          res.redirect("/lists");
+          res.redirect(401, "/lists");
         }
       }
     });
   } else {
-    res.redirect("/login");
+    res.redirect(401, "/login");
   }
 }
 
