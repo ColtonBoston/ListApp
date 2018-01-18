@@ -2,10 +2,11 @@ var express = require("express"),
     router = express.Router(),
     passport = require("passport"),
     List = require("../models/list"),
-    ListItem = require("../models/listItem");
+    ListItem = require("../models/listItem"),
+    middleware = require("../middleware");
 
 // Save new list item
-router.post("/lists/:id/listItems", checkListPermissions, function(req, res){
+router.post("/lists/:id/listItems", middleware.checkListPermissions, function(req, res){
   List.findById(req.params.id)
     .exec(function(err, foundList){
     if (err){
@@ -29,7 +30,7 @@ router.post("/lists/:id/listItems", checkListPermissions, function(req, res){
 });
 
 // Update list item
-router.put("/lists/:id/listItems/:item_id", checkListPermissions, function(req, res){
+router.put("/lists/:id/listItems/:item_id", middleware.checkListPermissions, function(req, res){
   ListItem.findByIdAndUpdate(req.params.item_id, {$set: {"name": req.body.item}}, function(err, updatedItem){
     if (err){
       res.redirect("back");
@@ -40,7 +41,7 @@ router.put("/lists/:id/listItems/:item_id", checkListPermissions, function(req, 
 });
 
 // Delete list item
-router.delete("/lists/:id/listItems/:item_id", checkListPermissions, function(req, res){
+router.delete("/lists/:id/listItems/:item_id", middleware.checkListPermissions, function(req, res){
     ListItem.findByIdAndRemove(req.params.item_id, function(err){
       if (err){
         console.log(err);
@@ -55,31 +56,5 @@ router.delete("/lists/:id/listItems/:item_id", checkListPermissions, function(re
       }
     });
 });
-
-// Checks if the user is logged in
-function isLoggedIn(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect(403, "/login");
-}
-
-function checkListPermissions(req, res, next){
-  if(req.isAuthenticated()){
-    List.findById(req.params.id, function(err, foundList){
-      if (err || !foundList){
-        res.redirect(404, "back");
-      } else {
-        if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
-          next();
-        } else {
-          res.redirect(401, "/lists");
-        }
-      }
-    });
-  } else {
-    res.redirect(401, "/login");
-  }
-}
 
 module.exports = router;

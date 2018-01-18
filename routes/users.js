@@ -3,18 +3,18 @@ var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user"),
     List = require("../models/list");
+var middleware = require("../middleware");
 
+// Searches the db for usernames matching the search term
 router.get("/users/search/:search", function(req, res){
   var search = regexEscape(req.params.search);
     User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
-      console.log(foundUsers);
       res.json(foundUsers);
     });
 });
 
 // Show all users
-router.get("/users", isLoggedIn, function(req, res){
-
+router.get("/users", middleware.isLoggedIn, function(req, res){
   // finds all friends of the current user
   User
   .findById(req.user._id)
@@ -28,9 +28,6 @@ router.get("/users", isLoggedIn, function(req, res){
         var friendA = a.username.toUpperCase();
         var friendB = b.username.toUpperCase();
         return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
-      });
-      user.friends.forEach(function(friend){
-        console.log(friend.username);
       });
     }
   });
@@ -48,7 +45,7 @@ router.get("/users", isLoggedIn, function(req, res){
 });
 
 // Add friend route
-router.post("/addFriend/:id", isLoggedIn, function(req, res){
+router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
   if (req.user._id.toString() !== req.params.id && req.user.friends.indexOf(req.params.id) < 0){
     User.findById(req.user._id, function(err, currentUser){
       if (err){
@@ -79,7 +76,7 @@ router.post("/addFriend/:id", isLoggedIn, function(req, res){
 });
 
 // Remove friend route
-router.post("/removeFriend/:id", isLoggedIn, function(req, res){
+router.post("/removeFriend/:id", middleware.isLoggedIn, function(req, res){
   User.findByIdAndUpdate(req.user._id, {$pull: {friends: req.params.id}}, {new: true}, function(err, foundUser){
     if (err){
       console.log(err);
@@ -89,14 +86,6 @@ router.post("/removeFriend/:id", isLoggedIn, function(req, res){
     }
   });
 });
-
-// Checks if the user is logged in
-function isLoggedIn(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect(303, "/login");
-}
 
 // Escape special characters for regex
 function regexEscape(str) {
