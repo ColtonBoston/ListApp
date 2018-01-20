@@ -7,6 +7,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
+  req.flash("error", "Please login first.");
   res.redirect("/login");
 }
 
@@ -14,16 +15,19 @@ middlewareObj.checkListPermissions = function(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
       if (err || !foundList){
+        req.flash("error", "List not found.");
         res.redirect(404, "back");
       } else {
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
         } else {
+          req.flash("error", "You do not have permission to use that list.");
           res.redirect(401, "/lists");
         }
       }
     });
   } else {
+    req.flash("error", "Please login first.");
     res.redirect(401, "/login");
   }
 }
@@ -33,16 +37,19 @@ middlewareObj.canUserEdit = function(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
       if (err){
+        req.flash("error", "Something went wrong.");
         res.redirect("back");
       } else {
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
         } else {
+          req.flash("error", "You do not have permission to edit that list");
           res.redirect("/lists");
         }
       }
     });
   } else {
+    req.flash("error", "Please login first.");
     res.redirect("/login");
   }
 }
@@ -51,16 +58,19 @@ middlewareObj.checkListOwnership = function(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
       if (err){
+        req.flash("error", "List not found.");
         res.redirect("back");
       } else {
         if (foundList.author.id.equals(req.user._id)){
           next();
         } else {
+          req.flash("error", "You do not own that list.");
           res.redirect("back");
         }
       }
     });
   } else {
+    req.flash("error", "Please login first.");
     res.redirect("/login");
   }
 }

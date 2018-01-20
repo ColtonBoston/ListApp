@@ -23,14 +23,16 @@ router.post("/register", function(req, res){
   var newUser = new User({username: req.body.username});
   console.log(req.body.username.includes(" "));
   if (req.body.username.includes(" ")){
+    req.flash("error", "Username cannot include spaces.");
     res.redirect("/register");
   } else {
     User.register(newUser, req.body.password, function(err, user){
       if(err){
-        console.log(err);
-        return res.render("register");
+        req.flash("error", err.message);
+        return res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, function(){
+          req.flash("success", "Welcome, " + req.body.username + "!");
           res.redirect("/lists");
         });
       }
@@ -55,7 +57,8 @@ router.post("/login", passport.authenticate("local",
 // Logout
 router.get("/logout", function(req, res){
   req.logout();
-  res.redirect("/lists");
+  req.flash("success", "You have successfully been logged out.");
+  res.redirect("/");
 });
 
 module.exports = router;

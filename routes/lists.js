@@ -61,11 +61,11 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
 });
 
 // Edit Route
-router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
-    List.findById(req.params.id, function(err, foundList){
-      res.render("lists/edit", {list: foundList});
-    });
-});
+// router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
+//     List.findById(req.params.id, function(err, foundList){
+//       res.render("lists/edit", {list: foundList});
+//     });
+// });
 
 // Update Route
 router.put("/lists/:id", middleware.isLoggedIn, function(req, res){
