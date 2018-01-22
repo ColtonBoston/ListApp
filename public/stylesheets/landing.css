@@ -8,7 +8,6 @@ body {
   color: white;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   min-height: 100%;
 }
 
@@ -32,5 +31,14 @@ h3 {
 @media (max-width: 767px){
   .container {
     width: 80%;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  body {
+    height: auto;
+    background-size: contain;
   }
 }
