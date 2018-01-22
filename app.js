@@ -15,7 +15,8 @@ var listRoutes = require("./routes/lists"),
 
 var app = express();
 
-mongoose.connect("mongodb://localhost/list_app_v4");
+//mongoose.connect("mongodb://localhost/list_app_v4");
+mongoose.connect(process.env.DATABASEURL);
 mongoose.Promise = global.Promise;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -51,4 +52,4 @@ app.use(userRoutes);
 // For shorter route names in routes/lists.js
 // app.use("/lists", listRoutes);
 
-app.listen("3000", console.log("ListApp started..."));
+app.listen(process.env.PORT, process.env.IP, console.log("ListApp started..."));
