@@ -39,6 +39,6 @@ h3 {
 
   body {
     height: auto;
-    background-size: contain;
+    background-size: auto;
   }
 }
