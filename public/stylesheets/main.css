@@ -86,7 +86,8 @@ body {
 }
 
 @media (max-width: 767px){
-  input {
+  input,
+  select:focus {
     font-size: 16px;
   }
 }
