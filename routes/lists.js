@@ -52,8 +52,10 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
   List.findById(req.params.id)
   .populate("items")
   .exec(function(err, foundList){
-    if (err){
+    if (err || !foundList){
       console.log(err);
+      req.flash("error", "List not found.");
+      res.redirect(404, "/lists");
     } else {
       res.render("lists/show", {list: foundList});
     }

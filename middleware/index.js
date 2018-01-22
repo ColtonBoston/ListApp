@@ -16,7 +16,7 @@ middlewareObj.checkListPermissions = function(req, res, next){
     List.findById(req.params.id, function(err, foundList){
       if (err || !foundList){
         req.flash("error", "List not found.");
-        res.redirect(404, "back");
+        res.redirect(404, "/lists");
       } else {
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
@@ -36,9 +36,9 @@ middlewareObj.checkListPermissions = function(req, res, next){
 middlewareObj.canUserEdit = function(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
-      if (err){
-        req.flash("error", "Something went wrong.");
-        res.redirect("back");
+      if (err || !foundList){
+        req.flash("error", "List not found.");
+        res.redirect("/lists");
       } else {
         if (foundList.author.id.equals(req.user._id) || foundList.permissions.indexOf(req.user._id) >= 0){
           next();
@@ -57,9 +57,9 @@ middlewareObj.canUserEdit = function(req, res, next){
 middlewareObj.checkListOwnership = function(req, res, next){
   if(req.isAuthenticated()){
     List.findById(req.params.id, function(err, foundList){
-      if (err){
+      if (err || !foundList){
         req.flash("error", "List not found.");
-        res.redirect("back");
+        res.redirect("/lists");
       } else {
         if (foundList.author.id.equals(req.user._id)){
           next();

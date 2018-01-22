@@ -46,45 +46,65 @@ router.get("/users", middleware.isLoggedIn, function(req, res){
 
 // Add friend route
 router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
-  if (req.user._id.toString() !== req.params.id && req.user.friends.indexOf(req.params.id) < 0){
-    User.findById(req.user._id, function(err, currentUser){
-      if (err){
-        console.log(err);
-        res.redirect("/users");
+  // Check if the user to add exists
+  User.findById(req.params.id, function(err, foundUser){
+      if (err || !foundUser){
+        res.redirect(404, "/lists");
       } else {
-        currentUser.friends.push(req.params.id);
+        // Logic to add friend
+        if (req.user._id.toString() !== req.params.id && req.user.friends.indexOf(req.params.id) < 0){
+          User.findById(req.user._id, function(err, currentUser){
+            if (err || !currentUser){
+              console.log(err);
+              res.redirect(404, "/users");
+            } else {
+              currentUser.friends.push(req.params.id);
 
-        List.find({"author.id": req.user._id}, function(err, foundLists){
-          foundLists.forEach(function(list){
-            list.permissions.push(req.params.id);
-            list.save();
+              List.find({"author.id": req.user._id}, function(err, foundLists){
+                foundLists.forEach(function(list){
+                  list.permissions.push(req.params.id);
+                  list.save();
+                });
+              });
+              // Redirects after the user is saved.
+              // The callback fixes an issue where the page would refresh before the user
+              // was saved and the updated data would not be reflected on the page.
+              currentUser.save(function(err2, savedUser){
+                //console.log(savedUser.friends);
+                res.redirect("/users");
+              });
+            }
           });
-        });
-        // Redirects after the user is saved.
-        // The callback fixes an issue where the page would refresh before the user
-        // was saved and the updated data would not be reflected on the page.
-        currentUser.save(function(err2, savedUser){
-          //console.log(savedUser.friends);
-          res.redirect("/users");
-        });
+        }
+        else {
+          res.send("that friend exists already");
+        }
       }
-    });
-  }
-  else {
-    res.send("that friend exists already");
-  }
+  });
+
+
 });
 
 // Remove friend route
 router.post("/removeFriend/:id", middleware.isLoggedIn, function(req, res){
-  User.findByIdAndUpdate(req.user._id, {$pull: {friends: req.params.id}}, {new: true}, function(err, foundUser){
-    if (err){
-      console.log(err);
-      res.redirect("/users");
+  // Check if the friend to delete exists
+  User.findById(req.params.id, function(err, foundUser){
+    if (err || !foundUser){
+      res.redirect(404, "/lists");
     } else {
-      res.redirect("/users");
+      // Remove friend from user.friends array
+      User.findByIdAndUpdate(req.user._id, {$pull: {friends: req.params.id}}, {new: true}, function(err, currentUser){
+        if (err){
+          console.log(err);
+          res.redirect("/users");
+        } else {
+          res.redirect("/users");
+        }
+      });
     }
   });
+
+
 });
 
 // Escape special characters for regex
