@@ -30,11 +30,12 @@ h3 {
 
 @media (max-width: 767px){
   .container {
+    margin-top: 50px;
     width: 80%;
   }
 
   .btn-lg {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
 
   h3 {
