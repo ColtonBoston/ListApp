@@ -1,6 +1,17 @@
+html {
+  min-height: 100%;
+}
+
 body {
-  padding-bottom: 20px;
+  padding-bottom: 60px;
   padding-top: 60px;
+  background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1), rgba(10,10,50,1));
+  background-repeat: no-repeat;
+  color: white;
+}
+
+ul, input {
+  color: black;
 }
 
 .center {
@@ -25,16 +36,40 @@ body {
   width: 80%;
 }
 
+.list-item-span {
+
+}
+
 .list-item-input {
   border: none;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
+  border: 2px solid rgba(10,10,255,0.1);
+  padding: 2px;
+  border-radius: 5px;
   width: 100%;
 }
 
 .list-item-input:focus {
   outline: none;
-  border-bottom: 2px solid lightblue;
+  border: 2px solid rgba(10,10,255,0.5);
+}
+
+.slide-left {
+  transform: translateX(-120%);
+  opacity: 0.8;
+  transition: transform 200ms linear;
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 1;
+    transform: translateX(-120%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(0);
+  }
 }
 
 .btn-delete-item {
@@ -60,16 +95,18 @@ body {
 .search-results {
   position: absolute;
   width: 100%;
-  max-height: 200px;
   background-color: white;
-  transform: translateY(5px);
   border: 1px solid lightgray;
+  transform: translateY(5px);
   border-top: none;
   z-index: 10;
+  transform-origin: top;
 }
 
 #users-list {
   margin: 0;
+  max-height: 200px;
+  overflow-y: scroll;
 }
 
 #users-list li {
@@ -85,12 +122,27 @@ body {
   border-radius: 0;
 }
 
+.buttons-menu {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.buttons-menu a {
+  width: calc(100% / 3);
+  margin: 0;
+  border-radius: 0;
+  float: left;
+}
+
+@media screen and (orientation: landscape) {
+  .navbar {
+    position: absolute;
+  }
+}
+
 @media (max-width: 767px){
-  input,
-  select,
-  input:focus,
-  select:focus,
-  .form-control {
-    font-size: 16px;
+  #search-bar {
+    display: none;
   }
 }
