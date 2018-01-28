@@ -1,4 +1,5 @@
-var List = require("../models/list");
+var List = require("../models/list"),
+    ListItem = require("../models/listItem");
 
 var middlewareObj = {};
 
@@ -72,6 +73,32 @@ middlewareObj.checkListOwnership = function(req, res, next){
   } else {
     req.flash("error", "Please login first.");
     res.redirect("/login");
+  }
+}
+
+middlewareObj.checkListItemOwnership = function(req, res, next){
+  if (req.isAuthenticated()){
+    List.findById(req.params.id, function(err, foundList){
+      if (err || !foundList){
+        res.redirect("/lists");
+      } else {
+        ListItem.findById(req.params.item_id, function(err, foundListItem){
+          if (err || !foundListItem){
+            res.redirect("/lists/" + req.params.id);
+          } else {
+            if (foundList.author.id.equals(req.user._id) || foundListItem.addedBy.id.equals(req.user._id)){
+              next();
+            } else {
+              res.redirect(403, "/lists/" + req.params.id);
+            }
+          }
+        });
+      }
+    });
+
+  } else {
+    req.flash("error", "Please login.");
+    res.redirect("/login")
   }
 }
 

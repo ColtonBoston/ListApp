@@ -30,18 +30,18 @@ router.post("/lists/:id/listItems", middleware.checkListPermissions, function(re
 });
 
 // Update list item
-router.put("/lists/:id/listItems/:item_id", middleware.checkListPermissions, function(req, res){
+router.put("/lists/:id/listItems/:item_id", middleware.checkListItemOwnership, function(req, res){
   ListItem.findByIdAndUpdate(req.params.item_id, {$set: {"name": req.body.item}}, function(err, updatedItem){
     if (err || !updatedItem){
       res.redirect(404, "/lists/" + req.params.id);
     } else {
-      res.redirect("/lists/" + req.params.id);
+      res.redirect(403, "/lists/" + req.params.id);
     }
   });
 });
 
 // Delete list item
-router.delete("/lists/:id/listItems/:item_id", middleware.checkListPermissions, function(req, res){
+router.delete("/lists/:id/listItems/:item_id", middleware.checkListItemOwnership, function(req, res){
     ListItem.findByIdAndRemove(req.params.item_id, function(err){
       if (err){
         console.log(err);
@@ -50,7 +50,7 @@ router.delete("/lists/:id/listItems/:item_id", middleware.checkListPermissions, 
         List.findByIdAndUpdate(req.params.id, {$pull: {"items": req.params.item_id}}, function(err, foundList){
           if (err || !foundList){
             console.log(err);
-            res.redirect(302, "/lists/" + req.params.id);
+            res.redirect(403, "/lists/" + req.params.id);
           } else {
             res.redirect("/lists/" + req.params.id);
           }
