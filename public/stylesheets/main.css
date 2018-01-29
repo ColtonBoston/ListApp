@@ -14,6 +14,11 @@ ul, input {
   color: black;
 }
 
+.navbar {
+  background-color: #101050;
+  border: none;
+}
+
 .center {
   text-align: center;
   margin: 0 auto;
