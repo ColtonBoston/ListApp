@@ -35,7 +35,7 @@ router.put("/lists/:id/listItems/:item_id", middleware.checkListItemOwnership, f
     if (err || !updatedItem){
       res.redirect(404, "/lists/" + req.params.id);
     } else {
-      res.redirect(403, "/lists/" + req.params.id);
+      res.redirect("/lists/" + req.params.id);
     }
   });
 });
