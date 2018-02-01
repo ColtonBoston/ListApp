@@ -169,7 +169,7 @@ ul, input {
     display: none;
   }
 
-  input {
+  input, .form-control {
     font-size: 16px;
   }
 }

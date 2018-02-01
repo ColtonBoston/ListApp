@@ -54,6 +54,8 @@ $("#new-item-form").submit(function(event){
       console.log("Error: Could not add item to list.");
     }
   });
+
+  document.activeElement.blur();
 });
 
 var initialInputVal;
