@@ -2,7 +2,7 @@
 
 <div class="container">
   <h1>All Lists</h1>
-  <a class="btn btn-primary" href="/lists/new">Add New List</a>
+  <a class="btn btn-primary" href="/lists/new">Create New List</a>
   <h2>My Lists</h2>
   <% var friendsLists = false; %>
   <% lists.forEach(function(list){ %>
@@ -13,12 +13,7 @@
     <% } %>
     <h3><%= list.name %></h3>
     <p>Created by <strong><%= list.author.username %></strong> - <%= list.items.length %> items</p>
-    <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm">More Info</a>
-    <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
-      <form class="delete-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
-        <button class="btn btn-danger btn-sm">Delete List</button>
-      </form>
-    <% } %>
+    <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open List</a>
   <% }) %>
 
 </div>

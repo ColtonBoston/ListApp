@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  padding-bottom: 60px;
+  padding-bottom: 100px;
   padding-top: 60px;
   background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1), rgba(10,10,50,1));
   background-repeat: no-repeat;
@@ -19,6 +19,14 @@ ul, input {
   border: none;
 }
 
+.navbar-inverse .navbar-nav > li > .nav-link, .navbar-inverse .navbar-brand {
+  color: white;
+}
+
+.navbar-inverse .navbar-nav > li > .nav-link:hover, .navbar-inverse .navbar-brand:hover {
+  background-color: black;
+}
+
 .center {
   text-align: center;
   margin: 0 auto;
@@ -28,10 +36,6 @@ ul, input {
   display: none;
 }
 
-.delete-form {
-  display: inline;
-}
-
 .list-group {
   margin: 10px 0;
 }
@@ -39,10 +43,6 @@ ul, input {
 .edit-item-form {
   display: inline-block;
   width: 80%;
-}
-
-.list-item-span {
-
 }
 
 .list-item-input {
@@ -92,9 +92,9 @@ ul, input {
   color: gray;
 }
 
-.search-bar {
+.user-search {
   transform: translateY(25%);
-  position: relative;
+  margin-left: 5px;
 }
 
 .search-results {
@@ -128,19 +128,37 @@ ul, input {
 }
 
 .buttons-menu {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+    position: fixed;
+    display: table;
+    bottom: 10px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.buttons-menu a {
-  width: calc(100% / 3);
-  margin: 0;
-  border-radius: 0;
-  float: left;
+#btn-add-item, #new-item-submit {
+  padding: 10px 15px;
+  background-color: #1010FF;
+  border: none;
+  font-weight: bold;
 }
 
-@media screen and (orientation: landscape) {
+#btn-add-item {
+  margin-right: 2px;
+}
+
+#btn-add-item:hover, #new-item-submit:hover {
+  background-color: #1010cc;
+}
+
+#btn-edit-item {
+  padding: 10px 15px;
+  border: none;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+@media screen and (max-height: 600px) {
   .navbar {
     position: absolute;
   }
@@ -149,5 +167,9 @@ ul, input {
 @media (max-width: 767px){
   #search-bar {
     display: none;
+  }
+
+  input {
+    font-size: 16px;
   }
 }

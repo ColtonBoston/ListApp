@@ -1,4 +1,24 @@
-var list = $("#list");
+var list = $("#list"),
+    isEditable = false;
+
+$("#btn-add-item").removeClass("hidden");
+
+$("#btn-add-item").click(function(event){
+    event.preventDefault();
+    $("#new-item-input").focus();
+});
+
+// Edit list button clicked
+$("#btn-edit-item").click(function(event){
+    event.preventDefault();
+    console.log($(this));
+    isEditable = !isEditable;
+    isEditable ? $(this)[0].innerHTML = "<i class='glyphicon glyphicon-ok'></i> Finish Editing" : $(this)[0].innerHTML = "<i class='glyphicon glyphicon-pencil'></i> Edit List";
+    $(".delete-form").toggleClass("js_hidden");
+    $(".delete-list-form").toggleClass("js_hidden");
+    $(".edit-item-form").toggleClass("js_hidden");
+    $(".list-item-span").toggleClass("js_hidden");
+});
 
 // Add list item
 $("#new-item-form").submit(function(event){
@@ -19,13 +39,21 @@ $("#new-item-form").submit(function(event){
       console.log("Item added to list.");
 
       var li = $(data).find("#list")[0].lastElementChild;
+      console.log(li.children.classList);
+
+      if (isEditable){
+        $.each(li.children, function(i, elem){
+          elem.classList.remove("js_hidden");
+        });
+        li.firstElementChild.classList.add("js_hidden");
+      }
       list.append(li);
       input.value = "";
     },
     error: function(){
       console.log("Error: Could not add item to list.");
     }
-  })
+  });
 });
 
 var initialInputVal;
@@ -61,7 +89,6 @@ function updateListItem(form){
   // Get the action of the form and the value of the form's input
   var url = form[0].action,
       item = form[0].children[0].value;
-
   // Updates the list item in the db if the value has changed. Resets the input
   // to before it was focused if the value is empty
   if (item !== initialInputVal && item !== ""){
@@ -71,6 +98,8 @@ function updateListItem(form){
       data: {item},
       success: function(){
         console.log("Update successful.");
+        console.log(item);
+        form[0].previousElementSibling.innerHTML = item;
       },
       error: function(){
         console.log("Update failed.");
@@ -93,8 +122,10 @@ function deleteListItem(form){
     success: function(data){
       if (data){
         console.log("Item deleted.");
-        console.log(data.status);
-        form[0].offsetParent.remove();
+        form[0].offsetParent.classList.add("slide-left");
+        setTimeout(function(){
+          form[0].offsetParent.remove();
+        }, 220);
       } else {
         console.log("Delete failed.");
       }
