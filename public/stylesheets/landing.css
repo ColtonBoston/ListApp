@@ -78,6 +78,9 @@ h1 {
 @media (max-width: 991px){
   .actions-desc {
     margin-top: 30px;
+  }
+
+  .actions-desc:last-child {
     margin-bottom: 40px;
   }
 
