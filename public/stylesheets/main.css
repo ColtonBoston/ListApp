@@ -36,6 +36,40 @@ ul, input {
   display: none;
 }
 
+.notification {
+  position: fixed;
+  z-index: 10;
+  margin: 0 auto;
+  background-color: rgba(0,0,0,1);
+  color: #FFF;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  transform: translateY(-200%);
+  transition: transform 250ms;
+}
+
+.notification-slide-down {
+  transform: translateY(0%);
+}
+
+.notification-item {
+  max-width: 100px;
+  overflow: hidden;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.notification-message {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .list-group {
   margin: 10px 0;
 }
@@ -102,10 +136,15 @@ ul, input {
   width: 100%;
   background-color: white;
   border: 1px solid lightgray;
-  transform: translateY(5px);
+  margin-top: -2px;
   border-top: none;
   z-index: 10;
   transform-origin: top;
+  transition: transform 250ms;
+}
+
+.hide-search-results {
+  transform: scaleY(0);
 }
 
 #users-list {

@@ -28,7 +28,7 @@
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active' : '' %>"><a class="nav-link" href="/users">Friends</a></li>
             <li class="nav-item user-search">
               <input id="search-bar" class="form-control" type="search" name="" placeholder="Search for friends...">
-              <div class="search-results hidden">
+              <div class="search-results hide-search-results">
                 <ul id="users-list" class="list-group">
                 </ul>
                 <button id="btn-hide-results" class="btn btn-default btn-sm btn-hide-results" type="button">Hide Results</button>
@@ -59,4 +59,8 @@
         <%= success %>
       </div>
     <% } %>
+  </div>
+  <div class="notification">
+    <span class="notification-item"></span>
+    <span class="notification-message"></span>
   </div>

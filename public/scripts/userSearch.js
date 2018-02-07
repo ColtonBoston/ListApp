@@ -20,24 +20,24 @@ $("#search-bar").on("keyup", function(event){
             // If currentUser has this user as a friend, show remove friend button
             if (currentUser && currentUser.friends.indexOf(user._id) > -1){
               usersList.append("<li class='list-group-item'>" + user.username + "<button class='btn-friend btn btn-danger btn-xs pull-right' type='submit' data-user-id='" + user._id + "'>Remove Friend</button></li>");
-              searchResults.removeClass("hidden");
+              searchResults.removeClass("hide-search-results");
             } else if (user._id === currentUser._id){
               // Do nothing if this user is the currentUser
             } else {
               // If this user is not already a friend of the currentUser, show add friend button
               usersList.append("<li class='list-group-item'>" + user.username + "<button class='btn-friend btn btn-primary btn-xs pull-right type='submit' data-user-id='" + user._id + "'>Add Friend</button></li>");
-              searchResults.removeClass("hidden");
+              searchResults.removeClass("hide-search-results");
             }
           });
         } else {
           usersList.html("");
-          searchResults.addClass("hidden");
+          searchResults.addClass("hide-search-results");
         }
       }
     });
   } else {
     usersList.html("");
-    searchResults.addClass("hidden");
+    searchResults.addClass("hide-search-results");
   }
 });
 
@@ -84,5 +84,5 @@ $("#users-list").on("click", ".btn-friend", function(event){
 });
 
 $("#btn-hide-results").click(function(){
-  searchResults.addClass("hidden");
+  searchResults.addClass("hide-search-results");
 });

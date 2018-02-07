@@ -1,5 +1,6 @@
 var list = $("#list"),
-    isEditable = false;
+    isEditable = false,
+    timer;
 
 $("#btn-add-item").removeClass("hidden");
 
@@ -42,13 +43,16 @@ $("#new-item-form").submit(function(event){
       console.log(li.children.classList);
 
       if (isEditable){
+        // Show the forms if the list is in edit mode
         $.each(li.children, function(i, elem){
           elem.classList.remove("js_hidden");
         });
+        // Hide the item text since the input is visible
         li.firstElementChild.classList.add("js_hidden");
       }
       list.append(li);
       input.value = "";
+      notifyUser(item.name, "added");
     },
     error: function(){
       console.log("Error: Could not add item to list.");
@@ -102,6 +106,7 @@ function updateListItem(form){
         console.log("Update successful.");
         console.log(item);
         form[0].previousElementSibling.innerHTML = item;
+        notifyUser(item, "updated");
       },
       error: function(){
         console.log("Update failed.");
@@ -117,6 +122,8 @@ function deleteListItem(form){
 
   var url = form[0].parentElement.action;
 
+  form[0].offsetParent.classList.add("slide-left");
+
   // Deletes the list item from the db and removes the corresponding li from the ul
   $.ajax({
     type: "POST",
@@ -124,16 +131,31 @@ function deleteListItem(form){
     success: function(data){
       if (data){
         console.log("Item deleted.");
-        form[0].offsetParent.classList.add("slide-left");
+        var itemName = form[0].offsetParent.firstElementChild.innerHTML;
+        notifyUser(itemName, "removed");
         setTimeout(function(){
           form[0].offsetParent.remove();
         }, 220);
       } else {
         console.log("Delete failed.");
+        form[0].offsetParent.classList.remove("slide-left");
       }
     },
     error: function(){
       console.log("Delete failed.");
+      form[0].offsetParent.classList.remove("slide-left");
     }
   });
+}
+
+function notifyUser(itemName, message){
+  clearTimeout(timer);
+  console.log($(".notification-item"));
+  var notification = $(".notification");
+  $(".notification-item")[0].innerHTML = "\"" + itemName;
+  $(".notification-message")[0].innerHTML = "\" " + message + "!";
+  notification.addClass("notification-slide-down");
+  timer = setTimeout(function(){
+    notification.removeClass("notification-slide-down");
+  }, 3000);
 }
