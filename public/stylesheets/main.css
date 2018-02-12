@@ -38,7 +38,9 @@ ul, input {
 
 .notification {
   position: fixed;
-  z-index: 10;
+  z-index: 1040;
+  bottom: -60px;
+  opacity: 0;
   margin: 0 auto;
   background-color: rgba(0,0,0,1);
   color: #FFF;
@@ -48,12 +50,12 @@ ul, input {
   padding: 10px;
   border-radius: 5px;
   text-align: center;
-  transform: translateY(-200%);
-  transition: transform 250ms;
+  transition: transform 250ms, opacity 250ms, background-color 250ms;
 }
 
 .notification-slide-down {
-  transform: translateY(0%);
+  transform: translateY(-120px);
+  opacity: 1;
 }
 
 .notification-item {
@@ -68,6 +70,10 @@ ul, input {
 .notification-message {
   display: inline-block;
   vertical-align: middle;
+}
+
+.notification-success {
+  background-color: #00aa00;
 }
 
 .list-group {

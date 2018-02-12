@@ -39,6 +39,10 @@
   <a id="btn-add-item" href="/" class="btn btn-primary hidden"><i class="glyphicon glyphicon-plus"></i> New Item</a>
   <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> Edit List</a>
 </div>
+<div class="notification">
+  <span class="notification-item"></span>
+  <span class="notification-message"></span>
+</div>
 <script type="text/javascript">var currentList = <%- JSON.stringify(list) %>;</script>
 <script type="text/javascript" src="/scripts/editListItems.js"></script>
 <% include ../partials/footer %>

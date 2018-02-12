@@ -32,6 +32,8 @@ $("#new-item-form").submit(function(event){
     name: newItemName
   }
 
+  // Notify user that the item is being added (for slower connections)
+  notifyUser("Adding...", false);
   $.ajax({
     type: "POST",
     url: url,
@@ -52,7 +54,7 @@ $("#new-item-form").submit(function(event){
       }
       list.append(li);
       input.value = "";
-      notifyUser(item.name, "added");
+      notifyUser("\"" + item.name + "\" added!", true);
     },
     error: function(){
       console.log("Error: Could not add item to list.");
@@ -95,6 +97,9 @@ function updateListItem(form){
   // Get the action of the form and the value of the form's input
   var url = form[0].action,
       item = form[0].children[0].value;
+
+      // Notify user that the item is being updated (for slower connections)
+      notifyUser("Updating...", false);
   // Updates the list item in the db if the value has changed. Resets the input
   // to before it was focused if the value is empty
   if (item !== initialInputVal && item !== ""){
@@ -106,7 +111,7 @@ function updateListItem(form){
         console.log("Update successful.");
         console.log(item);
         form[0].previousElementSibling.innerHTML = item;
-        notifyUser(item, "updated");
+        notifyUser("\"" + item + "\" updated!", true);
       },
       error: function(){
         console.log("Update failed.");
@@ -122,6 +127,8 @@ function deleteListItem(form){
 
   var url = form[0].parentElement.action;
 
+  // Notify user that the item is being removed (for slower connections)
+  notifyUser("Removing...", false);
   form[0].offsetParent.classList.add("slide-left");
 
   // Deletes the list item from the db and removes the corresponding li from the ul
@@ -132,7 +139,7 @@ function deleteListItem(form){
       if (data){
         console.log("Item deleted.");
         var itemName = form[0].offsetParent.firstElementChild.innerHTML;
-        notifyUser(itemName, "removed");
+        notifyUser("\"" + itemName + "\" removed!", true);
         setTimeout(function(){
           form[0].offsetParent.remove();
         }, 220);
@@ -148,14 +155,17 @@ function deleteListItem(form){
   });
 }
 
-function notifyUser(itemName, message){
+function notifyUser(message, isComplete){
   clearTimeout(timer);
   console.log($(".notification-item"));
   var notification = $(".notification");
-  $(".notification-item")[0].innerHTML = "\"" + itemName;
-  $(".notification-message")[0].innerHTML = "\" " + message + "!";
+  $(".notification-message")[0].innerHTML = message;
   notification.addClass("notification-slide-down");
-  timer = setTimeout(function(){
-    notification.removeClass("notification-slide-down");
-  }, 3000);
+  notification.removeClass("notification-success");
+  if (isComplete) {
+    notification.addClass("notification-success");
+    timer = setTimeout(function(){
+      notification.removeClass("notification-slide-down");
+    }, 3000);
+  }
 }
