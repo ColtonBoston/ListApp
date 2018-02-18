@@ -166,6 +166,7 @@ function deleteListItem(form){
     },
     error: function(){
       console.log("Delete failed.");
+      notifyUser("Failed to remove item.", true);
       form[0].offsetParent.classList.remove("slide-left");
     }
   });
