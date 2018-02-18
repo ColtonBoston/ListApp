@@ -54,10 +54,15 @@ $("#new-item-form").submit(function(event){
       }
       list.append(li);
       input.value = "";
-      notifyUser("\"" + item.name + "\" added!", true);
+      if (item.name.length < 15){
+        notifyUser("\"" + item.name + "\" added!", true);
+      } else {
+        notifyUser("\"" + item.name.slice(0, 15) + "...\" added!", true);
+      }
     },
     error: function(){
       console.log("Error: Could not add item to list.");
+      notifyUser("Failed to add item.", true);
     }
   });
 
@@ -98,11 +103,11 @@ function updateListItem(form){
   var url = form[0].action,
       item = form[0].children[0].value;
 
-      // Notify user that the item is being updated (for slower connections)
-      notifyUser("Updating...", false);
+
   // Updates the list item in the db if the value has changed. Resets the input
   // to before it was focused if the value is empty
-  if (item !== initialInputVal && item !== ""){
+  if (item !== initialInputVal && item !== ""){// Notify user that the item is being updated (for slower connections)
+    notifyUser("Updating...", false);
     $.ajax({
       type: "POST",
       url: url,
@@ -111,10 +116,16 @@ function updateListItem(form){
         console.log("Update successful.");
         console.log(item);
         form[0].previousElementSibling.innerHTML = item;
-        notifyUser("\"" + item + "\" updated!", true);
+        console.log(typeof item);
+        if (item.length < 15){
+          notifyUser("\"" + item + "\" updated!", true);
+        } else {
+          notifyUser("\"" + item.slice(0, 15) + "...\" updated!", true);
+        }
       },
       error: function(){
         console.log("Update failed.");
+        notifyUser("Failed to update item.", true);
         form[0].children[0].value = initialInputVal;
       }
     });
@@ -138,13 +149,18 @@ function deleteListItem(form){
     success: function(data){
       if (data){
         console.log("Item deleted.");
-        var itemName = form[0].offsetParent.firstElementChild.innerHTML;
-        notifyUser("\"" + itemName + "\" removed!", true);
+        var item = form[0].offsetParent.firstElementChild.innerHTML;
+        if (item.length < 15){
+          notifyUser("\"" + item + "\" removed!", true);
+        } else {
+          notifyUser("\"" + item.slice(0, 15) + "...\" removed!", true);
+        }
         setTimeout(function(){
           form[0].offsetParent.remove();
         }, 220);
       } else {
         console.log("Delete failed.");
+        notifyUser("Failed to remove item.", true);
         form[0].offsetParent.classList.remove("slide-left");
       }
     },
@@ -157,7 +173,6 @@ function deleteListItem(form){
 
 function notifyUser(message, isComplete){
   clearTimeout(timer);
-  console.log($(".notification-item"));
   var notification = $(".notification");
   $(".notification-message")[0].innerHTML = message;
   notification.addClass("notification-slide-down");

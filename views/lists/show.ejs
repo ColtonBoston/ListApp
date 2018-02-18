@@ -3,44 +3,46 @@
   <h1><%= list.name %></h1>
   <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
-  <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
-    <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
-      <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
-    </form>
-  <% } %>
-  <ul id="list" class="list-group">
-    <% if (list.items && list.items.length > 0){ %>
-      <% var i = 0; %>
-      <% list.items.forEach(function(item){ %>
-        <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
-          <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
-            <span class="list-item-span"><%= item.name %></span>
-            <form class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
-              <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
-            </form>
-            <form class="delete-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
-              <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
-            </form>
-          <% } else {%>
-            <span><%= item.name %></span>
-          <% } %>
-          <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
-        </li>
-        <% i++ %>
-      <% }) %>
-    <% } %>
-  </ul>
-  <form id="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
-    <input id="new-item-input" class="form-control" type="text" name="item[name]" autocomplete="off" placeholder="Add item...">
-    <input id="new-item-submit" type="submit" class="btn btn-primary" value="Submit">
-  </form>
-</div>
-<div class="buttons-menu">
-  <a id="btn-add-item" href="/" class="btn btn-primary hidden"><i class="glyphicon glyphicon-plus"></i> New Item</a>
-  <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> Edit List</a>
+  <div class="row">
+    <div class="col-sm-8">
+      <ul id="list" class="list-group">
+        <% if (list.items && list.items.length > 0){ %>
+          <% var i = 0; %>
+          <% list.items.forEach(function(item){ %>
+            <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
+              <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
+                <span class="list-item-span"><%= item.name %></span>
+                <form class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
+                  <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
+                </form>
+                <form class="delete-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
+                  <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
+                </form>
+              <% } else {%>
+                <span><%= item.name %></span>
+              <% } %>
+              <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
+            </li>
+            <% i++ %>
+          <% }) %>
+        <% } %>
+      </ul>
+    </div>
+    <div class="col-sm-4 list-actions">
+      <form id="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
+        <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="Add item...">
+        <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit"><i class="glyphicon glyphicon-plus"></i></button>
+      </form>
+      <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-pencil"></i> Edit List</a>
+      <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
+        <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+          <button class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
 </div>
 <div class="notification">
-  <span class="notification-item"></span>
   <span class="notification-message"></span>
 </div>
 <script type="text/javascript">var currentList = <%- JSON.stringify(list) %>;</script>
