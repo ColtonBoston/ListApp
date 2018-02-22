@@ -5,15 +5,24 @@ var User = require("../models/user"),
     List = require("../models/list");
 var middleware = require("../middleware");
 
-// Searches the db for usernames matching the search term
-router.get("/users/search/:search", function(req, res){
+// Searches the db for usernames matching the search term -- returns JSON
+router.get("/users/searchjson/:search", middleware.isLoggedIn, function(req, res){
   var search = regexEscape(req.params.search);
     User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
       res.json(foundUsers);
     });
 });
 
-// Show all users
+// Searches the db for usernames matching the search term -- returns VIEW
+router.get("/users/search", middleware.isLoggedIn, function(req, res){
+  var search = regexEscape(req.query.search);
+  User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
+    // res.render("friendSearch");
+    res.render("searchUsers", {users: foundUsers, searchQuery: search});
+  });
+});
+
+// Show all friends
 router.get("/users", middleware.isLoggedIn, function(req, res){
   // finds all friends of the current user
   User
@@ -22,6 +31,7 @@ router.get("/users", middleware.isLoggedIn, function(req, res){
   .exec(function (err, user) {
     if (err){
       console.log(err);
+      res.redirect("/lists");
     } else {
       // Sort friends by alphabetical order
       user.friends.sort(function(a, b){
@@ -29,19 +39,20 @@ router.get("/users", middleware.isLoggedIn, function(req, res){
         var friendB = b.username.toUpperCase();
         return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
       });
+        res.render("users", {users: user.friends, page: "users"});
     }
   });
 
   // finds all signed up users
   // will move this to a search bar with dropdown in the nav
-  User.find({}, function(err, foundUsers){
-    if(err){
-      console.log(err);
-      res.redirect("/lists");
-    } else {
-      res.render("users", {users: foundUsers});
-    }
-  });
+  // User.find({}, function(err, foundUsers){
+  //   if(err){
+  //     console.log(err);
+  //     res.redirect("/lists");
+  //   } else {
+  //     res.render("users", {users: foundUsers});
+  //   }
+  // });
 });
 
 // Add friend route

@@ -19,14 +19,14 @@ router.get("/lists", middleware.isLoggedIn, function(req, res){
         }
       });
       allLists = myLists.concat(friendLists);
-      res.render("lists/index", {lists: allLists});
+      res.render("lists/index", {lists: allLists, page: "lists"});
     }
   });
 });
 
 // Open new list form
 router.get("/lists/new", middleware.isLoggedIn, function(req, res){
-  res.render("lists/new");
+  res.render("lists/new", {page: "new"});
 });
 
 // Create new list
@@ -57,7 +57,7 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
       req.flash("error", "List not found.");
       res.redirect(404, "/lists");
     } else {
-      res.render("lists/show", {list: foundList});
+      res.render("lists/show", {list: foundList, page: "show"});
     }
   });
 });

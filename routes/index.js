@@ -15,7 +15,7 @@ router.get("/", function(req, res){
 // AUTH ROUTES //
 // Open register form
 router.get("/register", function(req, res){
-  res.render("register");
+  res.render("register", {page: "register"});
 });
 
 // Sign up logic
@@ -43,7 +43,7 @@ router.post("/register", function(req, res){
 // Login Routes //
 // Open login form
 router.get("/login", function(req, res){
-  res.render("login");
+  res.render("login", {page: "login"});
 });
 
 // Login logic

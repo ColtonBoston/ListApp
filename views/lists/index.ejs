@@ -1,19 +1,24 @@
 <% include ../partials/header %>
 
 <div class="container">
-  <h1>All Lists</h1>
+  <h1>My Lists</h1>
   <a class="btn btn-primary" href="/lists/new">Create New List</a>
-  <h2>My Lists</h2>
+  <ul class="list-group">
   <% var friendsLists = false; %>
   <% lists.forEach(function(list){ %>
     <% if (!list.author.id.equals(currentUser.id) && !friendsLists) { %>
       <% friendsLists = true; %>
+    </ul>
       <hr>
       <h2>Friends' Lists</h2>
+      <ul class="list-group">
     <% } %>
+    <li class="list-group-item">
     <h3><%= list.name %></h3>
     <p>Created by <strong><%= list.author.username %></strong> - <%= list.items.length %> items</p>
     <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open List</a>
+  </li>
   <% }) %>
+</ul>
 </div>
 <% include ../partials/footer %>

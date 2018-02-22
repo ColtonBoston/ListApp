@@ -7,7 +7,7 @@ $("#search-bar").on("keyup", function(event){
   if (search !== ""){
     $.ajax({
       type: "GET",
-      url: "/users/search/" + search,
+      url: "/users/searchjson/" + search,
       dataType: "json",
       success: function(users){
         console.log(currentUser);

@@ -46,6 +46,7 @@ ul, input {
   margin-bottom: 20px;
 }
 
+
 .new-item-input, .new-item-submit {
   display: inline;
   float: left;
@@ -214,6 +215,10 @@ ul, input {
 
 .btn-delete-list {
   width: 100%;
+}
+
+.relative {
+  position: relative;
 }
 
 @media screen and (max-height: 600px) {

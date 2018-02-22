@@ -3,10 +3,11 @@
 <!-- Add friend search form on this page -->
 
 <div class="container">
-  <h1>My Friends</h1>
+  <h1>User Results for "<%= searchQuery %>"</h1>
   <div class="row">
     <div class="col-sm-8">
       <ul class="list-group">
+      <% userCount = users.length; %>
       <% users.forEach(function(user){ %>
         <% if(!user._id.equals(currentUser._id)){ %>
           <li class="list-group-item">
@@ -21,14 +22,15 @@
               </form>
             <% } %>
           </li>
-        <% } %>
+        <% } else { userCount--; } %>
       <% }) %>
       </ul>
+      <p><%= userCount %> user(s) found.</p>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 list-actions">
       <div class="friends-page-search">
         <form class="" action="/users/search" method="GET">
-          <input id="search-bar" class="form-control" type="search" name="search" placeholder="Search for friends...">
+          <input id="search-bar" class="form-control" type="search" name="search" autocomplete="off" placeholder="Search for friends...">
         </form>
         <div class="search-results hide-search-results relative">
           <ul id="users-list" class="list-group">
