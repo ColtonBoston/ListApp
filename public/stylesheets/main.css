@@ -228,7 +228,7 @@ ul, input {
 }
 
 @media (max-width: 767px){
-  #search-bar {
+  .search-bar {
     display: none;
   }
 
