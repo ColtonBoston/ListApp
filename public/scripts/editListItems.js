@@ -25,6 +25,10 @@ $("#btn-edit-item").click(function(event){
     $(".delete-list-form").toggleClass("js_hidden");
 });
 
+$("#btn-new-item").click(function(){
+  $("#new-item-input").focus();
+})
+
 // Add list item
 $("#new-item-form").submit(function(event){
   event.preventDefault();
