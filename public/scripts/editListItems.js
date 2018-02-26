@@ -12,13 +12,17 @@ $("#btn-add-item").click(function(event){
 // Edit list button clicked
 $("#btn-edit-item").click(function(event){
     event.preventDefault();
-    console.log($(this));
     isEditable = !isEditable;
-    isEditable ? $(this)[0].innerHTML = "<i class='glyphicon glyphicon-ok'></i> Finish Editing" : $(this)[0].innerHTML = "<i class='glyphicon glyphicon-pencil'></i> Edit List";
+    isEditable ? $(this)[0].innerHTML = "<i class='glyphicon glyphicon-ok'></i> Finish Editing" : $(this)[0].innerHTML = "<i class='glyphicon glyphicon-edit'></i> Edit List";
+
+    $(".list-group-item").each(function(i, li){
+      if (!$(this)[0].classList.contains("completed-item")) {
+        $(this).find(".list-item-span").toggleClass("js_hidden");
+        $(this).find(".edit-item-form").toggleClass("js_hidden");
+      }
+    });
     $(".delete-form").toggleClass("js_hidden");
     $(".delete-list-form").toggleClass("js_hidden");
-    $(".edit-item-form").toggleClass("js_hidden");
-    $(".list-item-span").toggleClass("js_hidden");
 });
 
 // Add list item
@@ -39,10 +43,7 @@ $("#new-item-form").submit(function(event){
     url: url,
     data: {item},
     success: function(data){
-      console.log("Item added to list.");
-
       var li = $(data).find("#list")[0].lastElementChild;
-      console.log(li.children.classList);
 
       if (isEditable){
         // Show the forms if the list is in edit mode
@@ -61,7 +62,6 @@ $("#new-item-form").submit(function(event){
       }
     },
     error: function(){
-      console.log("Error: Could not add item to list.");
       notifyUser("Failed to add item.", true);
     }
   });
@@ -98,25 +98,29 @@ list.on("click", ".btn-delete-item", function(event){
   deleteListItem($(this));
 });
 
+list.on("click", ".list-group-item", function(event){
+  if (!isEditable){
+    $(this).toggleClass("completed-item");
+    $(this).find(".item-added-by").toggleClass("faded");
+  }
+});
+
 function updateListItem(form){
   // Get the action of the form and the value of the form's input
   var url = form[0].action,
       item = form[0].children[0].value;
 
-
   // Updates the list item in the db if the value has changed. Resets the input
   // to before it was focused if the value is empty
-  if (item !== initialInputVal && item !== ""){// Notify user that the item is being updated (for slower connections)
+  if (item !== initialInputVal && item !== ""){
+    // Notify user that the item is being updated (for slower connections)
     notifyUser("Updating...", false);
     $.ajax({
       type: "POST",
       url: url,
       data: {item},
       success: function(){
-        console.log("Update successful.");
-        console.log(item);
         form[0].previousElementSibling.innerHTML = item;
-        console.log(typeof item);
         if (item.length < 15){
           notifyUser("\"" + item + "\" updated!", true);
         } else {
@@ -124,7 +128,6 @@ function updateListItem(form){
         }
       },
       error: function(){
-        console.log("Update failed.");
         notifyUser("Failed to update item.", true);
         form[0].children[0].value = initialInputVal;
       }
@@ -148,7 +151,6 @@ function deleteListItem(form){
     url: url,
     success: function(data){
       if (data){
-        console.log("Item deleted.");
         var item = form[0].offsetParent.firstElementChild.innerHTML;
         if (item.length < 15){
           notifyUser("\"" + item + "\" removed!", true);
@@ -159,13 +161,11 @@ function deleteListItem(form){
           form[0].offsetParent.remove();
         }, 220);
       } else {
-        console.log("Delete failed.");
         notifyUser("Failed to remove item.", true);
         form[0].offsetParent.classList.remove("slide-left");
       }
     },
     error: function(){
-      console.log("Delete failed.");
       notifyUser("Failed to remove item.", true);
       form[0].offsetParent.classList.remove("slide-left");
     }
@@ -176,12 +176,12 @@ function notifyUser(message, isComplete){
   clearTimeout(timer);
   var notification = $(".notification");
   $(".notification-message")[0].innerHTML = message;
-  notification.addClass("notification-slide-down");
+  notification.addClass("notification-slider");
   notification.removeClass("notification-success");
   if (isComplete) {
     notification.addClass("notification-success");
     timer = setTimeout(function(){
-      notification.removeClass("notification-slide-down");
+      notification.removeClass("notification-slider");
     }, 3000);
   }
 }

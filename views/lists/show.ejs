@@ -33,7 +33,7 @@
         <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="Add item...">
         <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit"><i class="glyphicon glyphicon-plus"></i></button>
       </form>
-      <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-pencil"></i> Edit List</a>
+      <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-edit"></i> Edit List</a>
       <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
         <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
           <button class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
@@ -45,6 +45,7 @@
 <div class="notification">
   <span class="notification-message"></span>
 </div>
+<a id="btn-new-item" href="#new-item-input" class="btn btn-primary btn-new-item"><i class="glyphicon glyphicon-plus"></i></a>
 <script type="text/javascript">var currentList = <%- JSON.stringify(list) %>;</script>
 <script type="text/javascript" src="/scripts/editListItems.js"></script>
 <% include ../partials/footer %>

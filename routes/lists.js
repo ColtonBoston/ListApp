@@ -63,14 +63,22 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
 });
 
 // Edit Route
-// router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
-//     List.findById(req.params.id, function(err, foundList){
-//       res.render("lists/edit", {list: foundList});
-//     });
-// });
+router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
+  List.findById(req.params.id)
+  .populate("items")
+  .exec(function(err, foundList){
+    if (err || !foundList){
+      console.log(err);
+      req.flash("error", "List not found.");
+      res.redirect(404, "/lists");
+    } else {
+      res.render("lists/edit", {list: foundList, page: "edit"});
+    }
+  });
+});
 
 // Update Route
-router.put("/lists/:id", middleware.isLoggedIn, function(req, res){
+router.put("/lists/:id", middleware.checkListOwnership, function(req, res){
   // console.log(req.body.items);
   // console.log(req.body.items[req.body.items.length - 1].addedBy);
   // if (req.user._id.equals(req.body.items[req.body.items.length - 1].addedBy))
@@ -89,6 +97,14 @@ router.put("/lists/:id", middleware.isLoggedIn, function(req, res){
   //   res.status(404).send("Oops");
   // }
 
+  List.findByIdAndUpdate(req.params.id, {$set: {"name": req.body.name}}, function(err, updatedList){
+    if (err || !updatedList){
+      console.log(err);
+      res.redirect("/lists");
+    } else {
+      res.redirect("/lists/" + req.params.id + "/edit");
+    }
+  });
 });
 
 // Destroy Route

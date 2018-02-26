@@ -83,9 +83,13 @@ ul, input {
   transition: transform 250ms, opacity 250ms, background-color 250ms;
 }
 
-.notification-slide-down {
-  transform: translateY(-120px);
+.notification-slider {
+  transform: translateY(-70px);
   opacity: 1;
+}
+
+.btn-new-list {
+  margin-bottom: 10px;
 }
 
 .notification-message {
@@ -97,9 +101,17 @@ ul, input {
   background-color: #00aa00;
 }
 
+.notification-failure {
+  background-color: #aa0000;
+}
+
 .edit-item-form {
   display: inline-block;
   width: 80%;
+}
+
+.list-group-item {
+  transition: transform 200ms linear;
 }
 
 .list-item-input {
@@ -120,7 +132,6 @@ ul, input {
 .slide-left {
   transform: translateX(-120%);
   opacity: 0.8;
-  transition: transform 200ms linear;
 }
 
 @keyframes slideRight {
@@ -186,22 +197,22 @@ ul, input {
 }
 
 .buttons-menu {
-    position: fixed;
-    display: table;
-    bottom: 10px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
+  position: fixed;
+  display: table;
+  bottom: 10px;
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.new-item-submit {
+.btn-primary {
   padding: 10px 15px;
   background-color: #1010FF;
   border: none;
   font-weight: bold;
 }
 
-.new-item-submit:hover {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover {
   background-color: #1010cc;
 }
 
@@ -221,6 +232,20 @@ ul, input {
   position: relative;
 }
 
+.completed-item {
+  background-color: rgba(255,255,255,0.2);
+  border-color: transparent;
+  color: rgba(0,0,0,0.4);
+}
+
+.faded {
+  color: rgba(50,50,50,0.4);
+}
+
+.btn-new-item {
+  display: none;
+}
+
 @media screen and (max-height: 600px) {
   .navbar {
     position: absolute;
@@ -237,18 +262,63 @@ ul, input {
   }
 
   #new-item-form {
-    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     z-index: 1010;
-    margin: 0;
-    padding: 4px;
     background-color: rgba(0,0,0,0.7);
   }
 
   .list-actions {
     position: relative;
     top: auto;
+  }
+
+  .col-sm-12, .col-sm-8, .col-sm-4 {
+    padding: 0;
+  }
+
+  .list-group-item:first-child, .list-group-item:last-child, .btn, .new-item-input {
+    border-radius: 0;
+  }
+
+  .btn-edit-item {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    margin: 0;
+    height: 60px;
+    width: 60px;
+    padding: 20px;
+    border-radius: 50%;
+    font-size: 0;
+    z-index: 1000;
+  }
+
+  .btn-edit-item i {
+    font-size: 16px;
+  }
+
+  .btn-new-item {
+    display: block;
+    position: fixed;
+    right: 80px;
+    bottom: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    background-color: #1050FF;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 20px;
+  }
+
+  .notification {
+    bottom: auto;
+    top: -60px;
+  }
+
+  .notification-slider {
+    transform: translateY(70px);
   }
 }

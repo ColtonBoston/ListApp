@@ -1,21 +1,52 @@
 <% include ../partials/header %>
 <div class="container">
-  <div class="row center">
+  <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
     <h1>Edit List</h1>
     <form class="" action="/lists/<%= list._id %>?_method=PUT" method="post">
       <div class="form-group">
         <label class="hidden" for="name">Name</label>
-        <input class="form-control" id="name" type="text" name="list[name]" value="<%= list.name %>">
+        <input class="form-control" id="name" type="text" name="name" value="<%= list.name %>">
       </div>
-      <div class="form-group">
-        <!-- <label class="hidden" for="items">Items</label>
-        <textarea class="form-control" id="items" name="list[items]"><%= list.items.join(",") %></textarea> -->
-        <% for (var i = 0; i < list.items.length; i++){ %>
-          <input class="form-control" type="text" name="list[items][<%= i %>]]" value="<%= list.items[i] %>">
-        <% } %>
-      </div>
-      <button type="submit" class="btn btn-default">Update</button>
+      <!-- <div class="form-group">
+        <label class="hidden" for="items">Items</label>
+        <textarea class="form-control" id="items" name="list[items]" placeholder="List items (separate by commas)..."></textarea>
+      </div> -->
+      <button type="submit" class="btn btn-default">Save</button>
     </form>
+  <% } else { %>
+    <h1>Edit - <%= list.name %></h1>
+  <% } %>
+  <a href="/lists/<%= list._id %>" class="btn btn-default">Return to list view</a>
+  <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
+  <div class="row">
+    <div class="col-sm-12">
+      <ul id="list" class="list-group">
+        <% if (list.items && list.items.length > 0){ %>
+          <% var i = 0; %>
+          <% list.items.forEach(function(item){ %>
+            <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
+              <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
+                <form class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
+                  <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
+                </form>
+                <form class="delete-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
+                  <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
+                </form>
+              <% } else {%>
+                <span><%= item.name %></span>
+              <% } %>
+              <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
+            </li>
+            <% i++ %>
+          <% }) %>
+        <% } %>
+      </ul>
+      <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
+        <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+          <button class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
+        </form>
+      <% } %>
+    </div>
   </div>
 </div>
 
