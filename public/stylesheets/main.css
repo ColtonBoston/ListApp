@@ -65,13 +65,6 @@ h1, h2, h3, h4, h5, h6, p {
   border-bottom-right-radius: 0;
 }
 
-.new-item-submit {
-  width: 20%;
-  margin: 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
 .notification {
   position: fixed;
   z-index: 1040;
@@ -215,7 +208,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .btn-primary {
   background-color: #1010FF;
-  border: none;
+  border: 1px solid #1050FF;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover {
@@ -238,6 +231,10 @@ h1, h2, h3, h4, h5, h6, p {
   position: relative;
 }
 
+.btn-danger {
+  background-color: #ff5050;
+}
+
 .completed-item {
   background-color: rgba(255,255,255,0.2);
   color: rgba(0,0,0,0.4);
@@ -256,6 +253,11 @@ h1, h2, h3, h4, h5, h6, p {
 
 .new-item-submit {
   padding: 10px 15px;
+  width: 20%;
+  margin: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 0;
 }
 
 @media screen and (max-height: 600px) {
