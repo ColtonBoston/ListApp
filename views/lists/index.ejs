@@ -2,23 +2,34 @@
 
 <div class="container">
   <h1>My Lists</h1>
-  <a class="btn btn-default btn-new-list" href="/lists/new">Create New List</a>
-  <ul class="list-group">
-  <% var friendsLists = false; %>
-  <% lists.forEach(function(list){ %>
-    <% if (!list.author.id.equals(currentUser.id) && !friendsLists) { %>
-      <% friendsLists = true; %>
-    </ul>
-      <hr>
-      <h2>Friends' Lists</h2>
+  <a class="btn btn-default btn-new-list" href="/lists/new"><i class="glyphicon glyphicon-plus"></i> Create New List</a>
+  <div class="row">
+    <div class="col-sm-12">
       <ul class="list-group">
-    <% } %>
-    <li class="list-group-item">
-    <h3><%= list.name %></h3>
-    <p>Created by <strong><%= list.author.username %></strong> - <%= list.items.length %> items</p>
-    <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open List</a>
-  </li>
-  <% }) %>
-</ul>
+        <% var friendsLists = false; %>
+        <% lists.forEach(function(list){ %>
+          <% if (!list.author.id.equals(currentUser.id) && !friendsLists) { %>
+            <% friendsLists = true; %>
+            </ul>
+            </div>
+            </div>
+            <h2>Friends' Lists</h2>
+            <div class="row">
+              <div class="col-sm-12">
+                <ul class="list-group">
+        <% } %>
+        <li class="list-group-item">
+        <p class="text-lg"><strong><%= list.name %></strong></p>
+        <p>
+          <% if (!list.author.id.equals(currentUser.id)) { %>
+            Created by <strong><%= list.author.username %></strong> -
+          <% } %><%= list.items.length %> items
+        </p>
+        <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
+      </li>
+      <% }) %>
+      </ul>
+    </div>
+  </div>
 </div>
 <% include ../partials/footer %>

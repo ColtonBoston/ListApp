@@ -11,7 +11,7 @@
           <% list.items.forEach(function(item){ %>
             <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
               <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
-                <span class="list-item-span"><%= item.name %></span>
+                <div class="list-item-text"><%= item.name %></div>
                 <form class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
                   <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
                 </form>

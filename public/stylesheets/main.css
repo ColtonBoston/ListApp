@@ -14,6 +14,10 @@ ul, input {
   color: black;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+  word-wrap: break-word;
+}
+
 .navbar {
   background-color: #101050;
   border: none;
@@ -46,7 +50,9 @@ ul, input {
   margin-bottom: 20px;
 }
 
-
+.text-lg {
+  font-size: 1.5em;
+}
 .new-item-input, .new-item-submit {
   display: inline;
   float: left;
@@ -112,6 +118,8 @@ ul, input {
 
 .list-group-item {
   transition: transform 200ms linear;
+  margin: 0;
+  border-top: 0;
 }
 
 .list-item-input {
@@ -206,10 +214,8 @@ ul, input {
 }
 
 .btn-primary {
-  padding: 10px 15px;
   background-color: #1010FF;
   border: none;
-  font-weight: bold;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover {
@@ -234,8 +240,10 @@ ul, input {
 
 .completed-item {
   background-color: rgba(255,255,255,0.2);
-  border-color: transparent;
   color: rgba(0,0,0,0.4);
+  border-color: transparent;
+  border: 1px solid rgba(50,50,50,0.1);
+  border-top: 0;
 }
 
 .faded {
@@ -244,6 +252,10 @@ ul, input {
 
 .btn-new-item {
   display: none;
+}
+
+.new-item-submit {
+  padding: 10px 15px;
 }
 
 @media screen and (max-height: 600px) {
@@ -257,7 +269,7 @@ ul, input {
     display: none;
   }
 
-  input, .form-control, .list-group-item span {
+  input, .form-control, .list-group-item .list-item-text {
     font-size: 16px;
   }
 
@@ -278,7 +290,7 @@ ul, input {
     padding: 0;
   }
 
-  .list-group-item:first-child, .list-group-item:last-child, .btn, .new-item-input {
+  .list-group-item:first-child, .list-group-item:last-child, .btn-edit-item, .new-item-input, .new-item-submit, .btn-delete-list, .users-search-bar {
     border-radius: 0;
   }
 

@@ -17,7 +17,7 @@ $("#btn-edit-item").click(function(event){
 
     $(".list-group-item").each(function(i, li){
       if (!$(this)[0].classList.contains("completed-item")) {
-        $(this).find(".list-item-span").toggleClass("js_hidden");
+        $(this).find(".list-item-text").toggleClass("js_hidden");
         $(this).find(".edit-item-form").toggleClass("js_hidden");
       }
     });
