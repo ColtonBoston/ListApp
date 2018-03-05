@@ -42,7 +42,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
           <% if (!currentUser) { %>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>f"><a class="nav-link" href="/login">Login</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a class="nav-link" href="/login">Login</a></li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a class="nav-link" href="/register">Sign Up</a></li>
           <% } else { %>
             <li class="nav-item"><a class="nav-link" href="#">Logged in as <strong><%= currentUser.username %></strong></a></li>
