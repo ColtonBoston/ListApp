@@ -39,19 +39,19 @@ h1 {
 }
 
 .btn-login {
-  background-color: #1070FF;
+  background-color: #1090FF;
   color: white;
 }
 
 .btn-login:hover {
-  background-color: #1050cc;
+  background-color: #1070cc;
   color: white;
 }
 
 .btn-register {
   background-color: none;
-  border: 2px solid #1070FF;
-  color: #1070FF;
+  border: 2px solid #1090FF;
+  color: #1090FF;
 }
 
 .btn-register:hover {
@@ -89,7 +89,7 @@ h1 {
     transform: none;
     left: 0;
     top: 0;
-    margin-top: 40px;
+    margin-top: 100px;
     width: 80%;
   }
 }
@@ -100,7 +100,7 @@ h1 {
   }
 
   .container {
-    margin-top: 40px;
+    margin-top: 80px;
   }
 }
 
@@ -112,5 +112,9 @@ h1 {
   .app-desc {
     font-size: 1em;
     text-align: left;
+  }
+
+  .container {
+    margin-top: 40px;
   }
 }
