@@ -3,23 +3,17 @@
 <!-- Add friend search form on this page -->
 
 <div class="container">
-  <h1>My Friends</h1>
+  <h1>My Friends <small class="small-fix"><i class="glyphicon glyphicon-user"></i> <%= users.length %></small></h1>
   <div class="row">
     <div class="col-sm-8">
       <ul class="list-group">
       <% users.forEach(function(user){ %>
         <% if(!user._id.equals(currentUser._id)){ %>
           <li class="list-group-item">
-            <%= user.username %>
-            <% if(currentUser.friends.indexOf(user._id) < 0) { %>
-              <form action="/addFriend/<%= user._id %>" method="post">
-                  <input type="submit" value="Add Friend">
-              </form>
-            <% } else { %>
-              <form action="/removeFriend/<%= user._id %>" method="post">
-                  <input type="submit" value="Remove Friend">
-              </form>
-            <% } %>
+            <span class="friend-username"><%= user.username %></span>
+            <form class="form-rm-friend" action="/removeFriend/<%= user._id %>" method="post">
+                <input class="btn btn-danger" type="submit" value="Remove Friend">
+            </form>
           </li>
         <% } %>
       <% }) %>
