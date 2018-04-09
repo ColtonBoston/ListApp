@@ -39,6 +39,10 @@ h1, h2, h3, h4, h5, h6, p {
   display: none;
 }
 
+.permissions-list {
+  text-align: left;
+}
+
 .list-actions {
   position: sticky;
   top: 100px;
@@ -85,7 +89,6 @@ h1, h2, h3, h4, h5, h6, p {
   left: 50%;
   margin-left: -125px;
   padding: 10px;
-  border-radius: 5px;
   text-align: center;
   transition: transform 250ms, opacity 250ms, background-color 250ms;
 }
@@ -178,6 +181,7 @@ h1, h2, h3, h4, h5, h6, p {
 .user-search {
   transform: translateY(25%);
   margin-left: 5px;
+  width: 400px;
 }
 
 .search-results {
@@ -243,6 +247,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .btn-delete-list {
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .relative {
@@ -278,9 +283,20 @@ h1, h2, h3, h4, h5, h6, p {
   border: 0;
 }
 
+.friend-unpermitted {
+  background-color: #ddd;
+  color: #555;
+}
+
 @media screen and (max-height: 600px) {
   .navbar {
     position: absolute;
+  }
+}
+
+@media (max-width: 991px){
+  .user-search {
+    width: 250px;
   }
 }
 
