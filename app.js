@@ -26,7 +26,7 @@ app.use(flash());
 
 // PASSPORT CONFIG
 app.use(require("express-session")({
-  secret: "Zoe is a dog",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false
 }));
