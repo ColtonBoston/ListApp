@@ -1,4 +1,7 @@
 <% include ../partials/header %>
+
+<% var currentUserIsListOwner = list.author.id.equals(currentUser._id); %>
+
 <div class="container">
   <h1><%= list.name %></h1>
   <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
@@ -30,15 +33,45 @@
     </div>
     <div class="col-sm-4 list-actions">
       <form id="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
-        <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="Add item...">
+        <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="New item...">
         <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit"><i class="glyphicon glyphicon-plus"></i></button>
       </form>
       <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-edit"></i> Edit List</a>
-      <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
+      <% if (currentUser && currentUserIsListOwner){ %>
         <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
-          <button class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
+          <button id="btn-delete-list" class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
         </form>
       <% } %>
+      <h2 class="permissions-header">List permissions (<%= list.permissions.length %>)<i id="permissions-toggle" class="glyphicon glyphicon-menu-down"></i></h2>
+      <ul class="list-group list-permissions">
+        <div class="list-contents list-hidden">
+          <li class="list-group-item"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
+          <% list.permissions.forEach(function(permittedFriend){ %>
+              <li class="list-group-item">
+                <% if(currentUser && currentUserIsListOwner){ %>
+                  <span><%= permittedFriend.username %></span>
+                  <form class="pull-right" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
+                    <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></button>
+                  </form>
+                <% } else { %>
+                  <%= permittedFriend.username %>
+                <% } %>
+              </li>
+          <% }) %>
+          <% if(currentUser && currentUserIsListOwner){ %>
+            <% friends.forEach(function(friend){ %>
+              <% console.log(friend) %>
+              <li class="list-group-item friend-unpermitted">
+                <span><%= friend.username %></span>
+                <form class="pull-right" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
+                  <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button>
+                </form>
+              </li>
+            <% }) %>
+          <% } %>
+        </div>
+
+      </ul>
     </div>
   </div>
 </div>
@@ -47,5 +80,5 @@
 </div>
 <a id="btn-new-item" href="#new-item-input" class="btn btn-primary btn-new-item"><i class="glyphicon glyphicon-plus"></i></a>
 <script type="text/javascript">var currentList = <%- JSON.stringify(list) %>;</script>
-<script type="text/javascript" src="/scripts/editListItems.js"></script>
+<script type="text/javascript" src="/scripts/editList.js"></script>
 <% include ../partials/footer %>
