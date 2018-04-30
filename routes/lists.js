@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var List = require("../models/list"),
-    ListItem = require("../models/listItem");
+    ListItem = require("../models/listItem"),
+    User = require("../models/user");
 var middleware = require("../middleware");
 
 // List index route
@@ -26,7 +27,25 @@ router.get("/lists", middleware.isLoggedIn, function(req, res){
 
 // Open new list form
 router.get("/lists/new", middleware.isLoggedIn, function(req, res){
-  res.render("lists/new", {page: "new"});
+  // finds all friends of the current user
+  User
+  .findById(req.user._id)
+  .populate('friends') // <--
+  .exec(function (err, user) {
+    if (err){
+      console.log(err);
+      res.redirect("/lists");
+    } else {
+      // Sort friends by alphabetical order
+      user.friends.sort(function(a, b){
+        var friendA = a.username.toUpperCase();
+        var friendB = b.username.toUpperCase();
+        return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+      });
+      res.render("lists/new", {friends: user.friends, page: "new"});
+      // res.render("users", {users: user.friends, page: "users"});
+    }
+  });
 });
 
 // Create new list
@@ -35,8 +54,9 @@ router.post("/lists", middleware.isLoggedIn, function(req, res){
     id: req.user._id,
     username: req.user.username
   };
+  console.log(req.body.permissions);
   req.body.list.author = author;
-  req.body.list.permissions = req.user.friends;
+  req.body.list.permissions = req.body.permissions;
   //req.body.list.permissions.push(req.user._id);
   List.create(req.body.list, function(err, list){
     if (err){
@@ -51,13 +71,33 @@ router.post("/lists", middleware.isLoggedIn, function(req, res){
 router.get("/lists/:id", middleware.canUserEdit, function(req, res){
   List.findById(req.params.id)
   .populate("items")
+  .populate("permissions")
   .exec(function(err, foundList){
     if (err || !foundList){
       console.log(err);
       req.flash("error", "List not found.");
       res.redirect(404, "/lists");
     } else {
-      res.render("lists/show", {list: foundList, page: "show"});
+      User.findById(req.user._id)
+      .populate("friends")
+      .exec(function(err, foundUser){
+        if (err || !foundUser){
+          console.log(err);
+          req.flash("error", "User not found.");
+          res.redirect(404, "/lists");
+        } else {
+          // Gets the current user's friends that have permission to contribute to this list
+          var friends = foundUser.friends;
+          foundList.permissions.forEach(function(permittedFriend){
+            friends.forEach(function(friend, i){
+              if (permittedFriend._id.equals(friend._id)){
+                friends.splice(i, 1);
+              }
+            });
+          });
+          res.render("lists/show", {list: foundList, friends: friends, page: "show"});
+        }
+      });
     }
   });
 });
@@ -66,37 +106,40 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
 router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
   List.findById(req.params.id)
   .populate("items")
+  .populate("permissions")
   .exec(function(err, foundList){
     if (err || !foundList){
       console.log(err);
       req.flash("error", "List not found.");
       res.redirect(404, "/lists");
     } else {
-      res.render("lists/edit", {list: foundList, page: "edit"});
+      User.findById(req.user._id)
+      .populate("friends")
+      .exec(function(err, foundUser){
+        if (err || !foundUser){
+          console.log(err);
+          req.flash("error", "User not found.");
+          res.redirect(404, "/lists");
+        } else {
+          // Gets the current user's friends that have permission to contribute to this list
+          var friends = foundUser.friends;
+          foundList.permissions.forEach(function(permittedFriend){
+            friends.forEach(function(friend, i){
+              if (permittedFriend._id.equals(friend._id)){
+                friends.splice(i, 1);
+              }
+            });
+          });
+          res.render("lists/edit", {list: foundList, friends: friends, page: "edit"});
+        }
+      });
     }
   });
 });
 
 // Update Route
 router.put("/lists/:id", middleware.checkListOwnership, function(req, res){
-  // console.log(req.body.items);
-  // console.log(req.body.items[req.body.items.length - 1].addedBy);
-  // if (req.user._id.equals(req.body.items[req.body.items.length - 1].addedBy))
-  // {
-  //   List.findByIdAndUpdate(req.params.id, {$set: {"items": req.body.items}}, function(err, updatedList){
-  //     if(err){
-  //       console.log(err);
-  //       res.redirect("/lists");
-  //     } else {
-  //       // res.redirect("/lists/" + updatedList.id);
-  //       res.end();
-  //     }
-  //   });
-  // } else {
-  //   console.log("Don't mess with currentUser!");
-  //   res.status(404).send("Oops");
-  // }
-
+  // Need to update this route to be able to set list name or permissions from show and edit pages
   List.findByIdAndUpdate(req.params.id, {$set: {"name": req.body.name}}, function(err, updatedList){
     if (err || !updatedList){
       console.log(err);
@@ -127,9 +170,35 @@ router.delete("/lists/:id", middleware.checkListOwnership, function(req, res){
       });
       // Remove the list from the collection
       foundList.remove();
+      req.flash("success", "List deleted!");
       res.redirect("/lists");
     }
   });
 });
 
+// List permission routes
+// Add friend to permissions
+router.put("/lists/:id/addPermission/:friend_id", middleware.checkListOwnership, function(req, res){
+  // Find the list
+  List.findByIdAndUpdate(req.params.id, {$push: {"permissions": req.params.friend_id}}, function(err, updatedList){
+    if (err || !updatedList){
+      req.flash("List not found.");
+      res.redirect(404, "/lists");
+    } else {
+      res.redirect("/lists/" + req.params.id + "/edit");
+    }
+  });
+});
+
+// Remove friend from permissions
+router.put("/lists/:id/removePermission/:friend_id", middleware.checkListOwnership, function(req, res){
+  List.findByIdAndUpdate(req.params.id, {$pull: {"permissions": req.params.friend_id}}, function(err, updatedList){
+    if (err || !updatedList){
+      req.flash("List not found.");
+      res.redirect(404, "/lists");
+    } else {
+      res.redirect("/lists/" + req.params.id + "/edit");
+    }
+  });
+});
 module.exports = router;
