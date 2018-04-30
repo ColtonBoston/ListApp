@@ -24,8 +24,8 @@
   		<div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="nav navbar-nav">
           <% if (currentUser) { %>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active' : '' %>"><a class="nav-link" href="/lists">Home</a></li>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active' : '' %>"><a class="nav-link" href="/users">Friends</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active-page' : '' %>"><a class="nav-link" href="/lists">Home</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active-page' : '' %>"><a class="nav-link" href="/users">Friends</a></li>
             <% if (typeof page !== 'undefined' && page !== 'users'){ %>
               <li class="nav-item user-search">
                 <form class="" action="/users/search" method="GET">
@@ -42,8 +42,8 @@
         </ul>
         <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
           <% if (!currentUser) { %>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a class="nav-link" href="/login">Login</a></li>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a class="nav-link" href="/register">Sign Up</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active-page' : '' %>"><a class="nav-link" href="/login">Login</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active-page' : '' %>"><a class="nav-link" href="/register">Sign Up</a></li>
           <% } else { %>
             <li class="nav-item"><a class="nav-link" href="#">Logged in as <strong><%= currentUser.username %></strong></a></li>
             <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
