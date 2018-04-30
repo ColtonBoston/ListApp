@@ -7,7 +7,8 @@ var listItemSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId
     },
     username: String
-  }
+  },
+  isCompleted: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("ListItem", listItemSchema);
