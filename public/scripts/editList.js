@@ -37,7 +37,6 @@ $("#btn-delete-list").click(function(event){
   } else {
     event.preventDefault();
   }
-
 });
 
 // Add list item
@@ -73,13 +72,13 @@ $("#new-item-form").submit(function(event){
       list.append(li);
       input.value = "";
       if (item.name.length < 15){
-        notifyUser("\"" + item.name + "\" added!", true);
+        notifyUser("\"" + item.name + "\" added!", true, true);
       } else {
-        notifyUser("\"" + item.name.slice(0, 15) + "...\" added!", true);
+        notifyUser("\"" + item.name.slice(0, 15) + "...\" added!", true, true);
       }
     },
     error: function(){
-      notifyUser("Failed to add item.", true);
+      notifyUser("Failed to add item.", true, false);
     }
   });
 
@@ -144,13 +143,13 @@ function updateListItem(form){
       success: function(){
         form[0].previousElementSibling.innerHTML = item;
         if (item.length < 15){
-          notifyUser("\"" + item + "\" updated!", true);
+          notifyUser("\"" + item + "\" updated!", true, true);
         } else {
-          notifyUser("\"" + item.slice(0, 15) + "...\" updated!", true);
+          notifyUser("\"" + item.slice(0, 15) + "...\" updated!", true, true);
         }
       },
       error: function(){
-        notifyUser("Failed to update item.", true);
+        notifyUser("Failed to update item.", true, false);
         form[0].children[0].value = initialInputVal;
       }
     });
@@ -175,33 +174,38 @@ function deleteListItem(form){
       if (data){
         var item = form[0].offsetParent.firstElementChild.innerHTML;
         if (item.length < 15){
-          notifyUser("\"" + item + "\" removed!", true);
+          notifyUser("\"" + item + "\" removed!", true, true);
         } else {
-          notifyUser("\"" + item.slice(0, 15) + "...\" removed!", true);
+          notifyUser("\"" + item.slice(0, 15) + "...\" removed!", true, true);
         }
         setTimeout(function(){
           form[0].offsetParent.remove();
         }, 220);
       } else {
-        notifyUser("Failed to remove item.", true);
+        notifyUser("Failed to remove item.", true, false);
         form[0].offsetParent.classList.remove("slide-left");
       }
     },
     error: function(){
-      notifyUser("Failed to remove item.", true);
+      notifyUser("Failed to remove item.", true, false);
       form[0].offsetParent.classList.remove("slide-left");
     }
   });
 }
 
-function notifyUser(message, isComplete){
+function notifyUser(message, isComplete, isSuccessful){
   clearTimeout(timer);
   var notification = $(".notification");
   $(".notification-message")[0].innerHTML = message;
   notification.addClass("notification-slider");
   notification.removeClass("notification-success");
+  notification.removeClass("notification-failure");
   if (isComplete) {
-    notification.addClass("notification-success");
+    if (isSuccessful){
+      notification.addClass("notification-success");
+    } else {
+      notification.addClass("notification-failure");
+    }
     timer = setTimeout(function(){
       notification.removeClass("notification-slider");
     }, 3000);
