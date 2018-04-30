@@ -66,7 +66,7 @@ middlewareObj.checkListOwnership = function(req, res, next){
           next();
         } else {
           req.flash("error", "You do not own that list.");
-          res.redirect("back");
+          res.redirect("/lists");
         }
       }
     });
