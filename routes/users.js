@@ -70,13 +70,6 @@ router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
               res.redirect(404, "/users");
             } else {
               currentUser.friends.push(req.params.id);
-
-              List.find({"author.id": req.user._id}, function(err, foundLists){
-                foundLists.forEach(function(list){
-                  list.permissions.push(req.params.id);
-                  list.save();
-                });
-              });
               // Redirects after the user is saved.
               // The callback fixes an issue where the page would refresh before the user
               // was saved and the updated data would not be reflected on the page.
@@ -92,8 +85,6 @@ router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
         }
       }
   });
-
-
 });
 
 // Remove friend route
@@ -109,13 +100,20 @@ router.post("/removeFriend/:id", middleware.isLoggedIn, function(req, res){
           console.log(err);
           res.redirect("/users");
         } else {
+          List.find({"author.id": req.user._id}, function(err, foundLists){
+            foundLists.forEach(function(list){
+              // Removes all instances of a friend from all of the user's lists' permissions (fixed a bug where a friend was added multiple times)
+              list.permissions = list.permissions.filter(function(friend){
+                return !friend.equals(req.params.id);
+              });
+              list.save();
+            });
+          });
           res.redirect("/users");
         }
       });
     }
   });
-
-
 });
 
 // Escape special characters for regex
