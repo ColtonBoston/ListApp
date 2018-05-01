@@ -27,7 +27,7 @@ $("#btn-edit-item").click(function(event){
 
 $("#btn-new-item").click(function(){
   $("#new-item-input").focus();
-})
+});
 
 var confirmDeleteList = false;
 // Delete list button clicked
@@ -121,9 +121,9 @@ list.on("click", ".list-group-item", function(event){
   }
 });
 
-$("#permissions-toggle").on("click", function(event){
+$(".permissions-header").on("click", function(event){
   $(".list-contents").toggleClass("list-hidden");
-  $(this).toggleClass("glyphicon-menu-up")
+  $("#permissions-toggle").toggleClass("glyphicon-menu-up")
 });
 
 function updateListItem(form){
