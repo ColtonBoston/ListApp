@@ -44,7 +44,7 @@ $("#search-bar").on("keyup", function(event){
 $("#users-list").on("click", ".btn-friend", function(event){
   var url,
       action,
-      newText,
+      actionText,
       clickedBtn = $(this),
       friendId = clickedBtn[0].dataset.userId,
       index;
@@ -52,10 +52,10 @@ $("#users-list").on("click", ".btn-friend", function(event){
   console.log(clickedBtn[0].innerHTML);
   if (clickedBtn[0].innerHTML === "Add Friend"){
     action = "/addFriend/";
-    newText = "Remove Friend";
+    actionText = "Remove Friend";
   } else {
     action = "/removeFriend/";
-    newText = "Add Friend";
+    actionText = "Add Friend";
   }
 
   url = action + friendId;
@@ -67,7 +67,7 @@ $("#users-list").on("click", ".btn-friend", function(event){
     url: url,
     success: function(){
       console.log("Friends list update successful");
-      clickedBtn[0].innerHTML = newText;
+      clickedBtn[0].innerHTML = actionText;
       clickedBtn.toggleClass("btn-primary btn-danger");
 
       if (action === "/addFriend/"){
