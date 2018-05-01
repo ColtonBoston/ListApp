@@ -136,12 +136,17 @@ function updateListItem(form){
   if (item !== initialInputVal && item !== ""){
     // Notify user that the item is being updated (for slower connections)
     notifyUser("Updating...", false);
+
+    // Send request to db to update the item
     $.ajax({
       type: "POST",
       url: url,
       data: {item},
       success: function(){
+        // Update the text in the item display span
         form[0].previousElementSibling.innerHTML = item;
+
+        // Notify the user that the item was updated and shorten the item's text if it is too long
         if (item.length < 15){
           notifyUser("\"" + item + "\" updated!", true, true);
         } else {
@@ -150,6 +155,7 @@ function updateListItem(form){
       },
       error: function(){
         notifyUser("Failed to update item.", true, false);
+        // Reset the input's value
         form[0].children[0].value = initialInputVal;
       }
     });
