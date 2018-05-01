@@ -5,9 +5,10 @@ html {
 body {
   padding-bottom: 100px;
   padding-top: 60px;
-  background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1), rgba(10,10,50,1));
+  background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1));
   background-repeat: no-repeat;
   color: white;
+  font-size: 16px;
 }
 
 ul, input {
@@ -19,16 +20,24 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .navbar {
-  background-color: #101050;
+  background-color: rgb(10,10,125);
   border: none;
+  box-shadow: 0 0 5px 2px rgba(0,0,0,0.5);
+}
+
+.navbar-inverse .navbar-nav > li.active-page > .nav-link {
+  border-bottom-color: #1090FF;
 }
 
 .navbar-inverse .navbar-nav > li > .nav-link, .navbar-inverse .navbar-brand {
   color: white;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  height: 100%;
 }
 
-.navbar-inverse .navbar-nav > li > .nav-link:hover, .navbar-inverse .navbar-brand:hover {
-  background-color: black;
+.navbar-inverse .navbar-nav > li > .nav-link:hover {
+  border-bottom-color: #1090FF;
 }
 
 .center {
@@ -39,8 +48,45 @@ h1, h2, h3, h4, h5, h6, p {
   display: none;
 }
 
-.permissions-list {
+.new-list-permissions {
   text-align: left;
+}
+
+.list-permissions {
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+
+}
+
+.list-contents {
+  transform-origin: top;
+  max-height: 1000px;
+  -webkit-backface-visibility: hidden;
+}
+
+.list-hidden {
+  max-height: 0;
+}
+
+.permissions-header {
+  color: #242424;
+  background-color: #FFF;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 15px;
+  font-size: 1.3em;
+  text-align: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  overflow: hidden;
+}
+
+.permissions-header:hover {
+  cursor: pointer;
+}
+
+.list-permissions li:first-child {
+  border-radius: 0;
 }
 
 .list-actions {
@@ -112,7 +158,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .notification-failure {
-  background-color: #aa0000;
+  background-color: #ff5050;
 }
 
 .edit-item-form {
@@ -152,19 +198,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .slide-left {
-  transform: translateX(-120%);
+  transform: translateX(-150%);
   opacity: 0.8;
-}
-
-@keyframes slideRight {
-  from {
-    opacity: 1;
-    transform: translateX(-120%);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(0);
-  }
 }
 
 .btn-delete-item {
@@ -179,7 +214,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .user-search {
-  transform: translateY(25%);
+  transform: translateY(30%);
   margin-left: 5px;
   width: 400px;
 }
@@ -187,17 +222,19 @@ h1, h2, h3, h4, h5, h6, p {
 .search-results {
   position: absolute;
   width: 100%;
-  background-color: white;
-  border: 1px solid lightgray;
+  border: 1px solid #ddd;
   margin-top: -2px;
   border-top: none;
   z-index: 10;
+  max-height: 400px;
+  overflow: hidden;
   transform-origin: top;
-  transition: transform 250ms;
+  /*transition: max-height 350ms;*/
 }
 
 .hide-search-results {
   transform: scaleY(0);
+  max-height: 0;
 }
 
 #users-list {
@@ -234,7 +271,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover {
-  background-color: #1010cc;
+  background-color: #1080ee;
 }
 
 .btn-edit-item {
@@ -281,6 +318,12 @@ h1, h2, h3, h4, h5, h6, p {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border: 0;
+  font-weight: bold;
+  background-color: #1090FF;
+}
+
+.list-author-icon {
+  color: #1050ff;
 }
 
 .friend-unpermitted {
@@ -288,19 +331,37 @@ h1, h2, h3, h4, h5, h6, p {
   color: #555;
 }
 
-@media screen and (max-height: 600px) {
-  .navbar {
-    position: absolute;
-  }
+.permissions-header .glyphicon {
+  float: right;
+}
+
+.users-search-li,
+.permissions-li {
+  display: table;
+  width: 100%;
+}
+
+.user-text {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 @media (max-width: 991px){
   .user-search {
-    width: 250px;
+    width: 240px;
+  }
+
+  .permissions-header .glyphicon {
+    display: block;
+    float: none;
+    margin-top: 10px;
   }
 }
 
 @media (max-width: 767px){
+  * {
+    transition: none !important;
+  }
   .search-bar {
     display: none;
   }
@@ -322,7 +383,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
 
   .col-sm-12, .col-sm-8, .col-sm-4 {
-    padding: 0;
+    padding: 1%;
   }
 
   .list-group-item:first-child, .list-group-item:last-child, .btn-edit-item, .new-item-input, .new-item-submit, .btn-delete-list, .users-search-bar {
@@ -371,5 +432,12 @@ h1, h2, h3, h4, h5, h6, p {
 
   .login-form-container {
     width: 80%;
+  }
+
+}
+
+@media screen and (max-height: 600px) {
+  .navbar {
+    position: absolute;
   }
 }
