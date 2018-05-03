@@ -67,7 +67,7 @@
         </div>
       </ul>
       <% if (currentUser && currentUserIsListOwner){ %>
-        <form class="delete-list-form js_hidden" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+        <form class="delete-list-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
           <button id="btn-delete-list" class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
         </form>
       <% } %>

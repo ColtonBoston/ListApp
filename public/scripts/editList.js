@@ -22,7 +22,7 @@ $("#btn-edit-item").click(function(event){
       }
     });
     $(".delete-form").toggleClass("js_hidden");
-    $(".delete-list-form").toggleClass("js_hidden");
+    // $(".delete-list-form").toggleClass("js_hidden");
 });
 
 $("#btn-new-item").click(function(){
