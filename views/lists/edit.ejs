@@ -63,7 +63,7 @@
         <% if(currentUser && currentUserIsListOwner){ %>
           <% friends.forEach(function(friend){ %>
             <% console.log(friend) %>
-            <li class="list-group-item friend-unpermitted">
+            <li class="list-group-item unpermitted-friend">
               <span><%= friend.username %></span>
               <form class="" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
                 <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button>

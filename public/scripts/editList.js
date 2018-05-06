@@ -114,6 +114,7 @@ list.on("click", ".btn-delete-item", function(event){
   deleteListItem($(this));
 });
 
+// Toggle completion of list item
 list.on("click", ".list-group-item", function(event){
   if (!isEditable){
     $(this).toggleClass("completed-item");
@@ -121,9 +122,55 @@ list.on("click", ".list-group-item", function(event){
   }
 });
 
+// Toggle visibility of permissions
 $(".permissions-header").on("click", function(event){
   $(".list-contents").toggleClass("list-hidden");
   $("#permissions-toggle").toggleClass("glyphicon-menu-up")
+});
+
+// Add/Remove permission handler
+$(".btn-permission").on("click", function(event){
+  var btn = $(this),
+      form = $(this)[0].parentElement,
+      li = $(this)[0].offsetParent,
+      glyphicon = $(this).find(".glyphicon"),
+      permissionsLength = $(".permissions-length")[0];
+
+  event.preventDefault();
+  notifyUser("Updating permissions...", false);
+  // Add or remove friend from list permissions array in db
+  $.ajax({
+    type: "POST",
+    url: form.action,
+    success: function(data){
+      console.log("Successful change of permission");
+
+      // Add or remove 1 from permissionsLength span
+      if (btn.hasClass("btn-danger")){
+        permissionsLength.innerHTML = parseInt(permissionsLength.innerHTML) - 1;
+        notifyUser("Permission removed!", true, true);
+      } else {
+        permissionsLength.innerHTML = parseInt(permissionsLength.innerHTML) + 1;
+        notifyUser("Permission added!", true, true);
+      }
+
+      // Move li and change classes to show if friend is permitted or not
+      $(".list-contents")[0].insertBefore(li, $(".unpermitted-friend")[0]);
+      li.classList.toggle("unpermitted-friend");
+      btn.toggleClass("btn-primary btn-danger");
+      glyphicon.toggleClass("glyphicon-plus glyphicon-minus");
+
+      // Toggle form action to .../addPermission/:id or .../removePermission/:id
+      var actionSplit = form.action.split("/");
+      actionSplit[5] = actionSplit[5] === "addPermission" ? "removePermission" : "addPermission";
+      var newAction = actionSplit.join("/");
+      form.action = newAction;
+    },
+    error: function(){
+      notifyUser("Failed to update permissions.", true, false);
+    }
+  });
+
 });
 
 function updateListItem(form){
