@@ -91,7 +91,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .list-actions {
   position: sticky;
-  top: 100px;
+  top: 70px;
 }
 
 #new-item-form {
@@ -211,6 +211,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .item-added-by {
   color: gray;
+  padding-left: 4px;
 }
 
 .user-search {
@@ -335,6 +336,10 @@ h1, h2, h3, h4, h5, h6, p {
   float: right;
 }
 
+.glyphicon {
+  position: static;
+}
+
 .users-search-li,
 .permissions-li {
   display: table;
@@ -344,6 +349,11 @@ h1, h2, h3, h4, h5, h6, p {
 .user-text {
   display: table-cell;
   vertical-align: middle;
+}
+
+.list-item-text {
+  border: 2px solid transparent;
+  padding: 2px;
 }
 
 @media (max-width: 991px){
