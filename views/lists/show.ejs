@@ -3,7 +3,18 @@
 <% var currentUserIsListOwner = list.author.id.equals(currentUser._id); %>
 
 <div class="container">
-  <h1><%= list.name %></h1>
+  <% if (currentUser && list.author.id.equals(currentUser._id)){ %>
+    <h1 id="list-name"><%= list.name %></h1>
+    <form id="list-name-form" class="list-name-form js_hidden" action="/lists/<%= list._id %>?_method=PUT" method="post">
+      <div class="form-group">
+        <label class="hidden" for="name">Name</label>
+        <input class="form-control" id="name" type="text" name="name" value="<%= list.name %>">
+      </div>
+      <button type="submit" class="btn btn-default">Save List Name</button>
+    </form>
+  <% } else { %>
+    <h1><%= list.name %></h1>
+  <% } %>
   <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
   <div class="row">
@@ -22,7 +33,7 @@
                   <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
                 </form>
               <% } else {%>
-                <span><%= item.name %></span>
+                <span class="list-item-text-alt"><%= item.name %></span>
               <% } %>
               <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
             </li>
