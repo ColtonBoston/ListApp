@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>List</title>
+<title>ListCollab</title>
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +10,9 @@
 </head>
 <body>
   <nav class="navbar navbar-inverse navbar-expand navbar-fixed-top">
-    <div class="container">
+    <div class="container-fluid">
   		<div class="navbar-header">
-  			<a href="/" class="navbar-brand nav-link">ListApp</a>
+  			<a href="/" class="navbar-brand nav-link">ListCollab</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggle"
          aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -24,7 +24,7 @@
   		<div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="nav navbar-nav">
           <% if (currentUser) { %>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active-page' : '' %>"><a class="nav-link" href="/lists">Home</a></li>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active-page' : '' %>"><a class="nav-link" href="/lists">Lists</a></li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active-page' : '' %>"><a class="nav-link" href="/users">Friends</a></li>
             <% if (typeof page !== 'undefined' && page !== 'users'){ %>
               <li class="nav-item user-search">
