@@ -15,6 +15,8 @@ $("#btn-edit-item").click(function(event){
     isEditable = !isEditable;
     isEditable ? $(this)[0].innerHTML = "<i class='glyphicon glyphicon-ok'></i> Finish Editing" : $(this)[0].innerHTML = "<i class='glyphicon glyphicon-edit'></i> Edit List";
 
+    $("#list-name").toggleClass("js_hidden");
+    $("#list-name-form").toggleClass("js_hidden");
     $(".list-group-item").each(function(i, li){
       if (!$(this)[0].classList.contains("completed-item")) {
         $(this).find(".list-item-text").toggleClass("js_hidden");
