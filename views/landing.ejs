@@ -2,30 +2,89 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>ListShare</title>
+    <title>ListCollab</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/landing.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="col-md-6 col-sm-12">
-        <h1>ListShare</h1>
-        <p class="app-desc">
-          ListShare is for sharing lists online. Grocery lists, to-do lists, whatever you need. Create and update your lists from anywhere with your friends!
-        </p>
-        <a class="btn btn-login btn-lg" href="/login">Login</a>
-        <div class="center buttons-between"><strong>- or -</strong></div>
-        <a class="btn btn-register btn-lg" href="/register">Sign Up (Free)</a>
+    <nav class="navbar navbar-inverse navbar-expand navbar-fixed-top">
+      <div class="container-fluid">
+    		<div class="navbar-header">
+    			<h1><a href="/" class="navbar-brand nav-link">ListCollab</a></h1>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggle"
+           aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+    		</div>
+    		<div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="login-container">
+            <form class="login-form" action="/login" method="post">
+                <input class="form-control login-input" type="text" name="username" placeholder="Username" required autofocus>
+                <input class="form-control login-input" type="password" name="password" placeholder="Password" required>
+                <input class="btn btn-primary btn-login" type="submit" value="Log In">
+                <span class="recovery-container"><a class="recover-pw" href="">Forgot password?</a></span>
+            </form>
+          </div>
+    		</div>
       </div>
-      <div class="col-md-6 col-sm-12">
+    </nav>
+    <div class="container">
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= error %>
+        </div>
+      <% } %>
+      <% if (success && success.length > 0) { %>
+        <div class="alert alert-success" role="alert">
+          <%= success %>
+        </div>
+      <% } %>
+    </div>
+    <div class="container">
+      <div class="col-md-6 col-sm-6">
+          <h2>Share collaborative lists online with ListCollab.</h2>
+          <hr>
+           <!-- Grocery lists, to-do lists, whatever you need. Create and update your lists from anywhere! -->
         <div class="actions-desc">
-          <p class="action-item"><i class="glyphicon glyphicon-user"></i> Add friends</p>
-          <p class="action-item"><i class="glyphicon glyphicon-list-alt"></i> Create lists together</p>
-          <p class="action-item"><i class="glyphicon glyphicon-plus"></i> Add items from anywhere</p>
+          <p class="action-item"><i class="glyphicon glyphicon-user"></i> Find your friends.</p>
+          <p class="action-item"><i class="glyphicon glyphicon-list-alt"></i> Create lists.</p>
+          <p class="action-item"><i class="glyphicon glyphicon-plus"></i> Add items at your convenience.</p>
         </div>
       </div>
+      <div class="col-md-6 col-sm-6 register-container">
+        <h2 class="center">Sign up for free!</h2>
+        <form class="" action="/register" method="post">
+          <div class="form-group username-container">
+            <label for="#register-username" class="">Username</label>
+            <span id="new-username-msg" class="validation-msg valid-msg hidden"> - Validation message</span>
+            <input id="register-username" class="form-control register-input" type="text" name="username" placeholder="" required>
+          </div>
+          <div class="username-rules center">
+            Usernames can be 3-20 characters including letters, numbers, underscores (_), and dashes (-).
+          </div>
+          <div class="form-group">
+            <label for="#register-email" class="">Email</label>
+            <span id="is-valid-email" class="validation-msg hidden"> - Validation message</span>
+            <input id="register-email" class="form-control register-input" type="email" name="email" placeholder="" required>
+          </div>
+          <div class="form-group password-group">
+            <label for="#register-password" class="">Password</label>
+            <span id="" class="validation-msg hidden"> - Validation message</span>
+            <input id="register-password" class="form-control register-input" type="password" name="password" placeholder="" required>
+            <label class="show-password-lbl"><input class="show-password-chk" type="checkbox" name="" value=""> Show password</label>
+          </div>
+          <div class="form-group center">
+            <input class="btn btn-register" type="submit" value="Sign Up">
+          </div>
+        </form>
+      </div>
     </div>
+    <script type="text/javascript" src="/scripts/checkUsers.js"></script>
   </body>
 </html>
