@@ -126,6 +126,14 @@ p, h2, label, .username-rules {
   color: white;
 }
 
+@media (max-width: 860px){
+  .recovery-container {
+    display: block;
+    margin-top: 4px;
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 767px){
   body {
     padding: 60px 0;
@@ -147,5 +155,8 @@ p, h2, label, .username-rules {
     background-color: rgba(255,255,255,0.2);
     border-radius: 5px;
     padding: 1px 20px 20px 20px;
+  }
+  .recovery-container {
+    margin: 10px 0;
   }
 }
