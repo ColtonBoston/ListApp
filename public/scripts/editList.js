@@ -61,8 +61,6 @@ $("#new-item-form").submit(function(event){
     success: function(data){
       // Get the new item's data from the response to create a new li
       var li = $(data).find("#list")[0].lastElementChild;
-      console.log($(data).find("#list"));
-      console.log($(data));
       if (isEditable){
         // Show the forms if the list is in edit mode
         $.each(li.children, function(i, elem){
@@ -126,7 +124,7 @@ list.on("click", ".list-group-item", function(event){
 
 // Toggle visibility of permissions
 $(".permissions-header").on("click", function(event){
-  $(".list-contents").toggleClass("list-hidden");
+  $(".list-permissions").toggleClass("list-hidden");
   $("#permissions-toggle").toggleClass("glyphicon-menu-up")
 });
 
@@ -157,7 +155,7 @@ $(".btn-permission").on("click", function(event){
       }
 
       // Move li and change classes to show if friend is permitted or not
-      $(".list-contents")[0].insertBefore(li, $(".unpermitted-friend")[0]);
+      $(".list-permissions")[0].insertBefore(li, $(".unpermitted-friend")[0]);
       li.classList.toggle("unpermitted-friend");
       btn.toggleClass("btn-primary btn-danger");
       glyphicon.toggleClass("glyphicon-plus glyphicon-minus");
