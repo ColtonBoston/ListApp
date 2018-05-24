@@ -56,10 +56,18 @@ h1, h2, h3, h4, h5, h6, p {
   text-align: left;
 }
 
+.permissions-container {
+  margin-bottom: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+  display: table;
+  width: 100%;
+}
+
 .list-permissions {
   overflow: hidden;
   -webkit-backface-visibility: hidden;
-
+  margin: 0;
 }
 
 .list-contents {
@@ -76,13 +84,9 @@ h1, h2, h3, h4, h5, h6, p {
   color: #242424;
   background-color: #FFF;
   margin: 0;
-  border-bottom: 1px solid #ddd;
   padding: 10px 15px;
   font-size: 1.3em;
   text-align: center;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  overflow: hidden;
 }
 
 .permissions-header:hover {
@@ -387,7 +391,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 @media (max-width: 767px){
   * {
-    transition: none !important;
+    /*transition: none !important;*/
   }
   .search-bar {
     display: none;
@@ -413,7 +417,14 @@ h1, h2, h3, h4, h5, h6, p {
     padding: 1%;
   }
 
-  .list-group-item:first-child, .list-group-item:last-child, .btn-edit-item, .new-item-input, .new-item-submit, .btn-delete-list, .users-search-bar {
+  .list-group-item:first-child,
+  .list-group-item:last-child,
+  .btn-edit-item,
+  .new-item-input,
+  .new-item-submit,
+  .btn-delete-list,
+  .users-search-bar,
+  .permissions-container {
     border-radius: 0;
   }
 
