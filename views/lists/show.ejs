@@ -48,35 +48,36 @@
         <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit"><i class="glyphicon glyphicon-plus"></i></button>
       </form>
       <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-edit"></i> Edit List</a>
-      <h2 class="permissions-header">Permissions (<span class="permissions-length"><%= list.permissions.length + 1 %></span>)<i id="permissions-toggle" class="glyphicon glyphicon-menu-down"></i></h2>
-      <ul class="list-group list-permissions">
-        <div class="list-contents list-hidden">
-          <li class="list-group-item permissions-li"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
-          <% list.permissions.forEach(function(permittedFriend){ %>
-              <li class="list-group-item permissions-li">
-                <% if(currentUser && currentUserIsListOwner){ %>
-                  <span class="user-text"><%= permittedFriend.username %></span>
-                  <form class="pull-right" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
-                    <button type="submit" class="btn btn-sm btn-danger btn-permission"><i class="glyphicon glyphicon-minus"></i></button>
-                  </form>
-                <% } else { %>
-                  <%= permittedFriend.username %>
-                <% } %>
-              </li>
-          <% }) %>
-          <% if(currentUser && currentUserIsListOwner){ %>
-            <% friends.forEach(function(friend){ %>
-              <% console.log(friend) %>
-              <li class="list-group-item permissions-li unpermitted-friend">
-                <span class="user-text"><%= friend.username %></span>
-                <form class="pull-right" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
-                  <button type="submit" class="btn btn-sm btn-primary btn-permission"><i class="glyphicon glyphicon-plus"></i></button>
-                </form>
-              </li>
+      <div class="permissions-container">
+        <h2 class="permissions-header">Permissions (<span class="permissions-length"><%= list.permissions.length + 1 %></span>)<i id="permissions-toggle" class="glyphicon glyphicon-menu-down"></i></h2>
+        <ul class="list-group list-permissions list-hidden">
+            <li class="list-group-item permissions-li"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
+            <% list.permissions.forEach(function(permittedFriend){ %>
+                <li class="list-group-item permissions-li">
+                  <% if(currentUser && currentUserIsListOwner){ %>
+                    <span class="user-text"><%= permittedFriend.username %></span>
+                    <form class="pull-right" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
+                      <button type="submit" class="btn btn-sm btn-danger btn-permission"><i class="glyphicon glyphicon-minus"></i></button>
+                    </form>
+                  <% } else { %>
+                    <%= permittedFriend.username %>
+                  <% } %>
+                </li>
             <% }) %>
-          <% } %>
-        </div>
-      </ul>
+            <% if(currentUser && currentUserIsListOwner){ %>
+              <% friends.forEach(function(friend){ %>
+                <% console.log(friend) %>
+                <li class="list-group-item permissions-li unpermitted-friend">
+                  <span class="user-text"><%= friend.username %></span>
+                  <form class="pull-right" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
+                    <button type="submit" class="btn btn-sm btn-primary btn-permission"><i class="glyphicon glyphicon-plus"></i></button>
+                  </form>
+                </li>
+              <% }) %>
+            <% } %>
+        </ul>
+      </div>
+
       <% if (currentUser && currentUserIsListOwner){ %>
         <form class="delete-list-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
           <button id="btn-delete-list" class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
