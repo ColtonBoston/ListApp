@@ -54,7 +54,6 @@ router.post("/lists", middleware.isLoggedIn, function(req, res){
     id: req.user._id,
     username: req.user.username
   };
-  console.log(req.body.permissions);
   req.body.list.author = author;
   req.body.list.permissions = req.body.permissions;
   //req.body.list.permissions.push(req.user._id);
@@ -179,13 +178,20 @@ router.delete("/lists/:id", middleware.checkListOwnership, function(req, res){
 // List permission routes
 // Add friend to permissions
 router.put("/lists/:id/addPermission/:friend_id", middleware.checkListOwnership, function(req, res){
-  // Find the list
-  List.findByIdAndUpdate(req.params.id, {$push: {"permissions": req.params.friend_id}}, function(err, updatedList){
-    if (err || !updatedList){
+  List.findById(req.params.id, function(err, foundList){
+    if (err || !foundList){
       req.flash("List not found.");
       res.redirect(404, "/lists");
     } else {
-      res.redirect("/lists/" + req.params.id + "/edit");
+      // Adds user to the list's permissions if they are not already permitted and they are a friend of the current user
+      if (foundList.permissions.indexOf(req.params.friend_id) < 0 && req.user.friends.indexOf(req.params.friend_id) > 0){
+        foundList.permissions.push(req.params.friend_id);
+        foundList.save(function(){
+          res.redirect("/lists/" + req.params.id);
+        });
+      } else {
+        res.redirect(404, "/lists/" + req.params.id);
+      }
     }
   });
 });
