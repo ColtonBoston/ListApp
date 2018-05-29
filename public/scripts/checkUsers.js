@@ -8,7 +8,7 @@ usernameInput.on("input", function(event){
 
   resetUsernameField();
   clearTimeout(validationTimer);
-  
+
   if (regexUsername().test(username)){
     if (username.length >= 3 && username.length <= 20){
       validationTimer = setTimeout(function(){
@@ -44,9 +44,16 @@ usernameInput.on("input", function(event){
     showInvalid("Invalid username.");
   }
 });
-function checkUsers(){
 
-}
+// Toggle visibility  of password text
+$(".show-password-chk").click(function(event){
+  var isChecked = $(this)[0].checked;
+  if (isChecked){
+    $("#register-password")[0].type = "text";
+  } else {
+    $("#register-password")[0].type = "password";
+  }
+});
 
 function resetUsernameField(){
   usernameInput.removeClass("valid invalid");
