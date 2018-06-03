@@ -52,7 +52,7 @@ router.get("/lists/new", middleware.isLoggedIn, function(req, res){
 router.post("/lists", middleware.isLoggedIn, function(req, res){
   var author = {
     id: req.user._id,
-    username: req.user.username
+    username: req.user.rawUsername
   };
   req.body.list.author = author;
   req.body.list.permissions = req.body.permissions;
