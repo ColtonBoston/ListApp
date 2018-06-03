@@ -2,8 +2,10 @@ var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 
 var userSchema = new mongoose.Schema({
-  email: {type: String, unique: true, sparse: true, required: true},
   username: String,
+  rawUsername: String,
+  email: {type: String, unique: true, sparse: true, required: true, lowercase: true},
+  rawEmail: String,
   password: String,
   friends: [
     {
@@ -13,6 +15,6 @@ var userSchema = new mongoose.Schema({
   ]
 });
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, {usernameQueryFields: ["email"]});
 
 module.exports = mongoose.model("User", userSchema);
