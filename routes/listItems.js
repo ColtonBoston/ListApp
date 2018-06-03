@@ -18,7 +18,7 @@ router.post("/lists/:id/listItems", middleware.checkListPermissions, function(re
           res.redirect("/lists/" + req.params.id);
         } else {
           item.addedBy.id = req.user._id;
-          item.addedBy.username = req.user.username;
+          item.addedBy.username = req.user.rawUsername;
           item.save();
           foundList.items.push(item._id);
           foundList.save(function(err, savedList){
