@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-var User = require("../models/user");
+var User = require("../models/user"),
+    middleware = require("../middleware");
 
 // Landing Page
 router.get("/", function(req, res){
@@ -20,13 +21,19 @@ router.get("/register", function(req, res){
 
 // Sign up logic
 router.post("/register", function(req, res){
-  console.log(req.body.username);
-  console.log(regexUsername().test(req.body.username));
-  var newUser = new User({username: req.body.username, email: req.body.email});
   if (req.body.username.includes(" ") || !regexUsername().test(req.body.username)){
     req.flash("error", "Invalid username.");
     res.redirect("/");
   } else {
+    var usernameLower = req.body.username.toLowerCase();
+
+    var newUser = new User({
+      username: usernameLower,
+      rawUsername: req.body.username,
+      email: req.body.email,
+      rawEmail: req.body.email
+    });
+
     User.register(newUser, req.body.password, function(err, user){
       if(err){
         req.flash("error", err.message);
@@ -43,10 +50,10 @@ router.post("/register", function(req, res){
 
 // Check if username or email is taken
 router.get("/checkUsers", function(req, res){
-  var username = req.query.username;
-  var re = new RegExp("^" + username + "$", "i");
+  var username = req.query.username.toLowerCase();
+
   if (username.indexOf("@") === -1){
-    User.findOne({"username": re}, function(err, foundUser){
+    User.findOne({"username": username}, function(err, foundUser){
       if (!foundUser || err){
         console.log(err);
         res.send("User not found.");
@@ -74,7 +81,7 @@ router.get("/login", function(req, res){
 });
 
 // Login logic
-router.post("/login", passport.authenticate("local",
+router.post("/login", middleware.usernameToLowercase, passport.authenticate("local",
 {
   successRedirect: "/lists",
   failureRedirect: "/login",
