@@ -102,4 +102,10 @@ middlewareObj.checkListItemOwnership = function(req, res, next){
   }
 }
 
+// Middleware to convert username input to lowercase before attempt to log in
+middlewareObj.usernameToLowercase = function(req, res, next){
+  req.body.username = req.body.username.toLowerCase();
+  next();
+}
+
 module.exports = middlewareObj;
