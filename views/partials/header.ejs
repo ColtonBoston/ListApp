@@ -34,7 +34,7 @@
                 <div class="search-results hide-search-results">
                   <ul id="users-list" class="list-group">
                   </ul>
-                  <button id="btn-hide-results" class="btn btn-default btn-sm btn-hide-results" type="button">Hide Results</button>
+                  <button id="btn-hide-results" class="btn btn-default btn-hide-results" type="button">Hide Results</button>
                 </div>
               </li>
             <% } %>
@@ -45,7 +45,7 @@
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active-page' : '' %>"><a class="nav-link" href="/login">Login</a></li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active-page' : '' %>"><a class="nav-link" href="/register">Sign Up</a></li>
           <% } else { %>
-            <li class="nav-item"><a class="nav-link" href="#"><strong><%= currentUser.username %></strong></a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><strong><%= currentUser.rawUsername %></strong></a></li>
             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
           <% } %>
   			</ul>
