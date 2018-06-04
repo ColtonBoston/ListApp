@@ -82,17 +82,16 @@ p, h2, label, .username-rules {
   border-color: #0f5;
 }
 .invalid {
-  border: 1px solid #ff1050;
+  border: 1px solid #ff4848;
 }
 .invalid:focus {
-  border-color: #ff1050;
+  border-color: #ff4848;
 }
 .valid-msg {
   color: #0f5;
 }
 .invalid-msg {
-  color: #ff8080;
-  color: #ff1050;
+  color: #ff4848;
 }
 .no-display {
   display: none;
@@ -102,6 +101,7 @@ p, h2, label, .username-rules {
 }
 .validation-msg {
   float: right;
+  font-weight: bold;
 }
 .btn-register {
   background-color: #10BB50;
