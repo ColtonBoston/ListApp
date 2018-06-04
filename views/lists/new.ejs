@@ -13,7 +13,6 @@
         <ul class="list-group new-list-permissions">
           <li class="list-group-item"><strong>List Permissions:</strong></li>
         <% friends.forEach(function(friend){ %>
-          <% console.log(friend); %>
           <li class="list-group-item"><label><input type="checkbox" checked name="permissions[]" value="<%= friend._id %>" /> <%= friend.username %> </label></li>
         <% }) %>
       </ul>
