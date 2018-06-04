@@ -2,13 +2,6 @@ var list = $("#list"),
     isEditable = false,
     timer;
 
-$("#btn-add-item").removeClass("hidden");
-
-$("#btn-add-item").click(function(event){
-    event.preventDefault();
-    $("#new-item-input").focus();
-});
-
 // Edit list button clicked
 $("#btn-edit-item").click(function(event){
     event.preventDefault();
@@ -27,11 +20,11 @@ $("#btn-edit-item").click(function(event){
     // $(".delete-list-form").toggleClass("js_hidden");
 });
 
+// Focus new item input on clicking new item button (fixed mobile button)
 $("#btn-new-item").click(function(){
   $("#new-item-input").focus();
 });
 
-var confirmDeleteList = false;
 // Delete list button clicked
 $("#btn-delete-list").click(function(event){
   if (confirm("This list will be deleted permanently. Are you sure?")){
@@ -108,7 +101,7 @@ list.on("submit", ".edit-item-form", function(event){
 //   }
 // });
 
-// Delete list item
+// Delete list item click handler
 list.on("click", ".btn-delete-item", function(event){
   event.preventDefault();
   deleteListItem($(this));
@@ -119,6 +112,25 @@ list.on("click", ".list-group-item", function(event){
   if (!isEditable){
     $(this).toggleClass("completed-item");
     $(this).find(".item-added-by").toggleClass("faded");
+  }
+});
+
+// Show an item's options (edit/delete) when its options button is clicked
+list.on("click", ".btn-item-options", function(event){
+  var liNum = $(this)[0].id.split("-")[3],
+      allOptionsLists = $(".item-options-list"),
+      optionsList = $("#item-options-list-" + liNum),
+      areOptionsHidden = optionsList.hasClass("hidden");
+
+  // Prevent bubbling
+  event.stopPropagation();
+
+  // Hide options for all list item options
+  allOptionsLists.addClass("hidden");
+
+  // Shows the item's list options if they weren't already shown
+  if (areOptionsHidden){
+    optionsList.removeClass("hidden");
   }
 });
 
@@ -194,10 +206,10 @@ function updateListItem(form){
         form[0].previousElementSibling.innerHTML = item;
 
         // Notify the user that the item was updated and shorten the item's text if it is too long
-        if (item.length < 15){
+        if (item.length < 25){
           notifyUser("\"" + item + "\" updated!", true, true);
         } else {
-          notifyUser("\"" + item.slice(0, 15) + "...\" updated!", true, true);
+          notifyUser("\"" + item.slice(0, 22) + "...\" updated!", true, true);
         }
       },
       error: function(){
@@ -211,37 +223,41 @@ function updateListItem(form){
   }
 }
 
-function deleteListItem(form){
+function deleteListItem(btn){
+  var url = btn[0].parentElement.action,
+      parentId = btn[0].dataset.parentId,
+      listOptions = $("#item-options-list-" + parentId),
+      parentLi = $("#list-item-" + parentId);
 
-  var url = form[0].parentElement.action;
+  listOptions.addClass("hidden");
 
   // Notify user that the item is being removed (for slower connections)
-  notifyUser("Removing...", false);
-  form[0].offsetParent.classList.add("slide-left");
+  notifyUser("Removing item...", false);
 
-  // Deletes the list item from the db and removes the corresponding li from the ul
+  //Deletes the list item from the db and removes the corresponding li from the ul
   $.ajax({
     type: "POST",
     url: url,
     success: function(data){
       if (data){
-        var item = form[0].offsetParent.firstElementChild.innerHTML;
-        if (item.length < 15){
-          notifyUser("\"" + item + "\" removed!", true, true);
+        var itemText = parentLi[0].firstElementChild.innerHTML;
+        if (itemText.length < 25){
+          notifyUser("\"" + itemText + "\" removed!", true, true);
         } else {
-          notifyUser("\"" + item.slice(0, 15) + "...\" removed!", true, true);
+          notifyUser("\"" + itemText.slice(0, 22) + "...\" removed!", true, true);
         }
+        parentLi.addClass("slide-left");
         setTimeout(function(){
-          form[0].offsetParent.remove();
+          parentLi.remove();
         }, 220);
       } else {
         notifyUser("Failed to remove item.", true, false);
-        form[0].offsetParent.classList.remove("slide-left");
+        parentLi.removeClass("slide-left");
       }
     },
     error: function(){
       notifyUser("Failed to remove item.", true, false);
-      form[0].offsetParent.classList.remove("slide-left");
+      parentLi.removeClass("slide-left");
     }
   });
 }
