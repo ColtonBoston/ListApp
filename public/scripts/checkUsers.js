@@ -1,32 +1,37 @@
 var usernameInput = $("#register-username"),
     newUsernameMsg = $("#new-username-msg"),
-    validationAjax,
-    validationTimer;
+    invalidEmailMsg = $("#invalid-email-msg"),
+    emailInput = $("#register-email"),
+    usernameObj = {},
+    emailObj = {};
 
 usernameInput.on("input", function(event){
   var username = $(this)[0].value;
 
   resetUsernameField();
-  clearTimeout(validationTimer);
+  clearTimeout(usernameObj.validationTimer);
 
   if (regexUsername().test(username)){
     if (username.length >= 3 && username.length <= 20){
-      validationTimer = setTimeout(function(){
-        validationAjax = $.ajax({
+      usernameObj.validationTimer = setTimeout(function(){
+        // Searches the db to check if a username is taken
+        usernameObj.validationAjax = $.ajax({
           type: "GET",
           url: "/checkUsers",
-          data: {username},
+          data: {
+            username: username
+          },
           beforeSend: function(){
             // Cancel the previous ajax request if one exists when a new request is sent
-            if (validationAjax && validationAjax != "ToCancelPrevReq" && validationAjax.readyState < 4){
-              validationAjax.abort();
+            if (usernameObj.validationAjax && usernameObj.validationAjax != "ToCancelPrevReq" && usernameObj.validationAjax.readyState < 4){
+              usernameObj.validationAjax.abort();
             }
           },
           success: function(res){
             if (res === "User not found."){
               showValid("Username available!");
             } else {
-              showInvalid("Username already taken.");
+              showInvalid("Username taken.");
             }
           },
           error: function(res){
@@ -42,6 +47,39 @@ usernameInput.on("input", function(event){
     }
   } else if (username.length > 0){
     showInvalid("Invalid username.");
+  }
+});
+
+emailInput.on("blur", function(event){
+  var email = $(this)[0].value;
+
+  invalidEmailMsg.addClass("hidden");
+  clearTimeout(emailObj.validationTimer);
+
+  if (regexEmail().test(email)){
+    emailObj.validationTimer = setTimeout(function(){
+      // Searches the db to check if the email address already belongs to an account.
+      emailObj.validationAjax = $.ajax({
+        type: "GET",
+        url: "/checkUsers",
+        data: {
+          email: email
+        },
+        beforeSend: function(){
+          // Cancel the previous ajax request if one exists when a new request is sent
+          if (emailObj.validationAjax && emailObj.validationAjax != "ToCancelPrevReq" && emailObj.validationAjax.readyState < 4){
+            emailObj.validationAjax.abort();
+          }
+        },
+        success: function(res){
+          if (res === "That user exists."){
+            invalidEmailMsg.removeClass("hidden");
+          }
+        },
+        error: function(res){
+        }
+      });
+    }, 500);
   }
 });
 
@@ -76,6 +114,12 @@ function showInvalid(message){
   usernameInput.removeClass("valid");
 }
 
+// Regex to test if a username only has valid characters
 function regexUsername() {
   return /^[\w\-]+$/;
+}
+
+// Regex to test if an email has at least 1 ampersand and 1 period
+function regexEmail() {
+  return /(?=.*@)(?=.*\.).+/;
 }
