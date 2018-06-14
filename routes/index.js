@@ -50,31 +50,35 @@ router.post("/register", function(req, res){
 
 // Check if username or email is taken
 router.get("/checkUsers", function(req, res){
-  var username = req.query.username.toLowerCase();
 
-  if (username.indexOf("@") === -1){
+  if (req.query.username){
+    var username = req.query.username.toLowerCase();
+
+    // Searches the db for a user with the given username
     User.findOne({"username": username}, function(err, foundUser){
       if (!foundUser || err){
-        console.log(err);
         res.send("User not found.");
       } else {
-        console.log(foundUser);
         res.send("That user exists");
       }
     });
+  } else if (req.query.email){
+    var email = req.query.email.toLowerCase();
+
+    // Searches the db for a user with the given email
+    User.findOne({"email": email}, function(err, foundUser){
+      if (!foundUser || err){
+        res.send("User not found.");
+      } else {
+        res.send("That user exists.");
+      }
+    });
   } else {
-    res.send("email");
+    res.status(404).send("Something was wrong.");
   }
-  // User.find({$or: [{"username": req.body.username}, {"email": req.body.email}]}, function(err, foundUser){
-  //   if (err){
-  //     console.log(err);
-  //   } else {
-  //     console.log(foundUser);
-  //   }
-  // });
 });
 
-// Login Routes //
+// LOGIN ROUTES //
 // Open login form
 router.get("/login", function(req, res){
   res.render("login", {page: "login"});
@@ -95,6 +99,7 @@ router.get("/logout", function(req, res){
   req.flash("success", "You have successfully been logged out.");
   res.redirect("/");
 });
+// END OF LOGIN ROUTES
 
 // Regex allowing 3-20 characters from a-z, A-Z, 0-9, _, and -
 function regexUsername() {
