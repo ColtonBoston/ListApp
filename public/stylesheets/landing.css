@@ -3,7 +3,7 @@ html {
 }
 body {
   background-color: #203050;
-  color: #eee;
+  color: #fff;
   background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1));
   background-size: cover;
   background-repeat: no-repeat;
@@ -76,22 +76,22 @@ p, h2, label, .username-rules {
   margin-top: 5px;
 }
 .valid {
-  border: 1px solid #0f5;
+  border: 1px solid #10BB50;
 }
 .valid:focus {
-  border-color: #0f5;
+  border-color: #10BB50;
 }
 .invalid {
-  border: 1px solid #ff4848;
+  border: 1px solid #ee0033;
 }
 .invalid:focus {
-  border-color: #ff4848;
+  border-color: #ee0033;
 }
 .valid-msg {
-  color: #0f5;
+  background-color: #10BB50;
 }
 .invalid-msg {
-  color: #ff4848;
+  background-color: #ee0033;
 }
 .no-display {
   display: none;
@@ -102,6 +102,8 @@ p, h2, label, .username-rules {
 .validation-msg {
   float: right;
   font-weight: bold;
+  padding: 0 12px;
+  border-radius: 30px;
 }
 .btn-register {
   background-color: #10BB50;
@@ -124,6 +126,11 @@ p, h2, label, .username-rules {
 }
 .recover-pw:hover {
   color: white;
+}
+.invalid-email-msg {
+  margin-bottom: 5px;
+  padding: 6px 12px;
+  background-color: #ee0033;
 }
 
 @media (max-width: 860px){

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>ListCollab</title>
+    <title>ListSharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/landing.css">
@@ -13,7 +13,7 @@
     <nav class="navbar navbar-inverse navbar-expand navbar-fixed-top">
       <div class="container-fluid">
     		<div class="navbar-header">
-    			<h1><a href="/" class="navbar-brand nav-link">ListCollab</a></h1>
+    			<h1><a href="/" class="navbar-brand nav-link">ListSharing</a></h1>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggle"
            aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
@@ -48,7 +48,7 @@
     </div>
     <div class="container">
       <div class="col-md-6 col-sm-6">
-          <h2>Share collaborative lists online with ListCollab.</h2>
+          <h2>Share collaborative lists online with ListSharing.</h2>
           <hr>
            <!-- Grocery lists, to-do lists, whatever you need. Create and update your lists from anywhere! -->
         <div class="actions-desc">
@@ -70,8 +70,11 @@
           </div>
           <div class="form-group">
             <label for="#register-email" class="">Email</label>
-            <span id="is-valid-email" class="validation-msg hidden"> - Validation message</span>
+            <div id="invalid-email-msg" class="hidden center invalid-email-msg">
+              An account with that email already exists. Forgot your password? Recover it <a class="recover-pw" href><strong>here.</strong></a>
+            </div>
             <input id="register-email" class="form-control register-input" type="email" name="email" placeholder="" required>
+
           </div>
           <div class="form-group password-group">
             <label for="#register-password" class="">Password</label>
