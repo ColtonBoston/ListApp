@@ -18,45 +18,79 @@
   <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
   <div class="row">
-    <div class="col-sm-8">
-      <ul id="list" class="list-group">
+    <div class="col-lg-9 col-sm-8 list-container">
+      <ul id="list" class="primary-list list-group">
         <% if (list.items && list.items.length > 0){ %>
           <% var i = 0; %>
           <% list.items.forEach(function(item){ %>
-            <li id="list-item-<%= i %>" class="list-group-item" data-added-by="<%= item.addedBy._id %>">
+            <li id="list-item-<%= item._id %>" class="primary-list-item list-group-item">
               <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
-                <div class="list-item-text"><%= item.name %></div>
-                <form class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
-                  <input id="list-item-input-<%= i %>" class="list-item-input" name="item" type="text" value="<%= item.name %>">
+                <div id="list-item-text-<%= item._id %>" class="list-item-text"><%= item.name %></div>
+                <form id="edit-item-form-<%= item._id %>" class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
+                  <input class="list-item-input" name="item" type="text" value="<%= item.name %>"></input>
+                  <button type="submit" class="btn btn-primary btn-update-item">Save</button>
+                  <button type="button" class="btn btn-default btn-cancel-edit">Cancel</button>
                 </form>
-                <form class="delete-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
-                  <button class="btn btn-danger btn-delete-item" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
-                </form>
+                <button class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
+                <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
+                <div class="item-options-container">
+                  <button id="btn-item-options-<%= item._id %>" class="btn btn-item-options"><i class="glyphicon glyphicon-option-vertical"></i></button>
+                  <ul id="item-options-<%= item._id %>" class="item-options hidden">
+                    <li class="edit-item">
+                      <button class="btn btn-edit-item" data-parent-id="<%= item._id %>">Edit item</button>
+                    </li>
+                    <li>
+                      <form class="delete-form" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
+                        <button class="btn btn-danger btn-delete-item" type="submit" data-parent-id="<%= item._id %>">Delete item</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
               <% } else {%>
+                <button class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
                 <span class="list-item-text-alt"><%= item.name %></span>
+                <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
               <% } %>
-              <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
             </li>
             <% i++ %>
           <% }) %>
         <% } %>
       </ul>
+      <a href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item js_hidden"><i class="glyphicon glyphicon-edit"></i> Edit List</a>
+      <div class="list-actions">
+        <form id="new-item-form" class="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
+          <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="New item...">
+          <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit">Add</button>
+        </form>
+      </div>
     </div>
-    <div class="col-sm-4 list-actions">
-      <form id="new-item-form" action="/lists/<%= list._id %>/listItems" method="POST">
-        <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="New item...">
-        <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit"><i class="glyphicon glyphicon-plus"></i></button>
-      </form>
-      <a id="btn-edit-item" href="/lists/<%= list._id %>/edit" class="btn btn-warning btn-edit-item"><i class="glyphicon glyphicon-edit"></i> Edit List</a>
+    <div class="col-lg-3 col-sm-4">
+      <div class="list-options-container">
+        <!-- <button class="btn btn-list-options" title="List Options"><i class="glyphicon glyphicon-cog"></i> List Options</button> -->
+        <h2 class="list-options-header"><i class="glyphicon glyphicon-cog"></i> List Options</h2>
+        <ul class="list-options">
+          <li><button class="btn btn-default btn-list-option"><i class="glyphicon glyphicon-copy"></i> Copy list to clipboard</button></li>
+          <li><button class="btn btn-default btn-list-option"><i class="glyphicon glyphicon-trash"></i> Remove completed items</button></li>
+          <li><button class="btn btn-default btn-list-option"><i class="glyphicon glyphicon-list-alt"></i> Create a copy of this list</button></li>
+          <% if (currentUser && currentUserIsListOwner){ %>
+            <form class="delete-list-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
+              <button id="btn-delete-list" class="btn btn-danger btn-list-option bottom-list-option"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
+            </form>
+          <% } %>
+        </ul>
+      </div>
       <div class="permissions-container">
-        <h2 class="permissions-header">Permissions (<span class="permissions-length"><%= list.permissions.length + 1 %></span>)<i id="permissions-toggle" class="glyphicon glyphicon-menu-down"></i></h2>
-        <ul class="list-group list-permissions list-hidden">
+        <h2 class="permissions-header">
+          Permissions (<span class="permissions-length"><%= list.permissions.length + 1 %></span>)
+          <button id="permissions-toggle" class="permissions-toggle"><i class="glyphicon glyphicon-menu-down"></i></button>
+        </h2>
+        <ul class="list-group list-permissions">
             <li class="list-group-item permissions-li"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
             <% list.permissions.forEach(function(permittedFriend){ %>
                 <li class="list-group-item permissions-li">
                   <% if(currentUser && currentUserIsListOwner){ %>
                     <span class="user-text"><%= permittedFriend.username %></span>
-                    <form class="pull-right" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
+                    <form class="form-change-permission" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
                       <button type="submit" class="btn btn-sm btn-danger btn-permission"><i class="glyphicon glyphicon-minus"></i></button>
                     </form>
                   <% } else { %>
@@ -66,10 +100,9 @@
             <% }) %>
             <% if(currentUser && currentUserIsListOwner){ %>
               <% friends.forEach(function(friend){ %>
-                <% console.log(friend) %>
                 <li class="list-group-item permissions-li unpermitted-friend">
                   <span class="user-text"><%= friend.username %></span>
-                  <form class="pull-right" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
+                  <form class="form-change-permission" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
                     <button type="submit" class="btn btn-sm btn-primary btn-permission"><i class="glyphicon glyphicon-plus"></i></button>
                   </form>
                 </li>
@@ -77,19 +110,12 @@
             <% } %>
         </ul>
       </div>
-
-      <% if (currentUser && currentUserIsListOwner){ %>
-        <form class="delete-list-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
-          <button id="btn-delete-list" class="btn btn-danger btn-delete-list"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
-        </form>
-      <% } %>
     </div>
   </div>
 </div>
 <div class="notification">
   <span class="notification-message"></span>
 </div>
-<a id="btn-new-item" href="#new-item-input" class="btn btn-primary btn-new-item"><i class="glyphicon glyphicon-plus"></i></a>
-<script type="text/javascript">var currentList = <%- JSON.stringify(list) %>;</script>
+<a id="btn-new-item" href="#new-item-input" class="btn btn-new-item"><i class="glyphicon glyphicon-plus"></i></a>
 <script type="text/javascript" src="/scripts/editList.js"></script>
 <% include ../partials/footer %>
