@@ -40,6 +40,7 @@ router.post("/register", function(req, res){
         req.flash("error", err.message);
         res.redirect("/");
       } else {
+        req.body.username = req.body.username.toLowerCase();
         passport.authenticate("local")(req, res, function(){
           req.flash("success", "Welcome, " + req.body.username + "!");
           res.redirect("/lists");
