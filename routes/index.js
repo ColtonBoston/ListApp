@@ -40,17 +40,10 @@ router.post("/register", function(req, res){
         req.flash("error", err.message);
         res.redirect("/");
       } else {
-        console.log(user);
-        // passport.authenticate("local")(req, res, function(){
-        //   req.flash("success", "Welcome, " + req.body.username + "!");
-        //   res.redirect("/lists");
-        // });
-        passport.authenticate("local",
-        {
-          successRedirect: "/lists",
-          failureRedirect: "/",
-          failureFlash: true
-        })(req, res, function(){});
+        passport.authenticate("local")(req, res, function(){
+          req.flash("success", "Welcome, " + req.body.username + "!");
+          res.redirect("/lists");
+        });
       }
     });
   }
