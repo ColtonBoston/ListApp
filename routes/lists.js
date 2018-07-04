@@ -184,7 +184,7 @@ router.put("/lists/:id/addPermission/:friend_id", middleware.checkListOwnership,
       res.redirect(404, "/lists");
     } else {
       // Adds user to the list's permissions if they are not already permitted and they are a friend of the current user
-      if (foundList.permissions.indexOf(req.params.friend_id) < 0 && req.user.friends.indexOf(req.params.friend_id) > 0){
+      if (foundList.permissions.indexOf(req.params.friend_id) < 0 && req.user.friends.indexOf(req.params.friend_id) >= 0){
         foundList.permissions.push(req.params.friend_id);
         foundList.save(function(){
           res.redirect("/lists/" + req.params.id);
