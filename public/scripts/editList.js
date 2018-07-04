@@ -1,23 +1,51 @@
-var list = $("#list"),
-    isEditable = false,
-    timer;
+var list = $("#list"),  // Main list div
+    notificationTimer,
+    listActions = $(".list-actions"),
+    initialInputVal;    // Initial value for list item input (for editing/updating)
+
+if (window.innerWidth <= 767){
+  $(".btn-new-item").click(function(){
+    $(this).addClass("slide-right");
+  });
+
+  // Hides the button that focuses the new item input if the input is already visible
+  setInterval(function(){
+    var pageTop = window.pageYOffset;
+    var pageBottom = window.pageYOffset + window.innerHeight;
+    var elemTop = listActions[0].getBoundingClientRect().top,
+        elemHeight = listActions[0].clientHeight;
+    if (elemTop < window.innerHeight && elemTop + elemHeight > 0){
+      $(".btn-new-item").addClass("slide-right");
+    } else {
+      $(".btn-new-item").removeClass("slide-right");
+    }
+    console.log("hi");
+  }, 350);
+}
 
 // Edit list button clicked
-$("#btn-edit-item").click(function(event){
+list.on("click", ".btn-edit-item", function(event){
     event.preventDefault();
-    isEditable = !isEditable;
-    isEditable ? $(this)[0].innerHTML = "<i class='glyphicon glyphicon-ok'></i> Finish Editing" : $(this)[0].innerHTML = "<i class='glyphicon glyphicon-edit'></i> Edit List";
 
-    $("#list-name").toggleClass("js_hidden");
-    $("#list-name-form").toggleClass("js_hidden");
-    $(".list-group-item").each(function(i, li){
-      if (!$(this)[0].classList.contains("completed-item")) {
-        $(this).find(".list-item-text").toggleClass("js_hidden");
-        $(this).find(".edit-item-form").toggleClass("js_hidden");
-      }
-    });
-    $(".delete-form").toggleClass("js_hidden");
-    // $(".delete-list-form").toggleClass("js_hidden");
+    var itemId = $(this)[0].dataset.parentId,
+        itemText = $("#list-item-text-" + itemId),
+        editForm = $("#edit-item-form-" + itemId),
+        optionsList = $("#item-options-" + itemId);
+
+    // Set value of initial input value to prevent updating an item with the same value
+    initialInputVal = editForm[0].firstElementChild.value;
+
+    itemText.toggleClass("js_hidden");
+    editForm.toggleClass("js_hidden");
+    optionsList.addClass("hidden");
+});
+
+list.on("click", ".btn-cancel-edit", function(event){
+  var parentForm = $(this)[0].parentElement,
+      itemId = parentForm.id.split("-")[3];
+
+      parentForm.classList.add("js_hidden");
+      $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
 });
 
 // Focus new item input on clicking new item button (fixed mobile button)
@@ -54,14 +82,6 @@ $("#new-item-form").submit(function(event){
     success: function(data){
       // Get the new item's data from the response to create a new li
       var li = $(data).find("#list")[0].lastElementChild;
-      if (isEditable){
-        // Show the forms if the list is in edit mode
-        $.each(li.children, function(i, elem){
-          elem.classList.remove("js_hidden");
-        });
-        // Hide the item text since the input is visible
-        li.firstElementChild.classList.add("js_hidden");
-      }
       list.append(li);
       input.value = "";
       if (item.name.length < 15){
@@ -74,11 +94,9 @@ $("#new-item-form").submit(function(event){
       notifyUser("Failed to add item.", true, false);
     }
   });
-
   document.activeElement.blur();
 });
 
-var initialInputVal;
 list.on("focus", ".list-item-input", function(event){
   initialInputVal = $(this)[0].value;
 });
@@ -87,19 +105,14 @@ var hasItemUpdated = false;
 // Update list item on submitting the form
 list.on("submit", ".edit-item-form", function(event){
   event.preventDefault();
+
+  var itemId = $(this)[0].id.split("-")[3];
   updateListItem($(this));
   hasItemUpdated = true;
   document.activeElement.blur();
+  $(this).addClass("js_hidden");
+  $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
 });
-
-// Update list item on the form losing focus
-// list.on("blur", ".edit-item-form", function(event){
-//   if (!hasItemUpdated){
-//     updateListItem($(this));
-//   } else {
-//     hasItemUpdated = false;
-//   }
-// });
 
 // Delete list item click handler
 list.on("click", ".btn-delete-item", function(event){
@@ -108,36 +121,30 @@ list.on("click", ".btn-delete-item", function(event){
 });
 
 // Toggle completion of list item
-list.on("click", ".list-group-item", function(event){
-  if (!isEditable){
-    $(this).toggleClass("completed-item");
-    $(this).find(".item-added-by").toggleClass("faded");
-  }
+list.on("click", ".btn-complete-item", function(event){
+  $(this)[0].parentElement.classList.toggle("completed-item");
 });
 
 // Show an item's options (edit/delete) when its options button is clicked
 list.on("click", ".btn-item-options", function(event){
-  var liNum = $(this)[0].id.split("-")[3],
-      allOptionsLists = $(".item-options-list"),
-      optionsList = $("#item-options-list-" + liNum),
+  var itemId = $(this)[0].id.split("-")[3],
+      allOptionsLists = $(".item-options"),
+      optionsList = $("#item-options-" + itemId),
       areOptionsHidden = optionsList.hasClass("hidden");
-
-  // Prevent bubbling
-  event.stopPropagation();
 
   // Hide options for all list item options
   allOptionsLists.addClass("hidden");
 
-  // Shows the item's list options if they weren't already shown
+  // Shows the item's options if they weren't already shown
   if (areOptionsHidden){
     optionsList.removeClass("hidden");
   }
 });
 
 // Toggle visibility of permissions
-$(".permissions-header").on("click", function(event){
-  $(".list-permissions").toggleClass("list-hidden");
-  $("#permissions-toggle").toggleClass("glyphicon-menu-up")
+$(".permissions-toggle").on("click", function(event){
+  $(".list-permissions").toggleClass("hidden");
+  $(this)[0].firstElementChild.classList.toggle("glyphicon-menu-up")
 });
 
 // Add/Remove permission handler
@@ -150,13 +157,12 @@ $(".btn-permission").on("click", function(event){
 
   event.preventDefault();
   notifyUser("Updating permissions...", false);
+
   // Add or remove friend from list permissions array in db
   $.ajax({
     type: "POST",
     url: form.action,
     success: function(data){
-      console.log("Successful change of permission");
-
       // Add or remove 1 from permissionsLength span
       if (btn.hasClass("btn-danger")){
         permissionsLength.innerHTML = parseInt(permissionsLength.innerHTML) - 1;
@@ -182,7 +188,6 @@ $(".btn-permission").on("click", function(event){
       notifyUser("Failed to update permissions.", true, false);
     }
   });
-
 });
 
 function updateListItem(form){
@@ -203,7 +208,7 @@ function updateListItem(form){
       data: {item},
       success: function(){
         // Update the text in the item display span
-        form[0].previousElementSibling.innerHTML = item;
+        form[0].previousElementSibling.innerHTML = escapeHTML(item);
 
         // Notify the user that the item was updated and shorten the item's text if it is too long
         if (item.length < 25){
@@ -226,7 +231,7 @@ function updateListItem(form){
 function deleteListItem(btn){
   var url = btn[0].parentElement.action,
       parentId = btn[0].dataset.parentId,
-      listOptions = $("#item-options-list-" + parentId),
+      listOptions = $("#item-options-" + parentId),
       parentLi = $("#list-item-" + parentId);
 
   listOptions.addClass("hidden");
@@ -241,6 +246,7 @@ function deleteListItem(btn){
     success: function(data){
       if (data){
         var itemText = parentLi[0].firstElementChild.innerHTML;
+        itemText = unescapeHTML(itemText);
         if (itemText.length < 25){
           notifyUser("\"" + itemText + "\" removed!", true, true);
         } else {
@@ -263,9 +269,9 @@ function deleteListItem(btn){
 }
 
 function notifyUser(message, isComplete, isSuccessful){
-  clearTimeout(timer);
+  clearTimeout(notificationTimer);
   var notification = $(".notification");
-  $(".notification-message")[0].innerHTML = message;
+  $(".notification-message")[0].innerHTML = escapeHTML(message);
   notification.addClass("notification-slider");
   notification.removeClass("notification-success");
   notification.removeClass("notification-failure");
@@ -275,8 +281,17 @@ function notifyUser(message, isComplete, isSuccessful){
     } else {
       notification.addClass("notification-failure");
     }
-    timer = setTimeout(function(){
+    notificationTimer = setTimeout(function(){
       notification.removeClass("notification-slider");
-    }, 3000);
+    }, 2700);
   }
+}
+
+// Change strings to display html as plain text
+function escapeHTML(str){
+  return str.replace(/</g, "&lt").replace(/>/g, "&gt");
+}
+
+function unescapeHTML(str){
+  return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 }
