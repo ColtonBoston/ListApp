@@ -56,7 +56,7 @@ p, h2, label, .username-rules {
 .btn-login {
   background-color: #1090FF;
   color: #eee;
-  vertical-align: baseline;
+  vertical-align: top;
   font-weight: bold;
 }
 .btn-login:hover {
