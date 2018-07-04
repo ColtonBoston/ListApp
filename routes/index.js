@@ -25,12 +25,13 @@ router.post("/register", function(req, res){
     req.flash("error", "Invalid username.");
     res.redirect("/");
   } else {
-    var usernameLower = req.body.username.toLowerCase();
+    var usernameLower = req.body.username.toLowerCase(),
+        emailLower = req.body.email.toLowerCase();
 
     var newUser = new User({
       username: usernameLower,
       rawUsername: req.body.username,
-      email: req.body.email,
+      email: emailLower,
       rawEmail: req.body.email
     });
 
@@ -39,10 +40,17 @@ router.post("/register", function(req, res){
         req.flash("error", err.message);
         res.redirect("/");
       } else {
-        passport.authenticate("local")(req, res, function(){
-          req.flash("success", "Welcome, " + req.body.username + "!");
-          res.redirect("/lists");
-        });
+        console.log(user);
+        // passport.authenticate("local")(req, res, function(){
+        //   req.flash("success", "Welcome, " + req.body.username + "!");
+        //   res.redirect("/lists");
+        // });
+        passport.authenticate("local",
+        {
+          successRedirect: "/lists",
+          failureRedirect: "/",
+          failureFlash: true
+        })(req, res, function(){});
       }
     });
   }
