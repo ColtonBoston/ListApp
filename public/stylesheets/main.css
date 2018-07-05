@@ -246,8 +246,16 @@ h1, h2, h3, h4, h5, h6, p {
   border-top: 0;
 }
 
+.primary-list {
+  margin-bottom: 0;
+}
+
 .primary-list-item {
-  padding-left: 45px
+  padding-left: 45px;
+}
+
+.primary-list-item:last-of-type {
+  margin-bottom: 20px;
 }
 
 .form-rm-friend {
