@@ -10,13 +10,11 @@ $("#search-bar").on("keyup", function(event){
       url: "/users/searchjson/" + search,
       dataType: "json",
       success: function(users){
-        console.log(currentUser);
         if (users.length > 0){
           // Reset users search list to empty
           usersList.html("");
           users.forEach(function(user){
             var index = currentUser.friends.indexOf(user._id);
-            console.log(currentUser.friends.indexOf(user._id) > -1);
             // If currentUser has this user as a friend, show remove friend button
             if (currentUser && currentUser.friends.indexOf(user._id) > -1){
               usersList.append("<li class='list-group-item users-search-li'><span class='user-text'>" + user.username + "</span><button class='btn-friend btn btn-danger btn-sm pull-right' type='submit' data-user-id='" + user._id + "'>Remove Friend</button></li>");
@@ -49,7 +47,6 @@ $("#users-list").on("click", ".btn-friend", function(event){
       friendId = clickedBtn[0].dataset.userId,
       index;
 
-  console.log(clickedBtn[0].innerHTML);
   if (clickedBtn[0].innerHTML === "Add Friend"){
     action = "/addFriend/";
     actionText = "Remove Friend";
@@ -66,7 +63,6 @@ $("#users-list").on("click", ".btn-friend", function(event){
     type: "post",
     url: url,
     success: function(){
-      console.log("Friends list update successful");
       clickedBtn[0].innerHTML = actionText;
       clickedBtn.toggleClass("btn-primary btn-danger");
 
@@ -79,8 +75,6 @@ $("#users-list").on("click", ".btn-friend", function(event){
       }
     }
   });
-
-  $("#search-bar").focus();
 });
 
 $("#btn-hide-results").click(function(){
