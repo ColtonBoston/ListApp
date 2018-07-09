@@ -66,7 +66,7 @@ router.post("/lists", middleware.isLoggedIn, function(req, res){
   });
 });
 
-// Show list (updated to populate items.addedBy field with usernames)
+// Show list
 router.get("/lists/:id", middleware.canUserEdit, function(req, res){
   List.findById(req.params.id)
   .populate("items")
@@ -85,14 +85,29 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
           req.flash("error", "User not found.");
           res.redirect(404, "/lists");
         } else {
-          // Gets the current user's friends that have permission to contribute to this list
           var friends = foundUser.friends;
+          
+          // Removes permitted friends from the friends array since they are already in the permissions array
           foundList.permissions.forEach(function(permittedFriend){
             friends.forEach(function(friend, i){
               if (permittedFriend._id.equals(friend._id)){
                 friends.splice(i, 1);
               }
             });
+          });
+
+          // Sorts the user's friends alphabetically
+          friends = foundUser.friends.sort(function(a, b){
+            var friendA = a.username.toUpperCase();
+            var friendB = b.username.toUpperCase();
+            return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+          });
+
+          // Sorts the list's permissions alphabetically
+          foundList.permissions.sort(function(a, b){
+            var friendA = a.username.toUpperCase();
+            var friendB = b.username.toUpperCase();
+            return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
           });
           res.render("lists/show", {list: foundList, friends: friends, page: "show"});
         }
@@ -120,7 +135,7 @@ router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
           req.flash("error", "User not found.");
           res.redirect(404, "/lists");
         } else {
-          // Gets the current user's friends that have permission to contribute to this list
+          // Removes permitted friends from the friends array since they are already in the permissions array
           var friends = foundUser.friends;
           foundList.permissions.forEach(function(permittedFriend){
             friends.forEach(function(friend, i){
@@ -129,6 +144,21 @@ router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
               }
             });
           });
+
+          // Sorts the user's friends alphabetically
+          var friends = foundUser.friends.sort(function(a, b){
+            var friendA = a.username.toUpperCase();
+            var friendB = b.username.toUpperCase();
+            return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+          });
+
+          // Sorts the list's permissions alphabetically
+          foundList.permissions.sort(function(a, b){
+            var friendA = a.username.toUpperCase();
+            var friendB = b.username.toUpperCase();
+            return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+          });
+
           res.render("lists/edit", {list: foundList, friends: friends, page: "edit"});
         }
       });
@@ -138,7 +168,6 @@ router.get("/lists/:id/edit", middleware.canUserEdit, function(req, res){
 
 // Update Route
 router.put("/lists/:id", middleware.checkListOwnership, function(req, res){
-  // Need to update this route to be able to set list name or permissions from show and edit pages
   List.findByIdAndUpdate(req.params.id, {$set: {"name": req.body.name}}, function(err, updatedList){
     if (err || !updatedList){
       console.log(err);
@@ -163,7 +192,7 @@ router.delete("/lists/:id", middleware.checkListOwnership, function(req, res){
           if (err){
             console.log(err);
           } else {
-            console.log("Items deleted.");
+            // Items succesfully deleted
           }
         });
       });

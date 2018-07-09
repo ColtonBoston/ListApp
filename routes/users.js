@@ -8,7 +8,7 @@ var middleware = require("../middleware");
 // Searches the db for usernames matching the search term -- returns JSON
 router.get("/users/searchjson/:search", middleware.isLoggedIn, function(req, res){
   var search = regexEscape(req.params.search);
-    User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
+    User.find({"username": new RegExp(search, "i")}, null, {sort: {"username": 1}}, function(err, foundUsers){
       res.json(foundUsers);
     });
 });
@@ -39,7 +39,7 @@ router.get("/users", middleware.isLoggedIn, function(req, res){
         var friendB = b.username.toUpperCase();
         return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
       });
-        res.render("users", {users: user.friends, page: "users"});
+      res.render("users", {users: user.friends, page: "users"});
     }
   });
 
