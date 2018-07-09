@@ -58,7 +58,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .permissions-container {
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 4px;
   overflow: hidden;
   display: table;
   width: 100%;
@@ -118,7 +118,7 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 40;
   background-color: #1090FF;
   padding: 6px;
-  border-radius: 5px;
+  border-radius: 4px;
   box-shadow: 0 0 5px 2px rgba(0,0,0,0.3);
 }
 
@@ -139,7 +139,7 @@ h1, h2, h3, h4, h5, h6, p {
   font-size: 1.3em;
   text-align: center;
   margin: 0;
-  padding: 15px;
+  padding: 10px 15px 15px 15px;
 }
 
 .list-options {
@@ -163,10 +163,12 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .bottom-list-option {
-  margin-bottom: 0;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
+.mg-bottom-0 {
+  margin-bottom: 0;
+}
 
 .btn-permission {
   margin-left: 5px;
@@ -207,7 +209,7 @@ h1, h2, h3, h4, h5, h6, p {
   width: 30%;
   left: 50%;
   margin-left: -15%;
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px;
   text-align: center;
   transition: transform 250ms, opacity 250ms, background-color 250ms;
@@ -274,7 +276,7 @@ h1, h2, h3, h4, h5, h6, p {
 .list-item-input {
   border: 2px solid rgba(10,10,255,0.1);
   padding: 2px;
-  border-radius: 5px;
+  border-radius: 4px;
   width: 100%;
   margin-bottom: 5px;
 }
@@ -568,7 +570,6 @@ h1, h2, h3, h4, h5, h6, p {
     padding: 20px;
     z-index: 50;
     color: white;
-    transform: translateX(0);
     transition: transform 150ms linear;
   }
 
