@@ -198,7 +198,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .notification {
   position: fixed;
-  z-index: 35;
+  z-index: 45;
   top: 0;
   opacity: 0;
   margin: 0 auto;
@@ -568,6 +568,7 @@ h1, h2, h3, h4, h5, h6, p {
     padding: 20px;
     z-index: 50;
     color: white;
+    transform: translateX(0);
     transition: transform 150ms linear;
   }
 
