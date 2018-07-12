@@ -264,10 +264,7 @@ h1, h2, h3, h4, h5, h6, p {
   float: right;
 }
 
-.friend-username {
-  float: left;
-  margin-top: 7px;
-}
+
 
 .btn-friend {
   margin-left: 10px;
@@ -422,13 +419,12 @@ h1, h2, h3, h4, h5, h6, p {
   color: #555;
 }
 
-.users-search-li,
-.permissions-li {
+.li-user {
   display: table;
   width: 100%;
 }
 
-.user-text {
+.li-user-username {
   display: table-cell;
   vertical-align: middle;
   word-break: break-word;
@@ -439,10 +435,6 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 2px;
   width: 85%;
   word-break: break-word;
-}
-
-.li-friend {
-  overflow: hidden;
 }
 
 .list-name-form {
@@ -518,6 +510,11 @@ h1, h2, h3, h4, h5, h6, p {
 @media (max-width: 991px){
   .user-search {
     width: 220px;
+  }
+
+  .notification {
+    width: 50%;
+    margin-left: -25%;
   }
 
   .permissions-toggle {

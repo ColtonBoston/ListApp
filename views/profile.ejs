@@ -3,7 +3,9 @@
 <div class="container">
   <h1><%= user.username %>'s Profile</h1>
   <% if (!user._id.equals(currentUser._id) && currentUser.friends.indexOf(user._id) < 0) { %>
-    <button class="btn btn-default">Add Friend</button>
+    <form action="/addFriend/<%= user._id %>" method="post">
+      <button class="btn btn-default" type="submit">Add Friend</button>
+    </form>
   <% } %>
   <hr>
   <div class="row">
@@ -29,7 +31,9 @@
       <h2><%= user.friends.length %> friends</h2>
       <ul class="list-group profile-list">
         <% for (var i = 0; i < user.friends.length; i++){ %>
-          <li class="list-group-item"><a class="list-link user-text" href="/users/profile/<%= user.friends[i]._id %>"><%= user.friends[i].username %></a></li>
+          <li class="list-group-item li-user">
+            <span class="li-user-username"><a href="/users/profile/<%= user.friends[i]._id %>"><%= user.friends[i].username %></a></span>
+          </li>
         <% } %>
       </ul>
     </div>

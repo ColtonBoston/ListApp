@@ -17,13 +17,13 @@ $("#search-bar").on("keyup", function(event){
             var index = currentUser.friends.indexOf(user._id);
             // If currentUser has this user as a friend, show remove friend button
             if (currentUser && currentUser.friends.indexOf(user._id) > -1){
-              usersList.append("<li class='list-group-item users-search-li'><span class='user-text'>" + user.username + "</span><button class='btn-friend btn btn-danger btn-sm pull-right' type='submit' data-user-id='" + user._id + "'>Remove Friend</button></li>");
+              usersList.append("<li class='list-group-item li-user'><span class='li-user-username'><a href='/users/profile/" + user._id + "'>" + user.username + "</a></span><button class='btn-friend btn btn-danger btn-sm pull-right' type='submit' data-user-id='" + user._id + "'>Remove Friend</button></li>");
               searchResults.removeClass("hide-search-results");
             } else if (user._id === currentUser._id){
               // Do nothing if this user is the currentUser
             } else {
               // If this user is not already a friend of the currentUser, show add friend button
-              usersList.append("<li class='list-group-item users-search-li'><span class='user-text'>" + user.username + "</span><button class='btn-friend btn btn-primary btn-sm pull-right type='submit' data-user-id='" + user._id + "'>Add Friend</button></li>");
+              usersList.append("<li class='list-group-item li-user'><span class='li-user-username'><a href='/users/profile/" + user._id + "'>" + user.username + "</a></span><button class='btn-friend btn btn-primary btn-sm pull-right type='submit' data-user-id='" + user._id + "'>Add Friend</button></li>");
               searchResults.removeClass("hide-search-results");
             }
           });

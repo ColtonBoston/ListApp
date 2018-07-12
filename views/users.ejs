@@ -9,9 +9,9 @@
       <ul class="list-group">
       <% users.forEach(function(user){ %>
         <% if(!user._id.equals(currentUser._id)){ %>
-          <li class="list-group-item li-friend">
-            <span class="friend-username"><%= user.username %></span>
-            <form class="form-rm-friend" action="/removeFriend/<%= user._id %>" method="post">
+          <li class="list-group-item li-user">
+            <span class="li-user-username"><a href="/users/profile/<%= user._id %>"><%= user.username %></a></span>
+            <form class="form-change-permission" action="/removeFriend/<%= user._id %>" method="post">
                 <input class="btn btn-sm btn-danger" type="submit" value="Remove Friend">
             </form>
           </li>
