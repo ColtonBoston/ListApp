@@ -37,7 +37,7 @@
                   <button id="btn-item-options-<%= item._id %>" class="btn btn-item-options"><i class="glyphicon glyphicon-option-vertical"></i></button>
                   <ul id="item-options-<%= item._id %>" class="item-options hidden">
                     <li class="edit-item">
-                      <button class="btn btn-edit-item" data-parent-id="<%= item._id %>">Edit item</button>
+                      <button class="btn btn-default btn-edit-item" data-parent-id="<%= item._id %>">Edit item</button>
                     </li>
                     <li>
                       <form class="delete-form" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=DELETE" method="post">
@@ -85,7 +85,10 @@
           <button id="permissions-toggle" class="permissions-toggle"><i class="glyphicon glyphicon-menu-down"></i></button>
         </h2>
         <ul class="list-group list-permissions">
-            <li class="list-group-item li-user"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
+            <li class="list-group-item li-user">
+              <i class="glyphicon glyphicon-king list-author-icon"></i>
+              <a href="/users/profile/<%= list.author.id %>"><%= list.author.username %></a>
+            </li>
             <% list.permissions.forEach(function(permittedFriend){ %>
               <li class="list-group-item li-user">
                 <% if(currentUser && currentUserIsListOwner){ %>
@@ -98,7 +101,7 @@
                 <% } %>
               </li>
             <% }) %>
-            <% if(currentUser && currentUserIsListOwner){ %>
+            <% if (currentUser && currentUserIsListOwner) { %>
               <% friends.forEach(function(friend){ %>
                 <li class="list-group-item li-user unpermitted-friend">
                   <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.username %></a></span>

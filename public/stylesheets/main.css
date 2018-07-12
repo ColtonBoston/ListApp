@@ -12,11 +12,19 @@ body {
 }
 
 ul, input {
-  color: black;
+  color: #333;
 }
 
 h1, h2, h3, h4, h5, h6, p {
   word-wrap: break-word;
+}
+
+a {
+  color: #333;
+}
+
+a:hover {
+  color: #1090ff;
 }
 
 .navbar {
@@ -89,7 +97,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .permissions-header {
   position: relative;
-  color: #242424;
+  color: #333;
   background-color: #FFF;
   margin: 0;
   padding: 15px;
@@ -423,6 +431,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .list-author-icon {
   color: #1050ff;
+  margin-right: 4px;
 }
 
 .unpermitted-friend {
@@ -508,14 +517,6 @@ h1, h2, h3, h4, h5, h6, p {
   border: none;
   cursor: pointer;
   border-radius: 0;
-}
-
-.btn-edit-item {
-  background-color: white;
-}
-
-.btn-edit-item:hover {
-  color: #1090ff;
 }
 
 @media (max-width: 991px){
