@@ -7,7 +7,7 @@
     <div class="col-sm-12">
       <ul class="list-group">
         <% var friendsLists = false; %>
-        <% lists.forEach(function(list){ %>
+        <% lists.forEach(function(list) { %>
           <% if (!list.author.id.equals(currentUser.id) && !friendsLists) { %>
             <% friendsLists = true; %>
             </ul>
@@ -17,16 +17,16 @@
             <div class="row">
               <div class="col-sm-12">
                 <ul class="list-group">
-        <% } %>
+          <% } %>
         <li class="list-group-item">
-        <p class="text-lg"><strong><%= list.name %></strong></p>
-        <p>
-          <% if (!list.author.id.equals(currentUser.id)) { %>
-            Created by <strong><%= list.author.username %></strong> -
-          <% } %><%= list.items.length %> items
-        </p>
-        <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
-      </li>
+          <p class="text-lg"><strong><%= list.name %></strong></p>
+          <p>
+            <% if (!list.author.id.equals(currentUser.id)) { %>
+              Created by <strong><%= list.author.username %></strong> -
+            <% } %><%= list.items.length %> items
+          </p>
+          <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
+        </li>
       <% }) %>
       </ul>
     </div>
