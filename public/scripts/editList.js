@@ -144,7 +144,8 @@ list.on("click", ".btn-item-options", function(event){
 // Toggle visibility of permissions
 $(".permissions-toggle").on("click", function(event){
   $(".list-permissions").toggleClass("hidden");
-  $(this)[0].firstElementChild.classList.toggle("glyphicon-menu-up")
+  $(this)[0].firstElementChild.classList.toggle("glyphicon-menu-down");
+  $(this)[0].firstElementChild.classList.toggle("glyphicon-menu-up");
 });
 
 // Add/Remove permission handler
