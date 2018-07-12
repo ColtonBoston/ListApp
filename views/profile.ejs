@@ -1,0 +1,39 @@
+<% include partials/header %>
+
+<div class="container">
+  <h1><%= user.username %>'s Profile</h1>
+  <% if (!user._id.equals(currentUser._id) && currentUser.friends.indexOf(user._id) < 0) { %>
+    <button class="btn btn-default">Add Friend</button>
+  <% } %>
+  <hr>
+  <div class="row">
+    <div class="col-md-8">
+      <% if (lists.length > 0) { %>
+        <h2>Lists</h2>
+      <% } else { %>
+        <h2>No lists created or you don't have permission.</h2>
+      <% } %>
+      <ul class="list-group profile-list">
+        <% for (var i = 0; i < lists.length; i++){ %>
+          <% if (lists[i].author.id.equals(currentUser._id) || lists[i].permissions.indexOf(currentUser._id) >= 0) { %>
+            <li class="list-group-item">
+              <p class="text-lg"><strong><%= lists[i].name %></strong></p>
+              <p><%= lists[i].items.length %> items</p>
+              <a href="/lists/<%= lists[i]._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
+            </li>
+          <% } %>
+        <% } %>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2><%= user.friends.length %> friends</h2>
+      <ul class="list-group profile-list">
+        <% for (var i = 0; i < user.friends.length; i++){ %>
+          <li class="list-group-item"><a class="list-link user-text" href="/users/profile/<%= user.friends[i]._id %>"><%= user.friends[i].username %></a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<% include partials/footer %>

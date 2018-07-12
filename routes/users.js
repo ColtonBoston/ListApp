@@ -5,6 +5,36 @@ var User = require("../models/user"),
     List = require("../models/list");
 var middleware = require("../middleware");
 
+// User profile page
+router.get("/users/profile/:id", middleware.isLoggedIn, function(req, res){
+  User.findById(req.params.id)
+      .populate("friends")
+      .exec(function(err, foundUser){
+    if (err || !foundUser){
+      req.flash("User not found.");
+      res.redirect("/lists");
+    } else {
+      foundUser.friends.sort(function(a, b){
+        var friendA = a.username.toLowerCase();
+        var friendB = b.username.toLowerCase();
+
+        return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
+      });
+
+      List.find({"author.id": foundUser._id}, null, {sort: {"name": 1}}, function(err, foundLists){
+        if (err){
+          req.flash("Something went wrong.");
+          res.redirect("/lists");
+        } else if (!foundLists){
+          res.render("profile", {user: foundUser, lists: [], page: "profile"});
+        } else {
+          res.render("profile", {user: foundUser, lists: foundLists, page: "profile"});
+        }
+      });
+    }
+  });
+});
+
 // Searches the db for usernames matching the search term -- returns JSON
 router.get("/users/searchjson/:search", middleware.isLoggedIn, function(req, res){
   var search = regexEscape(req.params.search);
