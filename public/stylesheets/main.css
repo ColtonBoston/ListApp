@@ -317,6 +317,17 @@ h1, h2, h3, h4, h5, h6, p {
   max-height: 0;
 }
 
+.search-bar,
+.users-search-bar {
+  background-color: #eee;
+  transition: background-color 250ms;
+}
+
+.search-bar:focus,
+.users-search-bar:focus {
+  background-color: #fff;
+}
+
 #users-list {
   margin: 0;
   max-height: 200px;
