@@ -111,7 +111,7 @@ router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
           });
         }
         else {
-          res.send("that friend exists already");
+          res.redirect("/users");
         }
       }
   });
