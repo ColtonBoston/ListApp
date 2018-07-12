@@ -12,7 +12,7 @@
   <nav class="navbar navbar-inverse navbar-expand navbar-fixed-top">
     <div class="container-fluid">
   		<div class="navbar-header">
-  			<a href="/" class="navbar-brand nav-link">ListCollab</a>
+  			<a href="/" class="navbar-brand nav-link">ListSharing</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarToggle"
          aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -45,7 +45,7 @@
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active-page' : '' %>"><a class="nav-link" href="/login">Login</a></li>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active-page' : '' %>"><a class="nav-link" href="/register">Sign Up</a></li>
           <% } else { %>
-            <li class="nav-item"><a class="nav-link" href="#"><strong><%= currentUser.rawUsername %></strong></a></li>
+            <li class="nav-item"><a class="nav-link" href="/users/profile/<%= currentUser._id %>"><strong><%= currentUser.username %></strong></a></li>
             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
           <% } %>
   			</ul>
