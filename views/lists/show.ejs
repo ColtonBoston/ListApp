@@ -23,7 +23,7 @@
         <% if (list.items && list.items.length > 0){ %>
           <% var i = 0; %>
           <% list.items.forEach(function(item){ %>
-            <li id="list-item-<%= item._id %>" class="primary-list-item list-group-item">
+            <li id="list-item-<%= item._id %>" class="primary-list-item list-group-item <%= item.isCompleted ? 'completed-item' : '' %>">
               <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
                 <div id="list-item-text-<%= item._id %>" class="list-item-text"><%= item.name %></div>
                 <form id="edit-item-form-<%= item._id %>" class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
@@ -31,7 +31,10 @@
                   <button type="submit" class="btn btn-primary btn-update-item">Save</button>
                   <button type="button" class="btn btn-default btn-cancel-edit">Cancel</button>
                 </form>
-                <button class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
+                <form class="form-complete-item" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="post">
+                  <input type="text" name="toggleComplete" value="toggle" class="hidden">
+                  <button type="submit" class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
+                </form>
                 <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
                 <div class="item-options-container">
                   <button id="btn-item-options-<%= item._id %>" class="btn btn-item-options"><i class="glyphicon glyphicon-option-vertical"></i></button>
@@ -47,7 +50,10 @@
                   </ul>
                 </div>
               <% } else {%>
-                <button class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
+                <form class="form-complete-item" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="post">
+                  <input type="text" name="toggleComplete" value="toggle" class="hidden">
+                  <button type="submit" class="btn btn-complete-item"><i class="glyphicon glyphicon-ok"></i></button>
+                </form>
                 <span class="list-item-text-alt"><%= item.name %></span>
                 <div class="item-added-by"><small><em>added by <%= item.addedBy.username %></em></small></div>
               <% } %>
