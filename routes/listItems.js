@@ -31,14 +31,32 @@ router.post("/lists/:id/listItems", middleware.checkListPermissions, function(re
 });
 
 // Update list item
-router.put("/lists/:id/listItems/:item_id", middleware.checkListItemOwnership, function(req, res){
-  ListItem.findByIdAndUpdate(req.params.item_id, {$set: {"name": req.body.item}}, function(err, updatedItem){
-    if (err || !updatedItem){
-      res.redirect(404, "/lists/" + req.params.id);
-    } else {
-      res.redirect("/lists/" + req.params.id + "/edit");
-    }
-  });
+router.put("/lists/:id/listItems/:item_id", middleware.checkListPermissions, function(req, res){
+  if (req.body.item){
+    ListItem.findByIdAndUpdate(req.params.item_id, {$set: {"name": req.body.item}}, function(err, updatedItem){
+      if (err || !updatedItem){
+        res.redirect(404, "/lists/" + req.params.id);
+      } else {
+        res.redirect("/lists/" + req.params.id + "/edit");
+      }
+    });
+  } else if (req.body.isCompleted){
+    ListItem.findById(req.params.item_id, function(err, foundItem){
+      if (err || !foundItem){
+        res.redirect(404, "/lists/" + req.params.id);
+      } else {
+        if (foundItem.isCompleted !== req.body.isCompleted){
+          foundItem.isCompleted = req.body.isCompleted;
+          foundItem.save(function(){
+            res.redirect("/lists/" + req.params.id);
+          });
+        } else {
+          res.redirect("/lists/" + req.params.id);
+        }
+      }
+    });
+  }
+
 });
 
 // Delete list item
