@@ -114,6 +114,44 @@ list.on("submit", ".edit-item-form", function(event){
   $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
 });
 
+
+// Handler for completing items
+list.on("submit", ".form-complete-item", function(){
+  event.preventDefault();
+
+  var action = $(this)[0].action;
+
+  // Clear the timer that sends ajax request if the form is submitted again
+  clearTimeout($(this)[0].completeItemTimer);
+
+  // Toggle completed-item class on parent li. The user will see it completed even if the ajax fails, but only locally until the page is refreshed.
+  $(this)[0].parentElement.classList.toggle("completed-item");
+
+  var isCompleted = $(this)[0].parentElement.classList.contains("completed-item");
+
+  // Sets a timeout and ajax to toggle completion of the li that is being checked completed.
+  // This allows each li to have a separate timer/ajax that can be stopped or reset without affecting other list items if the form is submitted twice
+  $(this)[0].completeItemTimer = setTimeout(function(){
+    $(this)[0].completeItemAjax = $.ajax({
+      type: "POST",
+      url: action,
+      data: { isCompleted },
+      beforeSend: function(){
+        // Cancel the previous ajax request if one exists when a new request is sent
+        if ($(this)[0].completeItemAjax && $(this)[0].completeItemAjax != "ToCancelPrevReq" && $(this)[0].completeItemAjax.readyState < 4){
+          $(this)[0].completeItemAjax.abort();
+        }
+      },
+      success: function(){
+        // Done - do nothing.
+      }
+    });
+  // Waits 500ms to make the ajax call. If the form is submitted again before this time, the timer is reset for another 500ms.
+  // This prevents the user from spamming the form and sending multiple post requests.
+  }, 500);
+});
+// End of handler to complete items
+
 // Delete list item click handler
 list.on("click", ".btn-delete-item", function(event){
   event.preventDefault();
@@ -122,7 +160,6 @@ list.on("click", ".btn-delete-item", function(event){
 
 // Toggle completion of list item
 list.on("click", ".btn-complete-item", function(event){
-  $(this)[0].parentElement.classList.toggle("completed-item");
 });
 
 // Show an item's options (edit/delete) when its options button is clicked
