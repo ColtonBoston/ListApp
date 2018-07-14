@@ -53,6 +53,10 @@ a:hover {
   border-bottom-color: #1090FF;
 }
 
+.navbar-brand {
+  font-weight: bold;
+}
+
 .center {
   text-align: center;
 }
