@@ -65,6 +65,10 @@ a:hover {
   text-align: left;
 }
 
+.new-list-permission {
+  word-break: break-word;
+}
+
 .list-container {
 }
 

@@ -11,9 +11,18 @@
       </div>
       <div class="form-group">
         <ul class="list-group new-list-permissions">
-          <li class="list-group-item"><strong>List Permissions:</strong></li>
+          <li class="list-group-item permissions-">
+            <strong class="text-lg">List Permissions</strong>
+            <div class="">
+              <button type="button" id="btn-check-permissions" class="btn btn-default">Check All</button>
+              <button type="button" id="btn-uncheck-permissions" class="btn btn-default">Uncheck All</button>
+            </div>
+          </li>
         <% friends.forEach(function(friend){ %>
-          <li class="list-group-item"><label><input type="checkbox" checked name="permissions[]" value="<%= friend._id %>" /> <%= friend.username %> </label></li>
+          <li class="list-group-item">
+              <input type="checkbox" checked name="permissions[]" value="<%= friend._id %>">
+              <span class="new-list-permission"><%= friend.username %></span>
+           </li>
         <% }) %>
       </ul>
       </div>
@@ -22,4 +31,5 @@
   </div>
 </div>
 
+<script type="text/javascript" src="/scripts/newList.js"></script>
 <% include ../partials/footer %>
