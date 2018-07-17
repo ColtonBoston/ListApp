@@ -46,18 +46,18 @@ router.get("/users/searchjson/:search", middleware.isLoggedIn, function(req, res
 // Searches the db for usernames matching the search term -- returns VIEW
 router.get("/users/search", middleware.isLoggedIn, function(req, res){
   var search = regexEscape(req.query.search);
-  User.find({"username": new RegExp(search, "i")}, function(err, foundUsers){
+  User.find({ "username": new RegExp(search, "i") }, function(err, foundUsers){
     // res.render("friendSearch");
-    res.render("searchUsers", {users: foundUsers, searchQuery: search});
+    res.render("searchUsers", { users: foundUsers, searchQuery: search });
   });
 });
 
 // Show all friends
-router.get("/users", middleware.isLoggedIn, function(req, res){
+router.get("/friends", middleware.isLoggedIn, function(req, res){
   // finds all friends of the current user
   User
   .findById(req.user._id)
-  .populate('friends') // <--
+  .populate('friends')
   .exec(function (err, user) {
     if (err){
       console.log(err);
@@ -69,7 +69,27 @@ router.get("/users", middleware.isLoggedIn, function(req, res){
         var friendB = b.username.toUpperCase();
         return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
       });
-      res.render("users", {users: user.friends, page: "users"});
+
+      // Find all users that have added the current user as a friend
+      // and removes users that are already friends of the current user.
+      // This will allow the current user to see who has added him/her as a friend.
+      User.find({ "friends": user._id }, function(err, foundUsers){
+        if (err || !foundUsers){
+          res.render("friends", { friends: user.friends, page: "friends" });
+        } else {
+          // Remove friends already added by the current user from the foundUsers array
+          for (var i = 0; i < foundUsers.length; i++){
+            for (var j = 0; j < user.friends.length; j++){
+              if ( user.friends[j]._id.equals(foundUsers[i]._id) ){
+                foundUsers.splice(i, 1);
+                i--;
+                break;
+              }
+            }
+          }
+          res.render("friends", { friends: user.friends, userFriendedBy: foundUsers, page: "friends" });
+        }
+      });
     }
   });
 
@@ -97,7 +117,7 @@ router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
           User.findById(req.user._id, function(err, currentUser){
             if (err || !currentUser){
               console.log(err);
-              res.redirect(404, "/users");
+              res.redirect(404, "/friends");
             } else {
               currentUser.friends.push(req.params.id);
               // Redirects after the user is saved.
@@ -105,13 +125,13 @@ router.post("/addFriend/:id", middleware.isLoggedIn, function(req, res){
               // was saved and the updated data would not be reflected on the page.
               currentUser.save(function(err2, savedUser){
                 //console.log(savedUser.friends);
-                res.redirect("/users");
+                res.redirect("/friends");
               });
             }
           });
         }
         else {
-          res.redirect("/users");
+          res.redirect("/friends");
         }
       }
   });
@@ -128,7 +148,7 @@ router.post("/removeFriend/:id", middleware.isLoggedIn, function(req, res){
       User.findByIdAndUpdate(req.user._id, {$pull: {friends: req.params.id}}, {new: true}, function(err, currentUser){
         if (err){
           console.log(err);
-          res.redirect("/users");
+          res.redirect("/friends");
         } else {
           List.find({"author.id": req.user._id}, function(err, foundLists){
             foundLists.forEach(function(list){
@@ -139,7 +159,7 @@ router.post("/removeFriend/:id", middleware.isLoggedIn, function(req, res){
               list.save();
             });
           });
-          res.redirect("/users");
+          res.redirect("/friends");
         }
       });
     }

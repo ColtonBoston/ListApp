@@ -344,6 +344,10 @@ a:hover {
   background-color: #fff;
 }
 
+.friends-page-search {
+  margin-bottom: 20px;
+}
+
 #users-list {
   margin: 0;
   max-height: 200px;
