@@ -23,7 +23,7 @@
           <p>
             <% if (!list.author.id.equals(currentUser.id)) { %>
               Created by <a href="/users/profile/<%= list.author.id %>"><strong><%= list.author.username %></strong></a> -
-            <% } %><%= list.items.length %> items
+            <% } %><%= list.items.length %> <%= list.items.length === 1 ? 'item' : 'items' %>
           </p>
           <a href="/lists/<%= list._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
         </li>

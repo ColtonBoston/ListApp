@@ -20,7 +20,7 @@
           <% if (lists[i].author.id.equals(currentUser._id) || lists[i].permissions.indexOf(currentUser._id) >= 0) { %>
             <li class="list-group-item">
               <p class="text-lg"><strong><%= lists[i].name %></strong></p>
-              <p><%= lists[i].items.length %> items</p>
+              <p><%= lists[i].items.length %> <%= lists[i].items.length === 1 ? 'item' : 'items' %></p>
               <a href="/lists/<%= lists[i]._id %>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-list-alt"></i> Open</a>
             </li>
           <% } %>
@@ -28,7 +28,7 @@
       </ul>
     </div>
     <div class="col-md-4">
-      <h2><%= user.friends.length %> friends</h2>
+      <h2><%= user.friends.length %> <%= user.friends.length === 1 ? 'friend' : 'friends' %></h2>
       <ul class="list-group profile-list">
         <% for (var i = 0; i < user.friends.length; i++){ %>
           <li class="list-group-item li-user">
