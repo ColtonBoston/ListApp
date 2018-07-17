@@ -2,6 +2,10 @@ var searchResults = $(".search-results"),
     searchTimer,
     searchAjax;
 
+$("#user-search-form").on("submit", function(event){
+  event.preventDefault();
+});
+
 $("#search-bar").on("keyup", function(event){
   var search = this.value.split(" ").join(""),
       usersList = $("#users-list");
