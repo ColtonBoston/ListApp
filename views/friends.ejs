@@ -1,0 +1,46 @@
+<% include partials/header %>
+
+<div class="container">
+  <h1>My Friends <small class="small-fix"><i class="glyphicon glyphicon-user"></i> <%= friends.length %></small></h1>
+  <div class="row">
+    <div class="col-sm-8">
+      <ul class="list-group">
+      <% friends.forEach(function(friend){ %>
+        <% if(!friend._id.equals(currentUser._id)){ %>
+          <li class="list-group-item li-user">
+            <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.username %></a></span>
+            <form class="form-change-permission" action="/removeFriend/<%= friend._id %>" method="post">
+                <input class="btn btn-sm btn-danger" type="submit" value="Remove Friend">
+            </form>
+          </li>
+        <% } %>
+      <% }) %>
+      </ul>
+    </div>
+    <div class="col-sm-4">
+      <div class="friends-page-search">
+        <form id="user-search-form" class="" action="/users/search" method="GET">
+          <input id="search-bar" class="form-control users-search-bar" type="search" name="search" autocomplete="off" placeholder="Search for friends...">
+        </form>
+        <div class="search-results hide-search-results relative">
+          <ul id="users-list" class="list-group">
+          </ul>
+          <button id="btn-hide-results" class="btn btn-default btn-sm btn-hide-results" type="button">Hide Results</button>
+        </div>
+      </div>
+      <ul class="list-group">
+        <li class="center list-group-item"><strong>Non-friends who have added you</strong></li>
+        <% userFriendedBy.forEach(function(user){ %>
+          <li class="list-group-item li-user">
+            <span class="li-user-username"><a href="/users/profile/<%= user._id %>"><%= user.username %></a></span>
+            <form class="form-change-permission" action="/addFriend/<%= user._id %>" method="post">
+                <input class="btn btn-sm btn-primary" type="submit" value="Add Friend">
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<% include partials/footer %>
