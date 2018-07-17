@@ -25,10 +25,10 @@
         <ul class="nav navbar-nav">
           <% if (currentUser) { %>
             <li class="nav-item <%= typeof page !== 'undefined' && page === 'lists' ? 'active-page' : '' %>"><a class="nav-link" href="/lists">Lists</a></li>
-            <li class="nav-item <%= typeof page !== 'undefined' && page === 'users' ? 'active-page' : '' %>"><a class="nav-link" href="/users">Friends</a></li>
-            <% if (typeof page !== 'undefined' && page !== 'users'){ %>
+            <li class="nav-item <%= typeof page !== 'undefined' && page === 'friends' ? 'active-page' : '' %>"><a class="nav-link" href="/friends">Friends</a></li>
+            <% if (typeof page !== 'undefined' && page !== 'friends'){ %>
               <li class="nav-item user-search">
-                <form class="" action="/users/search" method="GET">
+                <form id="user-search-form" class="" action="/users/search" method="GET">
                   <input id="search-bar" class="form-control search-bar" type="search" name="search" autocomplete="off" placeholder="Search for friends...">
                 </form>
                 <div class="search-results hide-search-results">
