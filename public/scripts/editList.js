@@ -116,7 +116,7 @@ list.on("submit", ".edit-item-form", function(event){
 
 
 // Handler for completing items
-list.on("submit", ".form-complete-item", function(){
+list.on("submit", ".form-complete-item", function(event){
   event.preventDefault();
 
   var action = $(this)[0].action;
