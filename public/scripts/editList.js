@@ -32,9 +32,7 @@ list.on("click", ".btn-edit-item", function(event){
         editForm = $("#edit-item-form-" + itemId),
         optionsList = $("#item-options-" + itemId);
 
-    // Set value of initial input value to prevent updating an item with the same value
-    initialInputVal = editForm[0].firstElementChild.value;
-
+    initialInputVal = itemText[0].innerHTML;
     itemText.toggleClass("js_hidden");
     editForm.toggleClass("js_hidden");
     optionsList.addClass("hidden");
@@ -97,18 +95,12 @@ $("#new-item-form").submit(function(event){
   document.activeElement.blur();
 });
 
-list.on("focus", ".list-item-input", function(event){
-  initialInputVal = $(this)[0].value;
-});
-
-var hasItemUpdated = false;
 // Update list item on submitting the form
 list.on("submit", ".edit-item-form", function(event){
   event.preventDefault();
 
   var itemId = $(this)[0].id.split("-")[3];
   updateListItem($(this));
-  hasItemUpdated = true;
   document.activeElement.blur();
   $(this).addClass("js_hidden");
   $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
@@ -263,6 +255,7 @@ function updateListItem(form){
     });
   } else {
     form[0].children[0].value = initialInputVal;
+    initialInputVal = "";
   }
 }
 
