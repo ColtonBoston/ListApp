@@ -38,7 +38,7 @@ p, h2, label, .username-rules {
 }
 .action-item {
   text-align: left;
-  font-size: 1.6em;
+  font-size: 1.4em;
 }
 .login-container {
   display: table;
@@ -104,7 +104,6 @@ p, h2, label, .username-rules {
 }
 .validation-msg {
   float: right;
-  font-weight: bold;
   padding: 0 12px;
   border-radius: 30px;
 }
