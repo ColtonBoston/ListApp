@@ -1,4 +1,4 @@
-# ListApp
+# ListSharing
 A full-stack web app for sharing collaborative lists online.
 
 ## Technologies Used
