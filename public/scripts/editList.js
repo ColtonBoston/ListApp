@@ -25,25 +25,30 @@ if (window.innerWidth <= 767){
 
 // Edit list button clicked
 list.on("click", ".btn-edit-item", function(event){
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
     event.preventDefault();
+  } else {
+    return false;
+  }
 
-    var itemId = $(this)[0].dataset.parentId,
-        itemText = $("#list-item-text-" + itemId),
-        editForm = $("#edit-item-form-" + itemId),
-        optionsList = $("#item-options-" + itemId);
+  var itemId = $(this)[0].dataset.parentId,
+      itemText = $("#list-item-text-" + itemId),
+      editForm = $("#edit-item-form-" + itemId),
+      optionsList = $("#item-options-" + itemId);
 
-    initialInputVal = itemText[0].innerHTML;
-    itemText.toggleClass("js_hidden");
-    editForm.toggleClass("js_hidden");
-    optionsList.addClass("hidden");
+  initialInputVal = itemText[0].innerHTML;
+  itemText.toggleClass("js_hidden");
+  editForm.toggleClass("js_hidden");
+  optionsList.addClass("hidden");
 });
 
 list.on("click", ".btn-cancel-edit", function(event){
   var parentForm = $(this)[0].parentElement,
       itemId = parentForm.id.split("-")[3];
 
-      parentForm.classList.add("js_hidden");
-      $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
+  parentForm.classList.add("js_hidden");
+  $("#list-item-text-" + itemId).removeClass("hidden js_hidden");
 });
 
 // Focus new item input on clicking new item button (fixed mobile button)
@@ -56,13 +61,25 @@ $("#btn-delete-list").click(function(event){
   if (confirm("This list will be deleted permanently. Are you sure?")){
     // List deleted
   } else {
-    event.preventDefault();
+    // Fix for Internet Explorer not having an event.preventDefault function
+    if (typeof event.preventDefault === "function"){
+      event.preventDefault();
+    } else {
+      return false;
+    }
   }
 });
 
 // Add list item
 $("#new-item-form").submit(function(event){
-  event.preventDefault();
+
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
+
   var input = $(this)[0].elements["item[name]"],
       newItemName = input.value,
       url = $(this)[0].action;
@@ -76,7 +93,7 @@ $("#new-item-form").submit(function(event){
   $.ajax({
     type: "POST",
     url: url,
-    data: {item},
+    data: { item },
     success: function(data){
       // Get the new item's data from the response to create a new li
       var li = $(data).find("#list")[0].lastElementChild;
@@ -97,7 +114,12 @@ $("#new-item-form").submit(function(event){
 
 // Update list item on submitting the form
 list.on("submit", ".edit-item-form", function(event){
-  event.preventDefault();
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
 
   var itemId = $(this)[0].id.split("-")[3];
   updateListItem($(this));
@@ -109,7 +131,13 @@ list.on("submit", ".edit-item-form", function(event){
 
 // Handler for completing items
 list.on("submit", ".form-complete-item", function(event){
-  event.preventDefault();
+
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
 
   var action = $(this)[0].action;
 
@@ -146,7 +174,12 @@ list.on("submit", ".form-complete-item", function(event){
 
 // Delete list item click handler
 list.on("click", ".btn-delete-item", function(event){
-  event.preventDefault();
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
   deleteListItem($(this));
 });
 
@@ -185,7 +218,12 @@ $(".btn-permission").on("click", function(event){
       glyphicon = $(this).find(".glyphicon"),
       permissionsLength = $(".permissions-length")[0];
 
-  event.preventDefault();
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
   notifyUser("Updating permissions...", false);
 
   // Add or remove friend from list permissions array in db

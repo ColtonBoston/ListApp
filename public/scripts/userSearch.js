@@ -3,7 +3,12 @@ var searchResults = $(".search-results"),
     searchAjax;
 
 $("#user-search-form").on("submit", function(event){
-  event.preventDefault();
+  // Fix for Internet Explorer not having an event.preventDefault function
+  if (typeof event.preventDefault === "function"){
+    event.preventDefault();
+  } else {
+    return false;
+  }
 });
 
 $("#search-bar").on("keyup", function(event){
