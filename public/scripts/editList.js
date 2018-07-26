@@ -69,7 +69,7 @@ $("#new-item-form").submit(function(event){
 
   var item = {
     name: newItemName
-  }
+  };
 
   // Notify user that the item is being added (for slower connections)
   notifyUser("Adding...", false);
