@@ -27,7 +27,7 @@
               <% if (currentUser && (item.addedBy.id.equals(currentUser._id) || list.author.id.equals(currentUser._id))) { %>
                 <div id="list-item-text-<%= item._id %>" class="list-item-text"><%= item.name %></div>
                 <form id="edit-item-form-<%= item._id %>" class="edit-item-form js_hidden" action="/lists/<%= list._id %>/listItems/<%= item._id %>?_method=PUT" method="POST">
-                  <input class="list-item-input" name="item" type="text" value="<%= item.name %>"></input>
+                  <input class="list-item-input" name="item" type="text" value="<%= item.name %>">
                   <button type="submit" class="btn btn-primary btn-update-item">Save</button>
                   <button type="button" class="btn btn-default btn-cancel-edit">Cancel</button>
                 </form>
@@ -77,7 +77,11 @@
         <ul class="list-options">
           <li><button class="btn btn-default btn-list-option"><i class="glyphicon glyphicon-copy"></i> Copy list to clipboard</button></li>
           <li><button class="btn btn-default btn-list-option"><i class="glyphicon glyphicon-trash"></i> Remove completed items</button></li>
-          <li><button class="btn btn-default btn-list-option mg-bottom-0"><i class="glyphicon glyphicon-list-alt"></i> Create a copy of this list</button></li>
+          <!-- <li>
+            <form class="" action="/lists" method="post">
+              <button type="submit" name="list[copy]" value="<%= list._id %>" class="btn btn-default btn-list-option mg-bottom-0"><i class="glyphicon glyphicon-list-alt"></i> Create a copy of this list</button>
+            </form>
+          </li> -->
           <% if (currentUser && currentUserIsListOwner){ %>
             <form class="delete-list-form" action="/lists/<%= list._id %>?_method=DELETE" method="post">
               <button id="btn-delete-list" class="btn btn-danger btn-list-option bottom-list-option mg-bottom-0"><i class="glyphicon glyphicon-trash"></i> Delete List</button>
