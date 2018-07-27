@@ -93,7 +93,7 @@ $("#new-item-form").submit(function(event){
   $.ajax({
     type: "POST",
     url: url,
-    data: { item },
+    data: { item: { name: newItemName } },
     success: function(data){
       // Get the new item's data from the response to create a new li
       var li = $(data).find("#list")[0].lastElementChild;
@@ -155,7 +155,7 @@ list.on("submit", ".form-complete-item", function(event){
     $(this)[0].completeItemAjax = $.ajax({
       type: "POST",
       url: action,
-      data: { isCompleted },
+      data: { isCompleted: isCompleted },
       beforeSend: function(){
         // Cancel the previous ajax request if one exists when a new request is sent
         if ($(this)[0].completeItemAjax && $(this)[0].completeItemAjax != "ToCancelPrevReq" && $(this)[0].completeItemAjax.readyState < 4){
@@ -273,7 +273,7 @@ function updateListItem(form){
     $.ajax({
       type: "POST",
       url: url,
-      data: {item},
+      data: {item: item},
       success: function(){
         // Update the text in the item display span
         form[0].previousElementSibling.innerHTML = escapeHTML(item);
