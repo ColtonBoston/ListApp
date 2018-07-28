@@ -15,7 +15,7 @@
   <% } else { %>
     <h1><%= list.name %></h1>
   <% } %>
-  <p class="list-created-by"><em>Created by <strong><%= list.author.rawUsername %></strong> on <%= list.createdAt.toDateString() %></em></p>
+  <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
   <div class="row">
     <div class="col-lg-9 col-sm-8 list-container">
