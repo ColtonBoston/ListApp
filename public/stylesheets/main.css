@@ -265,8 +265,6 @@ a:hover {
 
 .primary-list {
   margin-bottom: 0;
-  background-color: #1090ff;
-  border-radius: 4px;
 }
 
 .primary-list-item {
@@ -404,7 +402,7 @@ a:hover {
 }
 
 .completed-item {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.3);
   color: rgba(0,0,0,0.4);
   border-color: transparent;
   border: 1px solid rgba(50,50,50,0.1);
@@ -416,7 +414,7 @@ a:hover {
 }
 
 .completed-item .btn-item-options {
-  color: rgba(50,50,50,0.4);
+  color: rgba(50,50,50,0.5);
 }
 
 .completed-item .btn-item-options:focus {
@@ -424,7 +422,7 @@ a:hover {
 }
 
 .completed-item .item-added-by {
-  color: rgba(50,50,50,0.4);
+  color: rgba(50,50,50,0.5);
 }
 
 .btn-new-item {
@@ -635,7 +633,6 @@ a:hover {
     padding: 0;
   }
 
-  .primary-list,
   .list-group-item:first-child,
   .list-group-item:last-child,
   .btn-edit-item,
