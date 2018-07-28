@@ -22,7 +22,6 @@ router.post("/lists/:id/listItems", middleware.checkListPermissions, function(re
           item.save();
           foundList.items.push(item._id);
           foundList.save(function(err, savedList){
-            res.req.headers["Cache-Control"] = "max-age=0, no-cache, must-revalidate, proxy-revalidate";
             res.redirect("/lists/" + req.params.id);
           });
         }
