@@ -20,4 +20,3 @@ A full-stack web app for sharing collaborative lists online.
 * Add option to move list items up or down
 * Add option to sort list items (By author, A-Z, etc.)
 * Add option to copy a list item to another list
-* Show a user's rawUsername in displays instead of lowercase username
