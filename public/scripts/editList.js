@@ -3,7 +3,6 @@ var list = $("#list"),  // Main list div
     listActions = $(".list-actions"),
     initialInputVal;    // Initial value for list item input (for editing/updating)
 
-$.ajaxSetup({ cache: false });
 // Logic for button to focus new item input on mobile devices
 if (window.innerWidth <= 767){
   $(".btn-new-item").click(function(){
@@ -78,6 +77,7 @@ $("#new-item-form").submit(function(event){
   $.ajax({
     type: "POST",
     url: url,
+    cache: false,
     data: { item: { name: newItemName } },
     success: function(data){
       // Get the new item's data from the response to create a new li
