@@ -15,7 +15,7 @@
   <% } else { %>
     <h1><%= list.name %></h1>
   <% } %>
-  <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
+  <p class="list-created-by"><em>Created by <strong><%= list.author.rawUsername %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
   <div class="row">
     <div class="col-lg-9 col-sm-8 list-container">
@@ -102,19 +102,19 @@
             <% list.permissions.forEach(function(permittedFriend){ %>
               <li class="list-group-item li-user">
                 <% if(currentUser && currentUserIsListOwner){ %>
-                  <span class="li-user-username"><a href="/users/profile/<%= permittedFriend._id %>"><%= permittedFriend.username %></a></span>
+                  <span class="li-user-username"><a href="/users/profile/<%= permittedFriend._id %>"><%= permittedFriend.rawUsername %></a></span>
                   <form class="form-change-permission" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
                     <button type="submit" class="btn btn-sm btn-danger btn-permission"><i class="glyphicon glyphicon-minus"></i></button>
                   </form>
                 <% } else { %>
-                  <span class="li-user-username"><a href="/users/profile/<%= permittedFriend._id %>"><%= permittedFriend.username %></a></span>
+                  <span class="li-user-username"><a href="/users/profile/<%= permittedFriend._id %>"><%= permittedFriend.rawUsername %></a></span>
                 <% } %>
               </li>
             <% }) %>
             <% if (currentUser && currentUserIsListOwner) { %>
               <% friends.forEach(function(friend){ %>
                 <li class="list-group-item li-user unpermitted-friend">
-                  <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.username %></a></span>
+                  <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.rawUsername %></a></span>
                   <form class="form-change-permission" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
                     <button type="submit" class="btn btn-sm btn-primary btn-permission"><i class="glyphicon glyphicon-plus"></i></button>
                   </form>

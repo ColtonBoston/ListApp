@@ -21,7 +21,7 @@
         <% friends.forEach(function(friend){ %>
           <li class="list-group-item">
               <input type="checkbox" checked name="permissions[]" value="<%= friend._id %>">
-              <span class="new-list-permission"><%= friend.username %></span>
+              <span class="new-list-permission"><%= friend.rawUsername %></span>
            </li>
         <% }) %>
       </ul>

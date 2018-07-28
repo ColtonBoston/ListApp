@@ -40,6 +40,7 @@ router.post("/register", function(req, res){
         req.flash("error", err.message);
         res.redirect("/");
       } else {
+        // Convert username to lowercase to match db username that was saved as lowercase
         req.body.username = req.body.username.toLowerCase();
         passport.authenticate("local")(req, res, function(){
           req.flash("success", "Welcome, " + req.body.username + "!");

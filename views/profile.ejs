@@ -1,7 +1,7 @@
 <% include partials/header %>
 
 <div class="container">
-  <h1><%= user.username %>'s Profile</h1>
+  <h1><%= user.rawUsername %>'s Profile</h1>
   <% if (!user._id.equals(currentUser._id) && currentUser.friends.indexOf(user._id) < 0) { %>
     <form action="/addFriend/<%= user._id %>" method="post">
       <button class="btn btn-default" type="submit">Add Friend</button>

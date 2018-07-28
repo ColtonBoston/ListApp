@@ -11,7 +11,7 @@
       <% users.forEach(function(user){ %>
         <% if(!user._id.equals(currentUser._id)){ %>
           <li class="list-group-item">
-            <%= user.username %>
+            <%= user.rawUsername %>
             <% if(currentUser.friends.indexOf(user._id) < 0) { %>
               <form action="/addFriend/<%= user._id %>" method="post">
                   <input type="submit" value="Add Friend">

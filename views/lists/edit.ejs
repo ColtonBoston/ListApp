@@ -20,7 +20,7 @@
     <h1>Edit - <%= list.name %></h1>
   <% } %>
   <a href="/lists/<%= list._id %>" class="btn btn-default">Return to list view</a>
-  <p class="list-created-by"><em>Created by <strong><%= list.author.username %></strong> on <%= list.createdAt.toDateString() %></em></p>
+  <p class="list-created-by"><em>Created by <strong><%= list.author.rawUsername %></strong> on <%= list.createdAt.toDateString() %></em></p>
   <div class="row">
     <div class="col-sm-12">
       <ul id="list" class="list-group">
@@ -47,23 +47,23 @@
       </ul>
       <ul class="list-group">
         <li class="list-group-item center"><strong>List permissions (<%= list.permissions.length %>)</strong><i class="glyphicon glyphicon-menu-down pull-right"></i></li>
-        <li class="list-group-item"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.username %></li>
+        <li class="list-group-item"><i class="glyphicon glyphicon-king list-author-icon"></i> <%= list.author.rawUsername %></li>
         <% list.permissions.forEach(function(permittedFriend){ %>
             <li class="list-group-item">
               <% if(currentUser && currentUserIsListOwner){ %>
-                <span><%= permittedFriend.username %></span>
+                <span><%= permittedFriend.rawUsername %></span>
                 <form class="" action="/lists/<%= list.id %>/removePermission/<%= permittedFriend._id %>?_method=PUT" method="post">
                   <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></button>
                 </form>
               <% } else { %>
-                <%= permittedFriend.username %>
+                <%= permittedFriend.rawUsername %>
               <% } %>
             </li>
         <% }) %>
         <% if(currentUser && currentUserIsListOwner){ %>
           <% friends.forEach(function(friend){ %>
             <li class="list-group-item unpermitted-friend">
-              <span><%= friend.username %></span>
+              <span><%= friend.rawUsername %></span>
               <form class="" action="/lists/<%= list.id %>/addPermission/<%= friend._id %>?_method=PUT" method="post">
                 <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button>
               </form>

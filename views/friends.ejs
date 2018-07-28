@@ -8,7 +8,7 @@
       <% friends.forEach(function(friend){ %>
         <% if(!friend._id.equals(currentUser._id)){ %>
           <li class="list-group-item li-user">
-            <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.username %></a></span>
+            <span class="li-user-username"><a href="/users/profile/<%= friend._id %>"><%= friend.rawUsername %></a></span>
             <form class="form-change-permission" action="/removeFriend/<%= friend._id %>" method="post">
                 <input class="btn btn-sm btn-danger" type="submit" value="Remove Friend">
             </form>
@@ -32,7 +32,7 @@
         <li class="center list-group-item"><strong>Non-friends who have added you</strong></li>
         <% userFriendedBy.forEach(function(user){ %>
           <li class="list-group-item li-user">
-            <span class="li-user-username"><a href="/users/profile/<%= user._id %>"><%= user.username %></a></span>
+            <span class="li-user-username"><a href="/users/profile/<%= user._id %>"><%= user.rawUsername %></a></span>
             <form class="form-change-permission" action="/addFriend/<%= user._id %>" method="post">
                 <input class="btn btn-sm btn-primary" type="submit" value="Add Friend">
             </form>
