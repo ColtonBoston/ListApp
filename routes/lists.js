@@ -86,7 +86,7 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
           res.redirect(404, "/lists");
         } else {
           var friends = foundUser.friends;
-          
+
           // Removes permitted friends from the friends array since they are already in the permissions array
           foundList.permissions.forEach(function(permittedFriend){
             friends.forEach(function(friend, i){
@@ -109,6 +109,7 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
             var friendB = b.username.toUpperCase();
             return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
           });
+          res.req.headers["Cache-Control"] = "max-age=0, no-cache, must-revalidate, proxy-revalidate";
           res.render("lists/show", {list: foundList, friends: friends, page: "show"});
         }
       });
