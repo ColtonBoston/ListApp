@@ -77,7 +77,6 @@ $("#new-item-form").submit(function(event){
   $.ajax({
     type: "POST",
     url: url,
-    cache: false,
     data: { item: { name: newItemName } },
     success: function(data){
       // Get the new item's data from the response to create a new li
