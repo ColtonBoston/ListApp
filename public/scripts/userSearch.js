@@ -2,13 +2,9 @@ var searchResults = $(".search-results"),
     searchTimer,
     searchAjax;
 
+// Prevent submission of user-search form
 $("#user-search-form").on("submit", function(event){
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
 });
 
 $("#search-bar").on("keyup", function(event){

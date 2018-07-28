@@ -3,6 +3,8 @@ var list = $("#list"),  // Main list div
     listActions = $(".list-actions"),
     initialInputVal;    // Initial value for list item input (for editing/updating)
 
+$.ajaxSetup({ cache: false });
+// Logic for button to focus new item input on mobile devices
 if (window.innerWidth <= 767){
   $(".btn-new-item").click(function(){
     $(this).addClass("slide-right");
@@ -19,18 +21,12 @@ if (window.innerWidth <= 767){
     } else {
       $(".btn-new-item").removeClass("slide-right");
     }
-    console.log("hi");
   }, 350);
 }
 
 // Edit list button clicked
 list.on("click", ".btn-edit-item", function(event){
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
 
   var itemId = $(this)[0].dataset.parentId,
       itemText = $("#list-item-text-" + itemId),
@@ -61,24 +57,13 @@ $("#btn-delete-list").click(function(event){
   if (confirm("This list will be deleted permanently. Are you sure?")){
     // List deleted
   } else {
-    // Fix for Internet Explorer not having an event.preventDefault function
-    if (typeof event.preventDefault === "function"){
-      event.preventDefault();
-    } else {
-      return false;
-    }
+    event.preventDefault();
   }
 });
 
 // Add list item
 $("#new-item-form").submit(function(event){
-
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
 
   var input = $(this)[0].elements["item[name]"],
       newItemName = input.value,
@@ -114,12 +99,7 @@ $("#new-item-form").submit(function(event){
 
 // Update list item on submitting the form
 list.on("submit", ".edit-item-form", function(event){
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
 
   var itemId = $(this)[0].id.split("-")[3];
   updateListItem($(this));
@@ -131,13 +111,7 @@ list.on("submit", ".edit-item-form", function(event){
 
 // Handler for completing items
 list.on("submit", ".form-complete-item", function(event){
-
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
 
   var action = $(this)[0].action;
 
@@ -174,12 +148,7 @@ list.on("submit", ".form-complete-item", function(event){
 
 // Delete list item click handler
 list.on("click", ".btn-delete-item", function(event){
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
   deleteListItem($(this));
 });
 
@@ -218,12 +187,7 @@ $(".btn-permission").on("click", function(event){
       glyphicon = $(this).find(".glyphicon"),
       permissionsLength = $(".permissions-length")[0];
 
-  // Fix for Internet Explorer not having an event.preventDefault function
-  if (typeof event.preventDefault === "function"){
-    event.preventDefault();
-  } else {
-    return false;
-  }
+  event.preventDefault();
   notifyUser("Updating permissions...", false);
 
   // Add or remove friend from list permissions array in db
