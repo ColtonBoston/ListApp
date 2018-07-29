@@ -110,7 +110,6 @@ router.get("/lists/:id", middleware.canUserEdit, function(req, res){
             return (friendA < friendB) ? -1 : (friendA > friendB) ? 1 : 0;
           });
           res.header({ "Cache-Control": "max-age=0, no-cache, must-revalidate, proxy-revalidate" });
-          console.log(res);
           res.render("lists/show", {list: foundList, friends: friends, page: "show"});
         }
       });
