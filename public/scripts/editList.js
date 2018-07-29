@@ -182,7 +182,7 @@ $(".permissions-toggle").on("click", function(event){
 $(".btn-permission").on("click", function(event){
   var btn = $(this),
       form = $(this)[0].parentElement,
-      li = $(this)[0].offsetParent,
+      li = form.parentElement,
       glyphicon = $(this).find(".glyphicon"),
       permissionsLength = $(".permissions-length")[0];
 
