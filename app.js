@@ -45,14 +45,14 @@ app.use(function(req, res, next){
 });
 
 // Redirect from http to https
-app.get("*", function(req, res, next){
-  if (req.headers["x-forwarded-proto"] != "https" && process.env.NODE_ENV === "production"){
-    res.redirect("https://" + req.hostname + req.url);
-  }
-  else {
-    next();
-  }
-});
+// app.get("*", function(req, res, next){
+//   if (req.headers["x-forwarded-proto"] != "https" && process.env.NODE_ENV === "production"){
+//     res.redirect("https://" + req.hostname + req.url);
+//   }
+//   else {
+//     next();
+//   }
+// });
 
 app.use(indexRoutes);
 app.use(listRoutes);
