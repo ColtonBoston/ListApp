@@ -5,7 +5,7 @@ html {
 body {
   padding-bottom: 200px;
   padding-top: 60px;
-  background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1));
+  background: linear-gradient(to bottom right, #1090ff, rgba(10,10,125,1));
   background-repeat: no-repeat;
   color: white;
 }

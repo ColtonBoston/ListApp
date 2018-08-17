@@ -4,7 +4,7 @@ html {
 body {
   background-color: #203050;
   color: #fff;
-  background: linear-gradient(to bottom right, rgba(10, 100, 255, 1), rgba(10,10,125,1));
+  background: linear-gradient(to bottom right, #1090ff, rgba(10,10,125,1));
   background-size: cover;
   background-repeat: no-repeat;
   padding: 80px 0 20px 0;
