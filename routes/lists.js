@@ -205,6 +205,11 @@ router.delete("/lists/:id", middleware.checkListOwnership, function(req, res){
   });
 });
 
+// Trial page
+router.get("/trial", function(req, res){
+  res.render("lists/trial");
+});
+
 // List permission routes
 // Add friend to permissions
 router.put("/lists/:id/addPermission/:friend_id", middleware.checkListOwnership, function(req, res){

@@ -58,6 +58,7 @@ p, h2, label, .username-rules {
   color: #eee;
   vertical-align: top;
   font-weight: bold;
+  transition: background-color 250ms;
 }
 .btn-login:hover {
   background-color: #1070cc;
@@ -133,6 +134,19 @@ p, h2, label, .username-rules {
   margin-bottom: 5px;
   padding: 6px 12px;
   background-color: #ee0033;
+}
+.trial-container {
+  text-align: center;
+}
+.btn-trial {
+  margin-top: 10px;
+  background-color: orange;
+  color: white;
+  transition: background-color 250ms;
+}
+.btn-trial:hover {
+  background-color: darkorange;
+  color: white;
 }
 
 @media (max-width: 930px){

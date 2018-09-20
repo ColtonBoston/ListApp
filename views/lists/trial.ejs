@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+  <h1 id="list-name">My Trial List</h1>
+  <script>document.write('<style>.js_hidden { display: none; }</style>');</script>
+  <div class="row">
+    <div class="col-lg-9 col-sm-8 list-container">
+      <ul id="list" class="primary-list list-group"></ul>
+      <div class="list-actions">
+        <form id="new-item-form" class="new-item-form" action="#" method="POST">
+          <input id="new-item-input" class="form-control new-item-input" type="text" name="item[name]" autocomplete="off" placeholder="New item...">
+          <button id="new-item-submit" type="submit" class="btn btn-primary new-item-submit">Add</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-4">
+
+    </div>
+  </div>
+</div>
+<div class="notification">
+  <span class="notification-message"></span>
+</div>
+<a id="btn-new-item" href="#new-item-input" class="btn btn-new-item"><i class="glyphicon glyphicon-plus"></i></a>
+<script type="text/javascript" src="/scripts/trial.js"></script>
+
+<% include ../partials/footer %>
