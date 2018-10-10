@@ -15,6 +15,15 @@ h1 {
 p, h2, label, .username-rules {
   text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
+.btn-primary {
+  background-color: #1010FF;
+  transition: background-color 250ms;
+  border: none;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover {
+  background-color: #1010DD;
+  border: none;
+}
 .form-control {
   font-size: 16px;
 }
@@ -54,15 +63,9 @@ p, h2, label, .username-rules {
   width: auto;
 }
 .btn-login {
-  background-color: #1090FF;
-  color: #eee;
   vertical-align: top;
   font-weight: bold;
-  transition: background-color 250ms;
-}
-.btn-login:hover {
-  background-color: #1070cc;
-  color: #eee;
+  height: 33px;
 }
 .username-container {
   margin-bottom: 5px;
@@ -110,12 +113,12 @@ p, h2, label, .username-rules {
 }
 .btn-register {
   background-color: #10BB50;
-  color: #eee;
   font-weight: bold;
   border: none;
+  transition: background-color 250ms;
 }
 .btn-register:hover {
-  color: #eee;
+  color: white;
   background-color: #10AA50;
 }
 .buttons-between {
@@ -139,14 +142,12 @@ p, h2, label, .username-rules {
   text-align: center;
 }
 .btn-trial {
+  font-weight: bold;
   margin-top: 10px;
-  background-color: orange;
-  color: white;
-  transition: background-color 250ms;
+  border: 2px solid white;
 }
 .btn-trial:hover {
-  background-color: darkorange;
-  color: white;
+  border: 2px solid white;
 }
 
 @media (max-width: 930px){
@@ -169,6 +170,9 @@ p, h2, label, .username-rules {
     font-size: 1.2em;
   }
   .action-item:last-of-type {
+    margin-bottom: 10px;
+  }
+  .trial-container {
     margin-bottom: 20px;
   }
   .login-container {
