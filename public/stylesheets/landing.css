@@ -144,10 +144,10 @@ p, h2, label, .username-rules {
 .btn-trial {
   font-weight: bold;
   margin-top: 10px;
-  border: 2px solid white;
+  border: 1px solid rgb(10,10,125);
 }
 .btn-trial:hover {
-  border: 2px solid white;
+  border: 1px solid rgb(10,10,125);
 }
 
 @media (max-width: 930px){
